@@ -3,15 +3,17 @@ RailsAdmin.config do |config|
   ### Popular gems integration
 
   ## == Devise ==
-  # config.authenticate_with do
-  #   warden.authenticate! scope: :user
-  # end
-  # config.current_user_method(&:current_user)
+  # 验证是否已经登录，未登录跳转登录，已登录再用Pundit判断是否有权限
+  config.authenticate_with do
+    warden.authenticate! scope: :user
+  end
+  config.current_user_method(&:current_user)
 
   ## == CancanCan ==
   # config.authorize_with :cancancan
 
   ## == Pundit ==
+  # 验证是否有权限进行相关操作
   config.authorize_with :pundit
 
   ## == PaperTrail ==
