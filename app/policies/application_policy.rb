@@ -34,6 +34,21 @@ class ApplicationPolicy
     false
   end
 
+  ['dashboard',
+   'index',
+   'new',
+   'show',
+   'edit',
+   'delete',
+   'export',
+   'bulk_delete',
+   'show_in_app'].each do |method|
+    define_method "#{method}?" do
+      user.admin?
+      # true
+    end
+  end
+
   class Scope
     attr_reader :user, :scope
 
