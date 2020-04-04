@@ -5,6 +5,7 @@ ruby '2.3.3'
 
 gem 'devise'
 gem 'rails_admin', '~> 2.0'
+gem 'pundit'
 
 gem 'jquery-rails'
 gem 'bootstrap-sass'
