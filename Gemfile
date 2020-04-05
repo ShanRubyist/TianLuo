@@ -1,7 +1,7 @@
 source 'http://gems.ruby-china.com'
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
-ruby '2.3.3'
+# ruby '2.3.3'
 
 gem 'devise'
 gem 'rails_admin', '~> 2.0'
@@ -57,6 +57,13 @@ group :development do
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
   gem 'spring'
   gem 'spring-watcher-listen', '~> 2.0.0'
+
+  # 代码最佳实践检查工具
+  gem 'rails_best_practices'
+
+  # 安全检查工具
+  gem 'bundle-audit'
+  gem 'brakeman'
 end
 
 group :test do
