@@ -1,0 +1,9 @@
+:concurrency: 35
+:pidfile: ./tmp/pids/sidekiq.pid
+:logfile: ./log/sidekiq.log
+:daemon: true
+# 任务指定优先级
+:queues:
+  - [mailers, 100]
+  - [rss_job, 100]
+  - [default, 1]

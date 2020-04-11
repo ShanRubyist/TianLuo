@@ -22,6 +22,6 @@
 env :PATH, ENV['PATH']
 set :output, 'log/cron.log'
 
-every 1.day, at: ['9:00 pm'] do
-  runner "RssWorkJob.perform_later"#, environment: :development
+every 1.day, at: ['8:30 pm'] do
+  runner "RssQueueJob.perform_later", environment: :development
 end
