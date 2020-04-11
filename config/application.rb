@@ -28,6 +28,8 @@ module MoJing
       g.fixture_replacement :factory_bot, dir: 'spec/factories'
     end
 
+    config.eager_load_paths += %W(#{Rails.root}/app/jobs)
+
     config.action_dispatch.rescue_responses["Pundit::NotAuthorizedError"] = :forbidden
   end
 end

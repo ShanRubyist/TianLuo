@@ -16,6 +16,8 @@ gem 'coveralls', require: false
 
 # 使用redis作为缓存服务器
 gem 'redis-rails'
+gem 'sidekiq'
+gem 'whenever', require: false
 
 gem 'rest-client'
 
