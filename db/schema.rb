@@ -10,10 +10,44 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_04_04_044830) do
+ActiveRecord::Schema.define(version: 2020_04_11_043652) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "probe_settings", force: :cascade do |t|
+    t.string "url", null: false, comment: "RSS地址"
+    t.integer "port", default: 80, comment: "端口"
+    t.integer "retry_limit", comment: "重试次数"
+    t.string "proxy", comment: "代理服务器"
+    t.string "log_path", comment: "日志文件名"
+    t.boolean "status", default: true, comment: "服务开关: 开启才会抓取"
+    t.integer "user_id", null: false, comment: "用户ID"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["url"], name: "index_probe_settings_on_url"
+  end
+
+  create_table "rss_feeds", force: :cascade do |t|
+    t.string "title", comment: "文章标题"
+    t.string "description", comment: "文章描述"
+    t.string "author", comment: "作者"
+    t.datetime "pub_date", comment: "发布时间"
+    t.string "link", comment: "连接地址"
+    t.integer "rss_probe_history_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "rss_probe_histories", force: :cascade do |t|
+    t.string "title", comment: "RSS源标头"
+    t.string "description", comment: "RSS源描述"
+    t.datetime "last_build_date", comment: "RSS列表最近创建时间"
+    t.string "link", comment: "连接地址"
+    t.integer "probe_setting_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
   create_table "users", force: :cascade do |t|
     t.string "email", default: "", null: false

@@ -17,8 +17,9 @@ class RSSProbe
 
   def parse
     logger.info("[+] Begin to parse rss : #{url}")
-    fetch_n_handle
+    rss_feeds = fetch_n_handle
     logger.info("[+] End to parse rss : #{url}")
+    rss_feeds
   end
 
   def fetch_n_handle
@@ -51,10 +52,24 @@ class RSSProbe
 
     begin
       feed = RSS::Parser.parse(response)
-      puts "Title: #{feed.channel.title}"
-      feed.items.each do |item|
-        puts "Item: #{item.title}"
+      feed_hash = {
+          title: feed.channel.title,
+          description: feed.channel.description,
+          link: feed.channel.link,
+          last_build_date: feed.channel.lastBuildDate,
+          items: []
+      }
+
+      feed.channel.items.each do |item|
+        feed_hash[:items] << {
+            title: item.title,
+            description: item.description,
+            link: item.link,
+            author: item.author,
+            pub_date: item.pubDate
+        }
       end
+      feed_hash
     rescue RSS::NotWellFormedError => e
       logger.error(e)
       raise ParseException
