@@ -28,3 +28,18 @@ Things you may want to cover:
 * Deployment instructions
 
 * ...
+
+## Deploy
+
+* 安装依赖包
+`sudo bundle`
+
+* 执行数据库迁移
+`rails db:migrate`
+
+* 设定 *config/schedule* 定时任务
+`whenever --update-cron`
+`crontab -l`
+
+* 启动 *sidekiq* 服务
+`bundle exec sidekiq`
