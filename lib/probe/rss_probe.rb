@@ -32,20 +32,22 @@ class RSSProbe
       # 无法连接： 域名错误、端口错误
       logger.error(e)
       raise FetchException
-    rescue Exception::Errno::ECONNREFUSED => e
+    rescue Errno::ECONNREFUSED => e
       # 连接被拒绝
       logger.error(e)
       raise FetchException
-    rescue Exception::RestClient::NotFound => e
+    rescue RestClient::NotFound => e
       # 无法找到页面
       logger.error(e)
       raise FetchException
     rescue => e
       logger.error(e)
-      logger.info("[+] Retry #{retry_count} times")
 
       retry_count += 1
-      retry if retry_count <= retry_limit
+      if retry_count <= retry_limit
+        logger.info("[+] Retry #{retry_count} times")
+	retry
+      end
 
       raise RetryTooManyTimeException
     end
@@ -103,6 +105,6 @@ class RSSProbe
   class ParseException < RSSException
   end
 
-  class RetryTooManyTimeExcepiton < RSSException
+  class RetryTooManyTimeException < RSSException
   end
 end

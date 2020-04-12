@@ -7,6 +7,14 @@ class RssWorkJob < ApplicationJob
     # do something here
   end
 
+  rescue_from(RSSProbe::RetryTooManyTimeException) do
+    # do something here
+  end
+
+  rescue_from(StandardError) do
+    # do something here
+  end
+
   def perform(probe_setting)
     # 获取 RSS Feed
     rss_feeds = RSSProbe.new(probe_setting.url).parse
