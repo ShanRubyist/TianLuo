@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_04_11_043652) do
+ActiveRecord::Schema.define(version: 2020_04_12_024443) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -37,6 +37,16 @@ ActiveRecord::Schema.define(version: 2020_04_11_043652) do
     t.integer "rss_probe_history_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "rss_probe_failure_histories", force: :cascade do |t|
+    t.string "status", comment: "运行状态"
+    t.string "reason", comment: "失败原因"
+    t.string "detail", comment: "详细原因"
+    t.integer "probe_setting_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["id"], name: "index_rss_probe_failure_histories_on_id"
   end
 
   create_table "rss_probe_histories", force: :cascade do |t|
