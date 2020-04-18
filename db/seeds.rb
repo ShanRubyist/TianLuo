@@ -5,3 +5,7 @@
 #
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
+
+%W(淘宝 天猫 1688 京东 拼多多).each do |platform|
+  Platform.create(name: platform)
+end
