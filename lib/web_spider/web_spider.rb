@@ -87,7 +87,7 @@ class WebSpider
         },
         retry_limit: 3,
         log_path: "#{self.class}.log",
-        need_cache: false,
+        need_cache: true,
         cache: Rails.cache
     }
   end

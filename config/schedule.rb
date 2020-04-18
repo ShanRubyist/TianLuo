@@ -25,3 +25,7 @@ set :output, 'log/cron.log'
 every 1.day, at: ['9:00 am'] do
   runner "RssQueueJob.perform_later", environment: :development
 end
+
+every 1.day, at: ['10:00 am'] do
+  runner "WebSpiderQueueJob.perform_later", environment: :development
+end

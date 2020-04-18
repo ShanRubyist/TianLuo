@@ -15,7 +15,7 @@ module SaveGoodsConcern
                          sales_num: data[:shop][:sales_num],
                          goods_num: data[:shop][:goods_num],
                          platform: Platform.find_by_name('拼多多'),
-                         pdd_web_spider_setting_id: pdd_web_spider_setting.id)
+                         pdd_web_spider_setting: pdd_web_spider_setting)
 
       shop.dsrs.create(logistics_score: data[:shop][:dsr][:logistics_score],
                        desc_score: data[:shop][:dsr][:desc_score],

@@ -14,7 +14,6 @@ class PDDWebSpider < WebSpider
       raw_data = response.scan(/<script>.*window.rawData.*?({.*?);\s*<\/script>/m).join('')
       json_data = JSON.load(raw_data)
       raise NeedLoginExcepiton if json_data["store"]["initDataObj"]["needLogin"]
-      json_hash = transform_data(json_data)
     rescue JSON::ParserError => e
       logger.error(e)
       raise ParseException
@@ -22,6 +21,7 @@ class PDDWebSpider < WebSpider
       logger.error(e)
       raise e
     end
+    json_data
   end
 
   # 把数据转化成系统需要的格式
@@ -99,6 +99,6 @@ class PDDWebSpider < WebSpider
   class PDDWebSpiderException < WebSpiderException
   end
 
-  class NeedLoginExcepiton < PDDWebSpiderException
+  class NeedLoginException < PDDWebSpiderException
   end
 end
