@@ -13,7 +13,7 @@ class PDDWebSpider < WebSpider
     begin
       raw_data = response.scan(/<script>.*window.rawData.*?({.*?);\s*<\/script>/m).join('')
       json_data = JSON.load(raw_data)
-      raise NeedLoginExcepiton if json_data["store"]["initDataObj"]["needLogin"]
+      raise NeedLoginException if json_data["store"]["initDataObj"]["needLogin"]
     rescue JSON::ParserError => e
       logger.error(e)
       raise ParseException
