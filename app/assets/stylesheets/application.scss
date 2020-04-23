@@ -15,3 +15,34 @@
  */
 
 @import "bootstrap";
+
+* {
+  margin: 0;
+  padding: 0;
+}
+
+#header {
+  width: 100%;
+}
+
+#container {
+  min-height: 80%;
+}
+
+#footer {
+  width: 100%;
+}
+
+#footer p {
+  text-align: center;
+  line-height: 10px;
+  font-size: 10px;
+  color: #9d9d9d;
+}
+
+#footer p a {
+  text-align: center;
+  line-height: 10px;
+  font-size: 10px;
+  color: #9d9d9d;
+}
