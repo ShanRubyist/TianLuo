@@ -7,8 +7,8 @@ gem 'devise'
 gem 'rails_admin', '~> 2.0'
 gem 'pundit'
 
-gem 'jquery-rails'
-gem 'bootstrap-sass'
+# gem 'jquery-rails'
+# gem 'bootstrap-sass'
 
 gem 'dotenv-rails'
 

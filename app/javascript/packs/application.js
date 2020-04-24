@@ -31,5 +31,13 @@ Vue.use(Antd);
 
 console.log('Hello World from Webpacker')
 
+import jQuery from 'jquery/dist/jquery'
+window.$ = window.jQuery = jQuery
 
+export default window
+
+import 'bootstrap/dist/css/bootstrap.css'
+import 'bootstrap/dist/js/bootstrap.min'
+
+import 'animate.css'
 

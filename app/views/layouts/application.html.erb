@@ -8,7 +8,7 @@
   <%= javascript_pack_tag 'application' %>
 
   <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
-  <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
+  <%#= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
 
   <!-- VUE -->
   <!--  <script src="https://cdn.jsdelivr.net/npm/vue@2.6.10/dist/vue.js"></script>-->
@@ -34,7 +34,9 @@
 
 <body>
 <div id="header">
-  <%= render 'common/nav' %>
+  <% if user_signed_in? %>
+    <%= render 'common/nav' %>
+  <% end %>
 </div>
 
 <div id="container">
