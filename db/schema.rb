@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_04_18_124501) do
+ActiveRecord::Schema.define(version: 2020_04_24_161344) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -24,12 +24,12 @@ ActiveRecord::Schema.define(version: 2020_04_18_124501) do
   end
 
   create_table "dsrs", force: :cascade do |t|
-    t.integer "logistics_score", comment: "物流评分"
-    t.integer "desc_score", comment: "描述评分"
-    t.integer "service_score", comment: "服务评分"
-    t.integer "logistics_rank_percent", comment: "物流排行"
-    t.integer "desc_rank_percent", comment: "描述排行"
-    t.integer "service_rank_percent", comment: "服务排行"
+    t.decimal "logistics_score", precision: 3, scale: 2, comment: "物流评分"
+    t.decimal "desc_score", precision: 3, scale: 2, comment: "描述评分"
+    t.decimal "service_score", precision: 3, scale: 2, comment: "服务评分"
+    t.decimal "logistics_rank_percent", precision: 5, scale: 2, comment: "物流排行"
+    t.decimal "desc_rank_percent", precision: 5, scale: 2, comment: "描述排行"
+    t.decimal "service_rank_percent", precision: 5, scale: 2, comment: "服务排行"
     t.integer "logistics_rank_status", comment: "物流排行状态"
     t.integer "desc_rank_status", comment: "描述排行状态"
     t.integer "service_rank_status", comment: "服务排行状态"
@@ -158,8 +158,8 @@ ActiveRecord::Schema.define(version: 2020_04_18_124501) do
   create_table "skus", force: :cascade do |t|
     t.string "skuid", comment: "平台SKU编码"
     t.string "spec", comment: "规格名称"
-    t.integer "normal_price", comment: "正常价"
-    t.integer "group_price", comment: "团购价"
+    t.decimal "normal_price", precision: 7, scale: 2, comment: "正常价"
+    t.decimal "group_price", precision: 7, scale: 2, comment: "团购价"
     t.integer "good_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false

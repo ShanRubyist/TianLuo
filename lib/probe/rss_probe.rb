@@ -82,7 +82,9 @@ class RSSProbe
 
   def default_config
     {
-        headers: {},
+        headers: {
+            user_agent: 'Mozilla\u002F5.0 (Windows NT 6.1; Win64; x64) AppleWebKit\u002F537.36 (KHTML, like Gecko) Chrome\u002F72.0.3626.121 Safari\u002F537.36'
+        },
         proxy: nil,
         retry_limit: 3,
         log_path: "rss_probe.log"
