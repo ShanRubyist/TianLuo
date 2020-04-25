@@ -3,6 +3,8 @@ require 'spider'
 class WebSpiderWorkJob < ApplicationJob
   queue_as :web_spider
 
+  include JobsCallConcern
+
   rescue_from(WebSpider::FetchException) do |exp|
     record_failure(exp)
   end
@@ -23,9 +25,6 @@ class WebSpiderWorkJob < ApplicationJob
   end
 
   def perform(setting)
-    # 获取网页数据
-    data = PDDWebSpider.new(setting.url).parse
-    # 保存商品信息到数据库
-    Good.store_goods_to_db(setting, data)
+    call_rss_work_job(setting)
   end
 end

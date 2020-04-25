@@ -3,6 +3,8 @@ require 'probe'
 class RssWorkJob < ApplicationJob
   queue_as :rss_job
 
+  include JobsCallConcern
+
   rescue_from(RSSProbe::FetchException) do |exp|
     record_failure(exp)
   end
@@ -26,10 +28,7 @@ class RssWorkJob < ApplicationJob
     )
   end
 
-  def perform(probe_setting)
-    # 获取 RSS Feed
-    rss_feeds = RSSProbe.new(probe_setting.url).parse
-    # 保持 RSS 信息到数据库
-    RssProbeHistory.store_rss_to_db(probe_setting.id, rss_feeds)
+  def perform(setting)
+    call_web_spider_work_job(setting)
   end
 end

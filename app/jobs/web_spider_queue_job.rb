@@ -1,10 +1,9 @@
 class WebSpiderQueueJob < ApplicationJob
   queue_as :web_spider
 
+  include JobsCallConcern
+
   def perform(*args)
-    # 从数据库获取 Web Spider 配置信息
-    PddWebSpiderSetting.all.each do |s|
-      WebSpiderWorkJob.perform_later(s)
-    end
+    call_web_spider_queue_job
   end
 end
