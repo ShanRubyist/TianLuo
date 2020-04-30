@@ -49,7 +49,7 @@
 </div>
 
 <div id="footer">
-  <p>Copyright &#169 2020 NIANMINGCHEN. All Rights Reserved. NIANMINGCHEN 版权所有</p>
+  <p><%= raw(ENV['BEIAN']) if ENV['BEIAN'] %></p>
   <p><%= link_to(ENV['ICP'], ENV['ICP_LINK'], target: '_blank', rel: 'noreferrer') if ENV['ICP'] && !ENV['ICP'].empty? %></p>
 </div>
 </body>
