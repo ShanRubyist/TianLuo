@@ -1,0 +1,15 @@
+// 卡片的头部标题组件
+const data = [
+    'Racing car sprays burning fuel into crowd.',
+    'Japanese princess to wed commoner.',
+    'Australian walks 100km after outback crash.',
+    'Man charged over missing wedding girl.',
+    'Los Angeles battles huge wildfires.',
+];
+
+Vue.component('rss-list', {
+    data: function () {
+        return {data}
+    },
+    template: '<%= import_partial('home/rss/rss_list.html') %>'
+})

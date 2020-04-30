@@ -1,2 +1,51 @@
-<h1>Home#index</h1>
-<p>Find me in app/views/home/index.html.erb</p>
+<div id="app">
+  <a-row>
+    <a-col :span="6"></a-col>
+
+    <a-col :span="12">
+      <!--      二级导航-->
+      <a-tabs id="nav-tab" default-active-key="1">
+        <a-tab-pane key="1">
+          <span slot="tab">
+            <i class="fa fa-newspaper-o"></i>&nbsp;最新动态
+          </span>
+          Tab 1
+          <!--        <new-feeds v-if="current[0] == 'new_feeds'"></new-feeds>-->
+        </a-tab-pane>
+
+        <a-tab-pane key="2">
+          <span slot="tab">
+            <i class="fa fa-rss"></i>&nbsp;RSS
+          </span>
+          <rss-list></rss-list>
+        </a-tab-pane>
+
+        <a-tab-pane key="3">
+          <span slot="tab">
+            <i class="fa fa-shopping-cart"></i>&nbsp;店铺监控
+          </span>
+          <!--        <shop-spy v-if="current[0] == 'shop_spy'"></shop-spy>-->
+        </a-tab-pane>
+      </a-tabs>
+
+    </a-col>
+
+    <a-col :span="6"></a-col>
+  </a-row>
+</div>
+
+<script>
+    <%= render "home/rss/rss_list.vue.js" %>
+
+    var app = new Vue({
+        el: '#app',
+        data: {
+        },
+        methods: {
+            // click_on_nav: function ({item, key, keyPath}) {
+
+            // }
+        }
+    })
+
+</script>
