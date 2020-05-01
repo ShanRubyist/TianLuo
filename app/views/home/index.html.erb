@@ -1,10 +1,10 @@
 <div id="app">
   <a-row>
-    <a-col :span="6"></a-col>
+    <a-col :md="6"></a-col>
 
-    <a-col :span="12">
-      <!--      二级导航-->
-      <a-tabs id="nav-tab" default-active-key="1">
+    <a-col :sm="24" :md="12">
+      <!--二级导航-->
+      <a-tabs id="nav-tab" default-active-key="2">
         <a-tab-pane key="1">
           <span slot="tab">
             <i class="fa fa-newspaper-o"></i>&nbsp;最新动态
@@ -26,11 +26,11 @@
           </span>
           <!--        <shop-spy v-if="current[0] == 'shop_spy'"></shop-spy>-->
         </a-tab-pane>
-      </a-tabs>
 
+      </a-tabs>
     </a-col>
 
-    <a-col :span="6"></a-col>
+    <a-col :md="6"></a-col>
   </a-row>
 </div>
 
@@ -40,12 +40,8 @@
     var app = new Vue({
         el: '#app',
         data: {
+            is_sticky: true,
         },
-        methods: {
-            // click_on_nav: function ({item, key, keyPath}) {
-
-            // }
-        }
+        methods: {}
     })
-
 </script>
