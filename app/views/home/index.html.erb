@@ -32,6 +32,8 @@
 
     <a-col :md="6"></a-col>
   </a-row>
+
+  <a-back-top visibilityHeight="100px" />
 </div>
 
 <script>
@@ -40,8 +42,12 @@
     var app = new Vue({
         el: '#app',
         data: {
-            is_sticky: true,
         },
-        methods: {}
+        methods: {
+
+        },
+        mounted: function () {
+            window.addEventListener('scroll', this.handleScroll);
+        }
     })
 </script>
