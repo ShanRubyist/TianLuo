@@ -1,0 +1,17 @@
+// shop 的表格组件
+const goods_data = <%= raw(@goods_list.to_json) %>
+
+Vue.component('shop-list', {
+    data: function () {
+        return {
+            goods_data,
+            show_more: false
+        }
+    },
+    methods: {
+        toggle_show_more: function(){
+            this.show_more = !this.show_more
+        }
+    },
+    template: '<%= import_partial('home/shop_spy/sku_item') %>'
+})

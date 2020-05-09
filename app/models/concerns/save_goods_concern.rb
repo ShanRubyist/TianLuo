@@ -27,7 +27,7 @@ module SaveGoodsConcern
                        service_rank_status: data[:shop][:dsr][:service_rank_status],
                        logistics_rank_status: data[:shop][:dsr][:logistics_rank_status])
 
-      goods = shop.goods.create(name: data[:goods][:id],
+      goods = shop.goods.create(name: data[:goods][:name],
                                 spu_id: data[:goods][:id],
                                 sales_num: data[:goods][:sales_num],
                                 comments_total_num: data[:goods][:comments][:comments_num])

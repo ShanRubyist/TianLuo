@@ -1,15 +1,19 @@
 <div id="app">
   <a-row>
-    <a-col :md="6"></a-col>
+    <a-col :md="4"></a-col>
 
-    <a-col :sm="24" :md="12">
+    <a-col :sm="24" :md="16">
       <!--二级导航-->
-      <a-tabs id="nav-tab" default-active-key="2">
+      <a-tabs id="nav-tab" default-active-key="3">
         <a-tab-pane key="1">
           <span slot="tab">
             <i class="fa fa-newspaper-o"></i>&nbsp;最新动态
           </span>
-          Tab 1
+          <a-empty>
+            <a-button type="primary">
+              去订阅
+            </a-button>
+          </a-empty>
           <!--        <new-feeds v-if="current[0] == 'new_feeds'"></new-feeds>-->
         </a-tab-pane>
 
@@ -24,28 +28,26 @@
           <span slot="tab">
             <i class="fa fa-shopping-cart"></i>&nbsp;店铺监控
           </span>
-          <!--        <shop-spy v-if="current[0] == 'shop_spy'"></shop-spy>-->
+          <shop-list></shop-list>
         </a-tab-pane>
 
       </a-tabs>
     </a-col>
 
-    <a-col :md="6"></a-col>
+    <a-col :md="4"></a-col>
   </a-row>
 
-  <a-back-top visibilityHeight="100px" />
+  <a-back-top visibilityHeight="100px"/>
 </div>
 
 <script>
     <%= render "home/rss/rss_list.vue.js" %>
+    <%= render "home/shop_spy/shop_list.vue.js" %>
 
     var app = new Vue({
         el: '#app',
-        data: {
-        },
-        methods: {
-
-        },
+        data: {},
+        methods: {},
         mounted: function () {
             window.addEventListener('scroll', this.handleScroll);
         }

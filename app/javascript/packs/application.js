@@ -26,7 +26,7 @@ import 'ant-design-vue/dist/antd.css';
 import 'font-awesome/css/font-awesome.css'
 
 window.Vue = Vue;
-Vue.use(ElementUI)
+Vue.use(ElementUI);
 Vue.use(Antd);
 
 console.log('Hello World from Webpacker')
