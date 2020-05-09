@@ -26,7 +26,7 @@
                     <a v-bind:href="good.shop_url" target="_blank">
                         {{good.shop_name}}({{good.spu_id}})
                         <a-tag color="#87d068">
-                            拼多多
+                            {{good.platform}}
                         </a-tag>
                     </a>
                     <span>&nbsp;</span>
@@ -34,13 +34,13 @@
                     <span>&nbsp;</span>
                     <span>销售量: {{good.sales_num}}</span>
                     <span>&nbsp;</span>
-                    <span>物流评分: 1</span>
+                    <span>物流评分: {{good.logistics_score}}</span>
 
                     <span>&nbsp;</span>
-                    <span>描述评分: 1</span>
+                    <span>描述评分: {{good.desc_score}}</span>
 
                     <span>&nbsp;</span>
-                    <span>服务评分: 1</span>
+                    <span>服务评分: {{good.service_score}}</span>
                 </td>
             </tr>
 

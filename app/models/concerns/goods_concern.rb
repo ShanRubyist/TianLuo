@@ -3,7 +3,21 @@ module GoodsConcern
 
   included do |base|
     def goods_list(page = 1, per = 20)
-      goods = Good.includes(:shop, :mall_services, :goods_comments, :coupons, :goods_images, :skus).page(page).per(per)
+      goods = Good.includes(
+          :shop => {
+              :pdd_web_spider_setting => :user
+          }
+      ).includes(
+          :shop => :dsrs,
+          :shop => :platform
+      ).includes(
+          :mall_services,
+          :goods_comments,
+          :coupons,
+          :goods_images,
+          :skus
+      ).where(:users => {:id => current_user.id}).page(page).per(per)
+
       goods_hash = {}
 
       goods.map do |good|
@@ -48,7 +62,11 @@ module GoodsConcern
         good_hash['shop_url'] = '//yangkeduo.com/' + good.shop.shop_url
         good_hash['sales_num'] = good.shop.sales_num
         good_hash['goods_num'] = good.shop.goods_num
-        good_hash['platform_id'] = good.shop.platform_id
+
+        good_hash['platform'] = good.shop.platform.name
+        good_hash['logistics_score'] = good.shop.dsrs.first.logistics_score
+        good_hash['desc_score'] = good.shop.dsrs.first.desc_score
+        good_hash['service_score'] = good.shop.dsrs.first.service_score
 
         goods_hash[good.spu_id] = good_hash
       end
