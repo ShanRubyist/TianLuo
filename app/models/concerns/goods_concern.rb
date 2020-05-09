@@ -12,9 +12,9 @@ module GoodsConcern
         good_hash['coupons'] = good.coupons.map(&:name)
         good_hash['goods_images'] = good.goods_images.map(&:url)
 
-        sku_hash = {}
         good_hash['skus'] = {}
         good.skus.map do |sku|
+          sku_hash = {}
           sku_hash['skuid'] = sku.skuid
           sku_hash['spec'] = sku.spec
           sku_hash['normal_price'] = sku.normal_price
@@ -23,9 +23,9 @@ module GoodsConcern
           good_hash['skus'][sku.skuid] = sku_hash
         end
 
-        goods_comments_hash = {}
         good_hash['goods_comments'] = {}
         good_hash['goods_comments'] = good.goods_comments.map do |goods_comment|
+          goods_comments_hash = {}
           goods_comments_hash['customer_name'] = goods_comment.customer_name
           goods_comments_hash['comment'] = goods_comment.comment
           goods_comments_hash['time'] = goods_comment.time.localtime.strftime("%Y-%m-%d %H:%M")
