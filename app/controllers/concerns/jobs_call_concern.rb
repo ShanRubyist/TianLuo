@@ -9,7 +9,7 @@ module JobsCallConcern
       end
     end
 
-    def call_rss_work_job(setting)
+    def call_web_spider_work_job(setting)
       # 获取网页数据
       data = PDDWebSpider.new(setting.url).parse
       # 保存商品信息到数据库
@@ -19,11 +19,11 @@ module JobsCallConcern
     def call_web_spider_queue_job
       # 从数据库获取 Web Spider 配置信息
       PddWebSpiderSetting.all.each do |s|
-        WebSpiderWorkJob.perform_later(s)
+	WebSpiderWorkJob.set(wait: (Random.rand(60)).minutes).perform_later(s)
       end
     end
 
-    def call_web_spider_work_job(setting)
+    def call_rss_work_job(setting)
       # 获取 RSS Feed
       rss_feeds = RSSProbe.new(setting.url).parse
       # 保持 RSS 信息到数据库

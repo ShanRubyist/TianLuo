@@ -29,6 +29,6 @@ class RssWorkJob < ApplicationJob
   end
 
   def perform(setting)
-    call_web_spider_work_job(setting)
+    call_rss_work_job(setting)
   end
 end
