@@ -60,7 +60,7 @@ module GoodsConcern
         good_hash['vendor_id'] = good.shop.vendor_id
         good_hash['shop_name'] = good.shop.shop_name
         good_hash['shop_url'] = '//yangkeduo.com/' + good.shop.shop_url
-        good_hash['sales_num'] = good.shop.sales_num
+        good_hash['shop_sales_num'] = good.shop.sales_num
         good_hash['goods_num'] = good.shop.goods_num
 
         good_hash['platform'] = good.shop.platform.name
