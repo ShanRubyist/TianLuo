@@ -7,7 +7,7 @@ module RSSConcern
           :rss_probe_history => {
               :probe_setting => :user
           }
-      ).where(:users => {:id => current_user.id}).page(page).per(per)
+      ).where(:users => {:id => current_user.id}).order_by_desc.page(page).per(per)
     end
   end
 
