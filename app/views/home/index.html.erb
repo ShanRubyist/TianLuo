@@ -4,7 +4,7 @@
 
     <a-col :sm="24" :md="16">
       <!--二级导航-->
-      <a-tabs id="nav-tab" default-active-key="3">
+      <a-tabs id="nav-tab" default-active-key="3" @change="change_tab">
         <a-tab-pane key="1">
           <span slot="tab">
             <i class="fa fa-newspaper-o"></i>&nbsp;最新动态
@@ -47,7 +47,21 @@
     var app = new Vue({
         el: '#app',
         data: {},
-        methods: {},
+        methods: {
+            change_tab: function(key) {
+                if(key == 2) {
+                    $.ajax({
+                        url: window.location.href + 'mark_readed',
+                        dataType: "script",
+                        type: "PUT",
+                        data: {
+                            user_id: <%= current_user.id %>,
+                            authenticity_token: $('meta[name="csrf-token"]').attr('content')
+                        }
+                    })
+                }
+            }
+        },
         mounted: function () {
             window.addEventListener('scroll', this.handleScroll);
         }

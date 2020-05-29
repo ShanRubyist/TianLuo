@@ -6,8 +6,13 @@ module RSSConcern
       RssFeed.joins(
           :rss_probe_history => {
               :probe_setting => :user
-          }
-      ).where(:users => {:id => current_user.id}).order_by_desc.page(page).per(per)
+          })
+          .joins(:user_rss_feed_ship)
+          .where(:users => {:id => current_user.id})
+          .order('user_rss_feed_ships.unread desc')
+          .order_by_desc
+          .page(page)
+          .per(per)
     end
   end
 

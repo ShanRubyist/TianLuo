@@ -2,7 +2,7 @@ class RssProbeHistory < ApplicationRecord
   belongs_to :probe_setting
   has_many :rss_feeds
 
-  def self.store_rss_to_db(probe_setting_id, rss)
+  def self.store_rss_to_db(user_id, probe_setting_id, rss)
     title = rss[:title]
     description = rss[:description]
     last_build_date = rss[:last_build_date]
@@ -17,12 +17,17 @@ class RssProbeHistory < ApplicationRecord
 
     items.each do |item|
       # 增量更新，已有的RSS Feed不会重复添加
-      RssFeed.create_with(title: item[:title],
-                          description: item[:description],
-                          author: item[:author],
-                          pub_date: item[:pub_date],
-                          rss_probe_history_id: rss_probe_history.id)
-          .find_or_create_by(link: item[:link])
+      rss_feed = RssFeed.create_with(title: item[:title],
+                                     description: item[:description],
+                                     author: item[:author],
+                                     pub_date: item[:pub_date],
+                                     rss_probe_history_id: rss_probe_history.id)
+                     .find_or_create_by(link: item[:link])
+
+      # 把RSS Feed内容分发到用户的内容队列中，默认为未读
+      # TODO: 应该要分发到有订阅此Rss的用户中
+      UserRssFeedShip.find_or_create_by(user_id: user_id,
+                                          rss_feed_id: rss_feed.id)
     end
   end
 end

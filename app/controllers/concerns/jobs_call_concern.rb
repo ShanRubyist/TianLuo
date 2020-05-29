@@ -26,8 +26,11 @@ module JobsCallConcern
     def call_rss_work_job(setting)
       # 获取 RSS Feed
       rss_feeds = RSSProbe.new(setting.url).parse
+
+      user_id = setting.user_id
+
       # 保持 RSS 信息到数据库
-      RssProbeHistory.store_rss_to_db(setting.id, rss_feeds)
+      RssProbeHistory.store_rss_to_db(user_id, setting.id, rss_feeds)
     end
   end
 
