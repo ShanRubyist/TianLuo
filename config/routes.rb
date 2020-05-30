@@ -17,4 +17,5 @@ Rails.application.routes.draw do
   end
 
   put 'mark_readed' => 'rss_feeds#mark_readed'
+  get 'load_more_rss_feed' => 'rss_feeds#load_more_rss_feed'
 end

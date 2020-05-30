@@ -3,7 +3,7 @@ class HomeController < ApplicationController
   include GoodsConcern
 
   def index
-    @rss_list = rss_list(params['page'], params['per'])
+    @rss_list = rss_list
     @goods_list = goods_list(params['page'], params['per'])
   end
 

@@ -34,6 +34,9 @@ console.log('Hello World from Webpacker')
 import jQuery from 'jquery/dist/jquery'
 window.$ = window.jQuery = jQuery
 
+import axios from 'axios'
+window.axios = axios
+
 export default window
 
 import 'bootstrap/dist/css/bootstrap.css'

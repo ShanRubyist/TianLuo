@@ -3,23 +3,61 @@ Vue.component('rss-list', {
     data: function () {
         return {
             rss_list_json:
-              <% rst =  @rss_list.map do |rss| %>
-                <% {title: rss.title,
-                    description: rss.description,
-                    pub_date: rss.pub_date.localtime.strftime("%Y-%m-%d %H:%M"),
-                    author: rss.author,
-                    link: rss.link,
-                    rss: rss.rss_probe_history.title,
-                    rss_link: rss.rss_probe_history.link,
-                    rss_description: rss.rss_probe_history.description
-                   } %>
-              <% end %>
-              <%= raw(rst.to_json) %>
+            <% rst =  @rss_list.map do |rss| %>
+            <% {title: rss.title,
+                description: rss.description,
+                pub_date: rss.pub_date.localtime.strftime("%Y-%m-%d %H:%M"),
+                author: rss.author,
+                link: rss.link,
+                rss: rss.rss_probe_history.title,
+                rss_link: rss.rss_probe_history.link,
+                rss_description: rss.rss_probe_history.description,
+                status: rss.user_rss_feed_ship.first.unread
+               } %>
+            <% end %>
+            <%= raw(rst.to_json) %>,
+            prev: null,
+            next_page: 2
         }
     },
     methods: {
+        is_last_read_position: function (current) {
+            // 必须是闭包函数，否则只会是false
+            return function () {
+                // 上个RSS Feed为空或未读，并且当前RSS Feed为已读
+                if ((this.prev == null || this.prev.status == true) && (current.status == false)) {
+                    this.prev = current;
+                    return true;
+                } else {
+                    this.prev = current;
+                    return false;
+                }
+            }
+        },
+        append_rss_feed: function (data) {
+            Object.assign(data, this.rss_list_json)
+            this.rss_list_json = data
+        },
         go_to_read: function (link) {
             window.open(link)
+        },
+        loadmore: function () {
+            let that = this
+
+            axios.get('/load_more_rss_feed',
+                {
+                    params: {
+                        user_id: <%= current_user.id %>,
+                        page: this.next_page
+                    }
+                })
+                .then(function (reason) {
+                    that.append_rss_feed(reason.data)
+                    that.next_page += 1
+                })
+                .catch(function (reason) {
+                    that.$message.error('加载出错!')
+                })
         },
     },
     template: '<%= import_partial('home/rss/rss_list_item.html') %>'

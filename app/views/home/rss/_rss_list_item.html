@@ -1,23 +1,27 @@
 <div>
-    <div class="rss-list" v-for="rss in rss_list_json">
-        <p class="rss-list-title" v-on:click="go_to_read(rss.link)">
-            <a-tooltip placement="top">
-                <template slot="title">
-                    点击访问源网页
-                </template>
-                {{rss.title}}
-            </a-tooltip>
-        </p>
+    <div v-for="rss in rss_list_json">
+        <p v-if="is_last_read_position(rss).call()" id="last_read_position">上次读到这里</p>
 
-        <p class="rss-list-content">{{rss.description.substring(0, 1000)}}</p>
+        <div class="rss-list">
 
-        <p class="rss-list-footer">
-            <a-tooltip placement="top">
-                <template slot="title">
-                    <p>{{rss.rss_description}}</p>
-                    <small>点击访问RSS源</small>
-                </template>
-                <span v-on:click="go_to_read(rss.rss_link)">{{rss.rss}}</span>
+            <p class="rss-list-title" v-on:click="go_to_read(rss.link)">
+                <a-tooltip placement="top">
+                    <template slot="title">
+                        点击访问源网页
+                    </template>
+                    {{rss.title}}
+                </a-tooltip>
+            </p>
+
+            <p class="rss-list-content">{{rss.description.substring(0, 1000)}}</p>
+
+            <p class="rss-list-footer">
+                <a-tooltip placement="top">
+                    <template slot="title">
+            <p>{{rss.rss_description}}</p>
+            <small>点击访问RSS源</small>
+            </template>
+            <span v-on:click="go_to_read(rss.rss_link)">{{rss.rss}}</span>
             </a-tooltip>
             |
             <a-tooltip placement="top">
@@ -28,6 +32,12 @@
             </a-tooltip>
             |
             发布时间：{{rss.pub_date}}
-        </p>
+            </p>
+        </div>
+
     </div>
+
+    <a-button id="loadmore" type="primary" @click="loadmore">
+        加载更多
+    </a-button>
 </div>

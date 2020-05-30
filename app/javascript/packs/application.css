@@ -76,3 +76,16 @@ body {
     color: #acb1b6;
     font-size: 12px;
 }
+
+#loadmore {
+    width: 100%;
+    padding: 5px auto;
+}
+
+#last_read_position {
+    margin: 0;
+    padding: 0;
+    text-align: center;
+    font-size: 4px;
+    color: #9d9d9d;
+}
