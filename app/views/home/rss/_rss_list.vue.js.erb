@@ -35,8 +35,11 @@ Vue.component('rss-list', {
             }
         },
         append_rss_feed: function (data) {
-            Object.assign(data, this.rss_list_json)
-            this.rss_list_json = data
+            var that = this;
+            data.forEach(function (obj, index) {
+                that.rss_list_json.push(obj)
+            })
+            // console.log(this.rss_list_json)
         },
         go_to_read: function (link) {
             window.open(link)
