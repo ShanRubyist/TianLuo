@@ -48,7 +48,8 @@ Vue.component('rss-list', {
                 {
                     params: {
                         user_id: <%= current_user.id %>,
-                        page: this.next_page
+                        page: this.next_page,
+                        per: 20
                     }
                 })
                 .then(function (reason) {
