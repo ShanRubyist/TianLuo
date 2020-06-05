@@ -13,7 +13,7 @@ class RssFeedsController < ApplicationController
       {
           title: rss.title,
           description: rss.description,
-          pub_date: rss.pub_date.localtime.strftime("%Y-%m-%d %H:%M"),
+          pub_date: rss.pub_date.nil? ? '' : rss.pub_date.localtime.strftime("%Y-%m-%d %H:%M"),
           author: rss.author,
           link: rss.link,
           rss: rss.rss_probe_history.title,
