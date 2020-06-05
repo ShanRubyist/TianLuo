@@ -46,14 +46,52 @@ class RSSProbe
       retry_count += 1
       if retry_count <= retry_limit
         logger.info("[+] Retry #{retry_count} times")
-	retry
+        retry
       end
 
       raise RetryTooManyTimeException
     end
 
+    feed = RSS::Parser.parse(response)
+    if feed.class == RSS::Atom::Feed
+      parse_atom(feed)
+    elsif feed.class == RSS::Rss
+      parse_rss(feed)
+    else
+      raise UnknownRssFormatException
+    end
+  end
+
+  private
+
+  def parse_atom(feed)
     begin
-      feed = RSS::Parser.parse(response)
+      feed_hash = {
+          title: feed.title.content,
+          description: feed.subtitle.content,
+          link: feed.link.href,
+          last_build_date: feed.updated.content,
+          items: []
+      }
+logger.error feed.entries.count
+      feed.entries.each do |item|
+        feed_hash[:items] << {
+            title: item.title.content,
+            description: item.content.content,
+            link: item.link.href,
+            author: item.author.name.content,
+            pub_date: item.published.content
+        }
+      end
+      feed_hash
+    rescue RSS::NotWellFormedError => e
+      logger.error(e)
+      raise ParseException
+    end
+  end
+
+  def parse_rss(feed)
+    begin
       feed_hash = {
           title: feed.channel.title,
           description: feed.channel.description,
@@ -77,8 +115,6 @@ class RSSProbe
       raise ParseException
     end
   end
-
-  private
 
   def default_config
     {
@@ -108,5 +144,8 @@ class RSSProbe
   end
 
   class RetryTooManyTimeException < RSSException
+  end
+
+  class UnknownRssFormatException < RSSException
   end
 end
