@@ -29,6 +29,7 @@ class PDDWebSpider < WebSpider
     data = data["store"]["initDataObj"]
     shop = data["mall"]
     goods = data["goods"]
+    comments = data["store"]["initDataObj"]["oakData"]
 
     {
         useAgent: data['userAgent'],
@@ -66,8 +67,8 @@ class PDDWebSpider < WebSpider
               }
             end,
             comments: {
-                comments_num: goods["review"]["commentNumText"],
-                details: goods["review"]["detailList"].map do |detail|
+                comments_num: comments["review"]["commentNumText"],
+                details: comments["review"]["detailList"].map do |detail|
                   {
                       customer_name: detail["name"],
                       comment: detail["comment"],
