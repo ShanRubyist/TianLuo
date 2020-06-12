@@ -40,9 +40,9 @@ module GoodsConcern
         good.skus.map do |sku|
           sku_hash = {}
           sku_hash['skuid'] = sku.skuid
-          sku_hash['spec'] = sku.skus_extras.last.spec
-          sku_hash['normal_price'] = sku.skus_extras.last.normal_price
-          sku_hash['group_price'] = sku.skus_extras.last.group_price
+          sku_hash['spec'] = sku.skus_extras.last.try :spec
+          sku_hash['normal_price'] = sku.skus_extras.last.try :normal_price
+          sku_hash['group_price'] = sku.skus_extras.last.try :group_price
 
           good_hash['skus'][sku.skuid] = sku_hash
         end
@@ -62,20 +62,20 @@ module GoodsConcern
           ]
         end
 
-        good_hash['name'] = good.goods_extras.last.name
+        good_hash['name'] = good.goods_extras.last.try :name
         good_hash['spu_id'] = good.spu_id
-        good_hash['sales_num'] = good.goods_extras.last.sales_num
-        good_hash['comments_total_num'] = good.goods_extras.last.comments_total_num
+        good_hash['sales_num'] = good.goods_extras.last.try :sales_num
+        good_hash['comments_total_num'] = good.goods_extras.last.try :comments_total_num
 
         good_hash['vendor_id'] = good.shop.vendor_id
         good_hash['shop_name'] = good.shop.shop_name
         good_hash['shop_url'] = '//yangkeduo.com/' + good.shop.shop_url
-        good_hash['shop_sales_num'] = good.shop.shops_extras.last.sales_num
-        good_hash['goods_num'] = good.shop.shops_extras.last.goods_num
+        good_hash['shop_sales_num'] = good.shop.shops_extras.last.try :sales_num
+        good_hash['goods_num'] = good.shop.shops_extras.last.try :goods_num
         good_hash['platform'] = good.shop.platform.name
-        good_hash['logistics_score'] = good.shop.dsrs.last.logistics_score
-        good_hash['desc_score'] = good.shop.dsrs.last.desc_score
-        good_hash['service_score'] = good.shop.dsrs.last.service_score
+        good_hash['logistics_score'] = good.shop.dsrs.last.try :logistics_score
+        good_hash['desc_score'] = good.shop.dsrs.last.try :desc_score
+        good_hash['service_score'] = good.shop.dsrs.last.try :service_score
 
         goods_hash[good.spu_id] = good_hash
       end
