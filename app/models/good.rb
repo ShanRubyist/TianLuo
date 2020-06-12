@@ -5,6 +5,7 @@ class Good < ApplicationRecord
   has_many :coupons
   has_many :goods_images
   has_many :skus
+  has_many :goods_extras
 
   include SaveGoodsConcern
 end

@@ -8,14 +8,15 @@ module SaveGoodsConcern
 
   module ClassMethods
     def store_goods_to_db(pdd_web_spider_setting, data)
-      # TODO: 如果 shop 已经存在，不能再创建
-      shop = Shop.create(vendor_id: data[:shop][:id],
-                         shop_name: data[:shop][:name],
-                         shop_url: data[:shop][:shop_url],
-                         sales_num: data[:shop][:sales_num],
-                         goods_num: data[:shop][:goods_num],
-                         platform: Platform.find_by_name('拼多多'),
-                         pdd_web_spider_setting: pdd_web_spider_setting)
+      shop = Shop.create_with(shop_name: data[:shop][:name],
+                              shop_url: data[:shop][:shop_url],
+                              platform: Platform.find_by_name('拼多多'),
+                              pdd_web_spider_setting: pdd_web_spider_setting)
+                 .find_or_create_by(vendor_id: data[:shop][:id])
+
+      shop.shops_extras.create(shop_id: shop.id,
+                               sales_num: data[:shop][:sales_num],
+                               goods_num: data[:shop][:goods_num])
 
       shop.dsrs.create(logistics_score: data[:shop][:dsr][:logistics_score],
                        desc_score: data[:shop][:dsr][:desc_score],
@@ -27,14 +28,15 @@ module SaveGoodsConcern
                        service_rank_status: data[:shop][:dsr][:service_rank_status],
                        logistics_rank_status: data[:shop][:dsr][:logistics_rank_status])
 
-      goods = shop.goods.create(name: data[:goods][:name],
-                                spu_id: data[:goods][:id],
+      goods = shop.goods.find_or_create_by(spu_id: data[:goods][:id])
+      goods.goods_extras.create(good_id: goods.id,
+                                name: data[:goods][:name],
                                 sales_num: data[:goods][:sales_num],
                                 comments_total_num: data[:goods][:comments][:comments_num])
 
-      data[:goods][:images].each { |image| goods.goods_images.create(url: image) }
-      data[:goods][:coupons].each { |coupon| goods.coupons.create(name: coupon[:name]) }
-      data[:goods][:services].each { |service| goods.mall_services.create(name: service[:name]) }
+      goods.goods_images.create(goods_images: data[:goods][:images].map { |image| image })
+      goods.coupons.create(coupons: data[:goods][:coupons].map { |coupon| coupon[:name]})
+      goods.mall_services.create(services: data[:goods][:services].map { |service| service[:name]})
       data[:goods][:comments][:details].each do |comment|
         goods.goods_comments.create(customer_name: comment[:customer_name],
                                     comment: comment[:comment],
@@ -42,10 +44,12 @@ module SaveGoodsConcern
       end
 
       data[:goods][:skus].each do |sku|
-        goods.skus.create(skuid: sku[:skuid],
-                          spec: sku[:spec],
-                          normal_price: sku[:normal_price],
-                          group_price: sku[:group_price])
+        _sku = goods.skus.find_or_create_by(skuid: sku[:skuid])
+
+        _sku.skus_extras.create(sku_id: _sku.id,
+                    spec: sku[:spec],
+                    normal_price: sku[:normal_price],
+                    group_price: sku[:group_price])
       end
     end
   end

@@ -10,17 +10,16 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_05_29_143804) do
+ActiveRecord::Schema.define(version: 2020_06_12_171349) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "coupons", force: :cascade do |t|
-    t.string "name", null: false, comment: "优惠卷名称"
     t.integer "good_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["name"], name: "index_coupons_on_name"
+    t.json "coupons", default: {}
   end
 
   create_table "dsrs", force: :cascade do |t|
@@ -40,11 +39,7 @@ ActiveRecord::Schema.define(version: 2020_05_29_143804) do
   end
 
   create_table "goods", force: :cascade do |t|
-    t.string "name", comment: "商品名称"
     t.string "spu_id", comment: "商品编码"
-    t.string "sales_num", comment: "商品销量"
-    t.integer "goods_comments_count"
-    t.string "comments_total_num"
     t.integer "shop_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -61,19 +56,28 @@ ActiveRecord::Schema.define(version: 2020_05_29_143804) do
     t.index ["id"], name: "index_goods_comments_on_id"
   end
 
-  create_table "goods_images", force: :cascade do |t|
-    t.string "url", comment: "图片链接"
-    t.integer "good_id", null: false
+  create_table "goods_extras", force: :cascade do |t|
+    t.string "name", comment: "商品名称"
+    t.string "sales_num", comment: "商品销量"
+    t.integer "goods_comments_count"
+    t.string "comments_total_num"
+    t.integer "good_id", null: false, comment: "关联商品ID"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
-  create_table "mall_services", force: :cascade do |t|
-    t.string "name", null: false, comment: "服务名称"
+  create_table "goods_images", force: :cascade do |t|
     t.integer "good_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["name"], name: "index_mall_services_on_name"
+    t.json "goods_images", default: {}
+  end
+
+  create_table "mall_services", force: :cascade do |t|
+    t.integer "good_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.json "services", default: {}
   end
 
   create_table "pdd_web_spider_settings", force: :cascade do |t|
@@ -145,8 +149,6 @@ ActiveRecord::Schema.define(version: 2020_05_29_143804) do
     t.integer "vendor_id", comment: "平台店铺ID"
     t.string "shop_name", comment: "店铺名称"
     t.string "shop_url", comment: "店铺链接"
-    t.string "sales_num", comment: "销售量"
-    t.string "goods_num", comment: "商品数量"
     t.integer "platform_id", null: false, comment: "关联电商平台"
     t.integer "pdd_web_spider_setting_id", null: false, comment: "关联设置"
     t.datetime "created_at", null: false
@@ -155,15 +157,29 @@ ActiveRecord::Schema.define(version: 2020_05_29_143804) do
     t.index ["vendor_id"], name: "index_shops_on_vendor_id"
   end
 
+  create_table "shops_extras", force: :cascade do |t|
+    t.string "sales_num", comment: "销售量"
+    t.string "goods_num", comment: "商品数量"
+    t.integer "shop_id", null: false, comment: "关联店铺"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "skus", force: :cascade do |t|
     t.string "skuid", comment: "平台SKU编码"
-    t.string "spec", comment: "规格名称"
-    t.decimal "normal_price", precision: 7, scale: 2, comment: "正常价"
-    t.decimal "group_price", precision: 7, scale: 2, comment: "团购价"
     t.integer "good_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["skuid"], name: "index_skus_on_skuid"
+  end
+
+  create_table "skus_extras", force: :cascade do |t|
+    t.string "spec", comment: "规格名称"
+    t.decimal "normal_price", precision: 7, scale: 2, comment: "正常价"
+    t.decimal "group_price", precision: 7, scale: 2, comment: "团购价"
+    t.integer "sku_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "user_rss_feed_ships", force: :cascade do |t|
@@ -186,4 +202,5 @@ ActiveRecord::Schema.define(version: 2020_05_29_143804) do
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
+
 end

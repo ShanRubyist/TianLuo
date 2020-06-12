@@ -3,4 +3,5 @@ class Shop < ApplicationRecord
   belongs_to :platform
   has_many :goods
   has_many :dsrs
+  has_many :shops_extras
 end
