@@ -32,9 +32,9 @@ module GoodsConcern
 
       goods.map do |good|
         good_hash = {}
-        good_hash['mall_services'] = good.mall_services.last.services
-        good_hash['coupons'] = good.coupons.nil? ? '' : good.coupons.last.try(:coupons)
-        good_hash['goods_images'] = good.goods_images.last.goods_images
+        good_hash['mall_services'] = good.mall_services.last.try(:services)
+        good_hash['coupons'] = good.coupons.last.try(:coupons)
+        good_hash['goods_images'] = good.goods_images.last.try(:goods_images)
 
         good_hash['skus'] = {}
         good.skus.map do |sku|
