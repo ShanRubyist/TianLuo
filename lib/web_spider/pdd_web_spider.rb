@@ -29,7 +29,7 @@ class PDDWebSpider < WebSpider
     data = data["store"]["initDataObj"]
     shop = data["mall"]
     goods = data["goods"]
-    comments = data["store"]["initDataObj"]["oakData"]
+    comments = data["oakData"]
 
     {
         useAgent: data['userAgent'],

@@ -1,3 +1,3 @@
 class GoodsComment < ApplicationRecord
-  belongs_to :good, counter_cache: true
+  belongs_to :good#, counter_cache: true
 end

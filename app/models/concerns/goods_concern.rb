@@ -52,7 +52,7 @@ module GoodsConcern
           goods_comments_hash = {}
           goods_comments_hash['customer_name'] = goods_comment.customer_name
           goods_comments_hash['comment'] = goods_comment.comment
-          goods_comments_hash['time'] = goods_comment.time.localtime.strftime("%Y-%m-%d %H:%M")
+          goods_comments_hash['time'] = goods_comment.time.try(:localtime).try(:strftime, "%Y-%m-%d %H:%M")
 
           # good_hash['goods_comments'][goods_comment.customer_name + goods_comment.time.to_s] = goods_comments_hash
           [
