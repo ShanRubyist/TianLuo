@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_06_12_171349) do
+ActiveRecord::Schema.define(version: 2020_06_13_021007) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -20,6 +20,7 @@ ActiveRecord::Schema.define(version: 2020_06_12_171349) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.json "coupons", default: {}
+    t.index ["good_id"], name: "index_coupons_on_good_id"
   end
 
   create_table "dsrs", force: :cascade do |t|
@@ -36,6 +37,7 @@ ActiveRecord::Schema.define(version: 2020_06_12_171349) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["id"], name: "index_dsrs_on_id"
+    t.index ["shop_id"], name: "index_dsrs_on_shop_id"
   end
 
   create_table "goods", force: :cascade do |t|
@@ -43,6 +45,7 @@ ActiveRecord::Schema.define(version: 2020_06_12_171349) do
     t.integer "shop_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["shop_id"], name: "index_goods_on_shop_id"
     t.index ["spu_id"], name: "index_goods_on_spu_id"
   end
 
@@ -53,6 +56,7 @@ ActiveRecord::Schema.define(version: 2020_06_12_171349) do
     t.integer "good_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["good_id"], name: "index_goods_comments_on_good_id"
     t.index ["id"], name: "index_goods_comments_on_id"
   end
 
@@ -64,6 +68,7 @@ ActiveRecord::Schema.define(version: 2020_06_12_171349) do
     t.integer "good_id", null: false, comment: "关联商品ID"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["good_id"], name: "index_goods_extras_on_good_id"
   end
 
   create_table "goods_images", force: :cascade do |t|
@@ -71,6 +76,7 @@ ActiveRecord::Schema.define(version: 2020_06_12_171349) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.json "goods_images", default: {}
+    t.index ["good_id"], name: "index_goods_images_on_good_id"
   end
 
   create_table "mall_services", force: :cascade do |t|
@@ -78,6 +84,7 @@ ActiveRecord::Schema.define(version: 2020_06_12_171349) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.json "services", default: {}
+    t.index ["good_id"], name: "index_mall_services_on_good_id"
   end
 
   create_table "pdd_web_spider_settings", force: :cascade do |t|
@@ -92,6 +99,7 @@ ActiveRecord::Schema.define(version: 2020_06_12_171349) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["url"], name: "index_pdd_web_spider_settings_on_url"
+    t.index ["user_id"], name: "index_pdd_web_spider_settings_on_user_id"
   end
 
   create_table "platforms", force: :cascade do |t|
@@ -112,6 +120,7 @@ ActiveRecord::Schema.define(version: 2020_06_12_171349) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["url"], name: "index_probe_settings_on_url"
+    t.index ["user_id"], name: "index_probe_settings_on_user_id"
   end
 
   create_table "rss_feeds", force: :cascade do |t|
@@ -123,6 +132,7 @@ ActiveRecord::Schema.define(version: 2020_06_12_171349) do
     t.integer "rss_probe_history_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["rss_probe_history_id"], name: "index_rss_feeds_on_rss_probe_history_id"
   end
 
   create_table "rss_probe_failure_histories", force: :cascade do |t|
@@ -133,6 +143,7 @@ ActiveRecord::Schema.define(version: 2020_06_12_171349) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["id"], name: "index_rss_probe_failure_histories_on_id"
+    t.index ["probe_setting_id"], name: "index_rss_probe_failure_histories_on_probe_setting_id"
   end
 
   create_table "rss_probe_histories", force: :cascade do |t|
@@ -143,6 +154,7 @@ ActiveRecord::Schema.define(version: 2020_06_12_171349) do
     t.integer "probe_setting_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["probe_setting_id"], name: "index_rss_probe_histories_on_probe_setting_id"
   end
 
   create_table "shops", force: :cascade do |t|
@@ -154,6 +166,8 @@ ActiveRecord::Schema.define(version: 2020_06_12_171349) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["id"], name: "index_shops_on_id"
+    t.index ["pdd_web_spider_setting_id"], name: "index_shops_on_pdd_web_spider_setting_id"
+    t.index ["platform_id"], name: "index_shops_on_platform_id"
     t.index ["vendor_id"], name: "index_shops_on_vendor_id"
   end
 
@@ -163,6 +177,7 @@ ActiveRecord::Schema.define(version: 2020_06_12_171349) do
     t.integer "shop_id", null: false, comment: "关联店铺"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["shop_id"], name: "index_shops_extras_on_shop_id"
   end
 
   create_table "skus", force: :cascade do |t|
@@ -170,6 +185,7 @@ ActiveRecord::Schema.define(version: 2020_06_12_171349) do
     t.integer "good_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["good_id"], name: "index_skus_on_good_id"
     t.index ["skuid"], name: "index_skus_on_skuid"
   end
 
@@ -180,6 +196,7 @@ ActiveRecord::Schema.define(version: 2020_06_12_171349) do
     t.integer "sku_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["sku_id"], name: "index_skus_extras_on_sku_id"
   end
 
   create_table "user_rss_feed_ships", force: :cascade do |t|
@@ -188,6 +205,8 @@ ActiveRecord::Schema.define(version: 2020_06_12_171349) do
     t.boolean "unread", default: true, comment: "是否已读"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["rss_feed_id"], name: "index_user_rss_feed_ships_on_rss_feed_id"
+    t.index ["user_id"], name: "index_user_rss_feed_ships_on_user_id"
   end
 
   create_table "users", force: :cascade do |t|
