@@ -26,9 +26,10 @@ class WebSpider
     logger.info("[+] Begin to scapy : #{url}")
     response = fetch
     data = handle(response)
-    result = transform_data(data)
+    # result = transform_data(data)
     logger.info("[+] End to scapy : #{url}")
-    result
+    # result
+    data
   end
 
   # 获取网页源数据
@@ -83,7 +84,8 @@ class WebSpider
   def default_config
     {
         headers: {
-            user_agent: 'Mozilla\u002F5.0 (Windows NT 6.1; Win64; x64) AppleWebKit\u002F537.36 (KHTML, like Gecko) Chrome\u002F72.0.3626.121 Safari\u002F537.36'
+            user_agent: 'Mozilla/5.0 (Linux; Android 5.0; SM-G900P Build/LRX21T) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.110 Mobile Safari/537.36',
+            cookie:'api_uid=CiHA5V7iPlODuABJ8t1zAg==; _nano_fp=XpdbXpCJnpXbn5TYXT_ecXxCswGPDgEcSFJPQB6h; PDDAccessToken=3M3NYVKDXFK6FRD3WJ6GGRZ577A5V537OBVIHVRWJ6NXHOKB7NFQ113d496; pdd_user_id=7201829222356; pdd_user_uin=W7U3BUPAEICPD2OZCJULVPRD2I_GEXDA; quick_entrance_click_record=20200611%2C253; ua=Mozilla%2F5.0%20(X11%3B%20Linux%20x86_64)%20AppleWebKit%2F537.36%20(KHTML%2C%20like%20Gecko)%20Chrome%2F70.0.3538.110%20Safari%2F537.36; webp=1'
         },
         retry_limit: 3,
         log_path: "#{self.class}.log",

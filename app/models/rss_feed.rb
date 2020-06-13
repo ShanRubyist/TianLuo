@@ -1,4 +1,6 @@
 class RssFeed < ApplicationRecord
+  include SaveRSSConcern
+
   belongs_to :rss_probe_history
 
   has_many :user_rss_feed_ship
