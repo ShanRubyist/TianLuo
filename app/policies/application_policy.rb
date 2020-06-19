@@ -6,10 +6,6 @@ class ApplicationPolicy
     @record = record
   end
 
-  def destroy?
-    false
-  end
-
   ['dashboard',
    'index',
    'new',
@@ -18,12 +14,12 @@ class ApplicationPolicy
    'edit',
    'update',
    'delete',
+   'destroy',
    'export',
    'bulk_delete',
    'show_in_app'].each do |method|
     define_method "#{method}?" do
       user.admin?
-      # true
     end
   end
 
