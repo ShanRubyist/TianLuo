@@ -89,6 +89,8 @@ group :test do
   gem 'database_cleaner'
   gem 'faker'
   gem 'launchy'
+
+  gem 'rails-controller-testing'
 end
 
 group :development, :test do
