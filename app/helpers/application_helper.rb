@@ -1,7 +1,7 @@
 module ApplicationHelper
-  def authenticate_admin!
-    redirect_to root_path unless current_user.admin?
-  end
+  # def authenticate_admin!
+  #   redirect_to root_path unless current_user.admin?
+  # end
 
   # 加载 VUE 组件的 template 内容
   def import_partial(partial)
