@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_06_13_021007) do
+ActiveRecord::Schema.define(version: 2020_06_24_152758) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -220,6 +220,17 @@ ActiveRecord::Schema.define(version: 2020_06_13_021007) do
     t.string "role", default: ""
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
+  end
+
+  create_table "web_spider_failure_histories", force: :cascade do |t|
+    t.string "status", comment: "运行状态"
+    t.string "reason", comment: "失败原因"
+    t.string "detail", comment: "详细原因"
+    t.integer "pdd_web_spider_setting_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["id"], name: "index_web_spider_failure_histories_on_id"
+    t.index ["pdd_web_spider_setting_id"], name: "index_web_spider_failure_histories_on_pdd_web_spider_setting_id"
   end
 
 end

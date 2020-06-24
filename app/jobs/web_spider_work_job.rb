@@ -15,13 +15,13 @@ class WebSpiderWorkJob < ApplicationJob
   end
 
   def record_failure(exp)
-    # probe_setting = self.arguments.first
-    #
-    # RssProbeFailureHistory.store_fail_rss_to_db(
-    #     probe_setting.id,
-    #     exp.message,
-    #     exp.backtrace.join('<br />')
-    # )
+    web_spider_setting = self.arguments.first
+
+    WebSpiderFailureHistory.store_fail_spider_to_db(
+        web_spider_setting.id,
+        exp.message,
+        exp.backtrace.join('<br />')
+    )
   end
 
   def perform(setting)
