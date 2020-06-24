@@ -1,5 +1,22 @@
 require 'rails_helper'
 
 RSpec.describe WebSpiderWorkJob, type: :job do
-  pending "add some examples to (or delete) #{__FILE__}"
+  describe ' # perform later' do
+    let(:web_spider_setting) { FactoryBot.create(:pdd_web_spider_setting) }
+
+    it 'enqueued web spider work jobs' do
+      ActiveJob::Base.queue_adapter = :test
+      expect {
+        WebSpiderWorkJob.perform_later(web_spider_setting)
+      }.to have_enqueued_job
+    end
+
+    it "matches with performed job" do
+      ActiveJob::Base.queue_adapter = :test
+      ActiveJob::Base.queue_adapter.perform_enqueued_jobs = true
+      expect {
+        WebSpiderWorkJob.perform_later(web_spider_setting)
+      }.to have_performed_job(WebSpiderWorkJob)
+    end
+  end
 end
