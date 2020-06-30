@@ -7,7 +7,7 @@ language: ruby
 rvm:
   - 2.5
 
-nodejs:
+node_js:
   - 11.0.0
 
 install: 
