@@ -13,7 +13,9 @@ install:
 services:
   - postgresql
   - elasticsearch
-  - nodejs-11.0.0
+
+addons:
+  nodejs: "10.13"
 
 before_script:
   - bundle install
