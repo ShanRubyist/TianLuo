@@ -7,15 +7,15 @@ language: ruby
 rvm:
   - 2.5
 
+nodejs:
+  - 11.0.0
+
 install: 
   - gem install rails
 
 services:
   - postgresql
   - elasticsearch
-
-addons:
-  nodejs: "10.13"
 
 before_script:
   - bundle install
