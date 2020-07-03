@@ -9,11 +9,14 @@ module JobsCallConcern
       end
     end
 
-    def call_web_spider_work_job(setting)
-      # 获取网页数据
-      data = PDDWebSpider.new(setting.url).parse
-      # 保存商品信息到数据库
-      Good.store_goods_to_db(setting, data)
+    def call_rss_work_job(setting)
+      # 获取 RSS Feed
+      rss_feeds = Robot::RSSProbe.new(setting.url).parse
+
+      user_id = setting.user_id
+
+      # 保持 RSS 信息到数据库
+      RssFeed.store_rss_to_db(user_id, setting.id, rss_feeds)
     end
 
     def call_web_spider_queue_job
@@ -23,14 +26,11 @@ module JobsCallConcern
       end
     end
 
-    def call_rss_work_job(setting)
-      # 获取 RSS Feed
-      rss_feeds = RSSProbe.new(setting.url).parse
-
-      user_id = setting.user_id
-
-      # 保持 RSS 信息到数据库
-      RssFeed.store_rss_to_db(user_id, setting.id, rss_feeds)
+    def call_web_spider_work_job(setting)
+      # 获取网页数据
+      data = Robot::PDDWebSpider.new(setting.url).parse
+      # 保存商品信息到数据库
+      Good.store_goods_to_db(setting, data)
     end
   end
 

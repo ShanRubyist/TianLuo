@@ -1,15 +1,15 @@
-require 'probe'
+require 'robot'
 
 class RssWorkJob < ApplicationJob
   queue_as :rss_job
 
   include JobsCallConcern
 
-  rescue_from(RSSProbe::FetchException) do |exp|
+  rescue_from(Robot::RSSProbe::FetchException) do |exp|
     record_failure(exp)
   end
 
-  rescue_from(RSSProbe::RetryTooManyTimeException) do |exp|
+  rescue_from(Robot::RSSProbe::RetryTooManyTimeException) do |exp|
     record_failure(exp)
   end
 

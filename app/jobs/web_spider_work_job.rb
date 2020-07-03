@@ -1,15 +1,15 @@
-require 'spider'
+require 'robot'
 
 class WebSpiderWorkJob < ApplicationJob
   queue_as :web_spider
 
   include JobsCallConcern
 
-  rescue_from(WebSpider::FetchException) do |exp|
+  rescue_from(Robot::PDDWebSpider::FetchException) do |exp|
     record_failure(exp)
   end
 
-  rescue_from(PDDWebSpider::NeedLoginException) do |exp|
+  rescue_from(Robot::PDDWebSpider::NeedLoginException) do |exp|
     record_failure(exp)
     retry_job wait: 60.minutes, queue: :web_spider
   end

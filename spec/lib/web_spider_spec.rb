@@ -1,10 +1,10 @@
 require 'rails_helper'
-require_relative '../../lib/spider'
+require_relative '../../lib/robot'
 
-RSpec.describe WebSpider do
-  pending "WebSpider pending spec"
+RSpec.describe Robot do
+  pending "Robot pending spec"
 
-  describe 'WebSpider' do
+  describe 'Robot' do
     it ''
   end
 end
