@@ -3,8 +3,6 @@ require 'robot'
 class WebSpiderWorkJob < ApplicationJob
   queue_as :web_spider
 
-  include JobsCallConcern
-
   rescue_from(Robot::PDDWebSpider::FetchException) do |exp|
     record_failure(exp)
   end
@@ -29,6 +27,9 @@ class WebSpiderWorkJob < ApplicationJob
   end
 
   def perform(setting)
-    call_web_spider_work_job(setting)
+    # 获取网页数据
+    data = Robot::PDDWebSpider.new(setting.url).parse
+    # 保存商品信息到数据库
+    Good.store_goods_to_db(setting, data)
   end
 end

@@ -3,8 +3,6 @@ require 'robot'
 class RssWorkJob < ApplicationJob
   queue_as :rss_job
 
-  include JobsCallConcern
-
   rescue_from(Robot::RSSProbe::FetchException) do |exp|
     record_failure(exp)
   end
@@ -29,6 +27,12 @@ class RssWorkJob < ApplicationJob
   end
 
   def perform(setting)
-    call_rss_work_job(setting)
+    # 获取 RSS Feed
+    rss_feeds = Robot::RSSProbe.new(setting.url).parse
+
+    user_id = setting.user_id
+
+    # 保持 RSS 信息到数据库
+    RssFeed.store_rss_to_db(user_id, setting.id, rss_feeds)
   end
 end

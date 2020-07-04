@@ -25,10 +25,9 @@ module Robot
     def parse
       logger.info("[+] Begin to parse #{self.class}: #{url}")
       response = fetch
-      data = handle(response)
       logger.info("[+] End to parse #{self.class}: #{url}")
 
-      data
+      response
     end
 
     # 获取网页源数据
@@ -68,10 +67,9 @@ module Robot
     end
 
     # 处理网页源数据
-    def handle(response)
-      # raise "handle 是个抽象方法，需要在子类中实现"
-      response
-    end
+    # def handle(response)
+    #   raise "handle 是个抽象方法，需要在子类中实现"
+    # end
 
     private
 

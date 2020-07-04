@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'rss'
+
 module SaveRSSConcern
   extend ActiveSupport::Concern
 
@@ -7,7 +9,8 @@ module SaveRSSConcern
   end
 
   module ClassMethods
-    def store_rss_to_db(user_id, probe_setting_id, rss)
+    def store_rss_to_db(user_id, probe_setting_id, rss_raw_data)
+      rss = handle(rss_raw_data)
       title = rss[:title]
       description = rss[:description]
       last_build_date = rss[:last_build_date]
@@ -35,5 +38,70 @@ module SaveRSSConcern
                                           rss_feed_id: rss_feed.id)
       end
     end
+
+    private
+    def handle(response)
+      feed = RSS::Parser.parse(response)
+      if feed.class == RSS::Atom::Feed
+        parse_atom(feed)
+      elsif feed.class == RSS::Rss
+        parse_rss(feed)
+      else
+        raise UnknownRssFormatException
+      end
+    end
+
+    def parse_atom(feed)
+      begin
+        feed_hash = {
+            title: feed.title.content,
+            description: feed.subtitle.content,
+            link: feed.link.href,
+            last_build_date: feed.updated.content,
+            items: []
+        }
+        logger.error feed.entries.count
+        feed.entries.each do |item|
+          feed_hash[:items] << {
+              title: item.title.content,
+              description: item.content.content,
+              link: item.link.href,
+              author: item.author.name.content,
+              pub_date: item.published.content
+          }
+        end
+        feed_hash
+      rescue RSS::NotWellFormedError => e
+        logger.error(e)
+        raise ParseException
+      end
+    end
+
+    def parse_rss(feed)
+      begin
+        feed_hash = {
+            title: feed.channel.title,
+            description: feed.channel.description,
+            link: feed.channel.link,
+            last_build_date: feed.channel.lastBuildDate,
+            items: []
+        }
+
+        feed.channel.items.each do |item|
+          feed_hash[:items] << {
+              title: item.title,
+              description: item.description,
+              link: item.link,
+              author: item.author,
+              pub_date: item.pubDate
+          }
+        end
+        feed_hash
+      rescue RSS::NotWellFormedError => e
+        logger.error(e)
+        raise ParseException
+      end
+    end
+
   end
 end
