@@ -47,7 +47,7 @@ module SaveRSSConcern
       elsif feed.class == RSS::Rss
         parse_rss(feed)
       else
-        raise UnknownRssFormatException
+        raise Robot::RSSProbe::UnknownRssFormatException
       end
     end
 
@@ -73,7 +73,7 @@ module SaveRSSConcern
         feed_hash
       rescue RSS::NotWellFormedError => e
         logger.error(e)
-        raise ParseException
+        raise Robot::WebSpider::ParseException
       end
     end
 
@@ -99,7 +99,7 @@ module SaveRSSConcern
         feed_hash
       rescue RSS::NotWellFormedError => e
         logger.error(e)
-        raise ParseException
+        raise Robot::WebSpider::ParseException
       end
     end
 
