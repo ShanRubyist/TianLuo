@@ -102,7 +102,7 @@ module Robot
     class ParseException < WebSpiderException
     end
 
-    class RetryTooManyTimeExcepiton < WebSpiderException
+    class RetryTooManyTimeException < WebSpiderException
     end
   end
 end
