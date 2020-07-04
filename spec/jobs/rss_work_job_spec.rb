@@ -1,5 +1,4 @@
 require 'rails_helper'
-require 'probe'
 
 RSpec.describe RssWorkJob, type: :job do
   describe ' # perform later' do
