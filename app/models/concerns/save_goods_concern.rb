@@ -74,7 +74,8 @@ module SaveGoodsConcern
     end
 
     # 把数据转化成系统需要的格式
-    def transform_data(data)
+    def transform_data(raw_data)
+      data = handle(raw_data)
       data = data['store']['initDataObj']
       shop = data['mall']
       goods = data['goods']
