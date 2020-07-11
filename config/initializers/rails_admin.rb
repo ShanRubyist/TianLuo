@@ -41,5 +41,15 @@ RailsAdmin.config do |config|
     # history_show
   end
 
-  config.excluded_models = ["User"]
+  # config.excluded_models = ["User"]
+
+    config.navigation_static_links = {
+      'Sidekiq' => '/sidekiq',
+    }
+
+    config.actions do
+      root :sql, :dashboard do
+        route_fragment '/sql'
+      end
+    end
 end

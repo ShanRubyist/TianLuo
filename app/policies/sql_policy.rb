@@ -1,4 +1,4 @@
-class ApplicationPolicy
+class SQLPolicy
   attr_reader :user, :record
 
   def initialize(user, record)
@@ -6,23 +6,8 @@ class ApplicationPolicy
     @record = record
   end
 
-  ['dashboard',
-   'index',
-   'new',
-   'create',
-   'show',
-   'edit',
-   'update',
-   'delete',
-   'destroy',
-   'export',
-   'bulk_delete',
-   'show_in_app',
-   'sql'
-  ].each do |method|
-    define_method "#{method}?" do
-      user.admin?
-    end
+  def sql?
+    user.admin?
   end
 
   class Scope

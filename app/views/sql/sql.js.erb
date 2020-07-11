@@ -1,0 +1,14 @@
+$('#result').css("display", "block");
+
+<% str = '' %>
+<% str << '<ul>' %>
+
+<% @result.each do |data| %>
+  <% str << '<li>' %>
+  <% str << j(data.to_s) %>
+  <% str << '</li>' %>
+<% end %>
+
+<% str << '</ul>' %>
+
+$('#result').html("<%= raw str %>");

@@ -1,0 +1,7 @@
+en:
+  admin:
+    actions:
+      sql:
+        menu: 'SQL'
+        title: 'SQL'
+        breadcrumb: 'SQL'

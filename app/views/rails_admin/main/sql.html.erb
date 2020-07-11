@@ -1,0 +1,14 @@
+<%= form_with(url: '/sql') do |f| %>
+  <div class="textarea">
+    <%= f.text_area :sql, id: :sql, autofocus: true, placeholder: 'SQL语句',
+                    style: 'width: 100%; height: 100px' %>
+  </div>
+
+  <%= f.submit 'SQL Execute', class: 'btn btn-primary' %>
+<% end %>
+
+<div id="result" style="display: none">
+  <br />
+  <p>SQL RESULT</p>
+
+</div>
