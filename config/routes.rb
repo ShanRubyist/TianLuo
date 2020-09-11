@@ -20,4 +20,6 @@ Rails.application.routes.draw do
   get 'load_more_rss_feed' => 'rss_feeds#load_more_rss_feed'
 
   post 'sql' => 'sql#sql'
+  get 'coupons/' => 'goods#coupons'
+  get 'prices/' => 'goods#prices'
 end

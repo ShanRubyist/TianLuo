@@ -1,17 +1,104 @@
 // shop 的表格组件
 const goods_data = <%= raw(@goods_list.to_json) %>
 
-Vue.component('shop-list', {
-    data: function () {
-        return {
-            goods_data,
-            show_more: false
-        }
-    },
-    methods: {
-        toggle_show_more: function(){
-            this.show_more = !this.show_more
-        }
-    },
-    template: '<%= import_partial('home/shop_spy/sku_item') %>'
-})
+    Vue.component('shop-list', {
+        data: function () {
+            return {
+                goods_data,
+                show_more: false,
+                visible: false,
+                good: goods_data.first,
+                coupon_list: null,
+                price_list: null,
+            }
+        },
+        methods: {
+            toggle_show_more: function () {
+                this.show_more = !this.show_more
+            },
+            showDetail: function (good) {
+                this.visible = true
+                this.good = good
+            },
+            onClose: function () {
+                this.visible = false
+            },
+            change_tab: function (key) {
+                var that = this
+                if (key == 2) {
+                    $.ajax({
+                        url: window.location.href + 'coupons',
+                        dataType: "script",
+                        type: "GET",
+                        data: {
+                            good_id: this.good.spu_id
+                        },
+                        success: function (data) {
+                            that.coupon_list = jQuery.parseJSON(data);
+                        }
+                    })
+
+                } else if (key == 3) {
+                    $.ajax({
+                        url: window.location.href + 'prices',
+                        dataType: "script",
+                        type: "GET",
+                        data: {
+                            good_id: this.good.spu_id
+                        },
+                        success: function (data) {
+                            that.price_list = jQuery.parseJSON(data);
+
+                            // 基于准备好的dom，初始化echarts实例
+                            var myChart = echarts.init(document.getElementById('main'));
+
+                            // 指定图表的配置项和数据
+                            let option = {
+                                title: {
+                                    text: '价格走势图'
+                                },
+                                tooltip: {
+                                    trigger: 'axis'
+                                },
+                                legend: {
+                                    data: that.price_list.legend
+                                },
+                                grid: {
+                                    left: '3%',
+                                    right: '4%',
+                                    bottom: '3%',
+                                    containLabel: true
+                                },
+                                toolbox: {
+                                    feature: {
+                                        saveAsImage: {}
+                                    }
+                                },
+                                xAxis: {
+                                    type: 'category',
+                                    boundaryGap: false,
+                                    data: that.price_list.time
+                                },
+                                yAxis: {
+                                    type: 'value'
+                                },
+                                series: []
+                            };
+
+                            that.price_list.data.forEach(function (item) {
+                                option["series"].push({
+                                    name: item.spec,
+                                    type: 'line',
+                                    data: item.prices
+                                })
+                            })
+
+                            // 使用刚指定的配置项和数据显示图表。
+                            myChart.setOption(option);
+                        }
+                    })
+                }
+            }
+        },
+        template: '<%= import_partial('home/shop_spy/shop_list_templ') %>'
+    })

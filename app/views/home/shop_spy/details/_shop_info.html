@@ -1,0 +1,25 @@
+<div class="left" style="padding: 5px 10px; position: relative; width:15%; float:left;text-align: right">
+    <p>平台:</p>
+    <p>店铺名称:</p>
+    <p>店铺ID:</p>
+    <p>店铺地址:</p>
+    <p>商品数量:</p>
+    <p>销售量:</p>
+    <p>物流评分:</p>
+    <p>描述评分:</p>
+    <p>服务评分:</p>
+</div>
+
+<div class="right" style="padding: 5px 10px;position: relative; float:left;text-align: left">
+    <div v-if="good">
+    <p>{{good.platform}}</p>
+    <p>{{good.shop_name}}</p>
+    <p>{{good.vendor_id}}</p>
+    <p><a v-bind:href="good.shop_url" target="_blank">{{good.shop_url}}</p>
+    <p>{{good.goods_num}}</p>
+    <p>{{good.shop_sales_num}}</p>
+    <p>{{good.logistics_score}}</p>
+    <p>{{good.desc_score}}</p>
+    <p>{{good.service_score}}</p>
+    </div>
+</div>

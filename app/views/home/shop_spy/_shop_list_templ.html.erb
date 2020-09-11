@@ -66,7 +66,7 @@
                 </td>
 
                 <td>
-                    <a-button type="primary">
+                    <a-button type="primary" v-on:click="showDetail(good)">
                         查看详情
                     </a-button>
 
@@ -119,5 +119,38 @@
 
         </tbody>
     </table>
-</div>
 
+    <a-drawer
+            placement="right"
+            :closable="true"
+            :visible="visible"
+            @close="onClose"
+            width="90%"
+    >
+        <a-tabs default-active-key="1" :size="size" @change="change_tab">
+            <a-tab-pane key="1" tab="店铺信息">
+                <%= import_partial('home/shop_spy/details/shop_info') %>
+            </a-tab-pane>
+
+            <a-tab-pane key="2" tab="促销变动">
+              <%= import_partial('home/shop_spy/details/coupons_change') %>
+            </a-tab-pane>
+
+            <a-tab-pane key="3" tab="价格变动">
+              <%= import_partial('home/shop_spy/details/price_change') %>
+            </a-tab-pane>
+
+            <a-tab-pane key="4" tab="标题变动">
+              <%= import_partial('home/shop_spy/details/title_change') %>
+            </a-tab-pane>
+
+            <a-tab-pane key="5" tab="标语变动">
+              <%= import_partial('home/shop_spy/details/ad_change') %>
+            </a-tab-pane>
+
+            <a-tab-pane key="6" tab="评论数变动">
+              <%= import_partial('home/shop_spy/details/comments_num_change') %>
+            </a-tab-pane>
+        </a-tabs>
+    </a-drawer>
+</div>

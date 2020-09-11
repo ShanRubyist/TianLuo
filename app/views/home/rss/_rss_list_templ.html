@@ -18,20 +18,20 @@
             <p class="rss-list-footer">
                 <a-tooltip placement="top">
                     <template slot="title">
-            <p>{{rss.rss_description}}</p>
-            <small>点击访问RSS源</small>
-            </template>
-            <span v-on:click="go_to_read(rss.rss_link)">{{rss.rss}}</span>
-            </a-tooltip>
-            |
-            <a-tooltip placement="top">
-                <template slot="title">
-                    <span>作者</span>
-                </template>
-                {{rss.author}}
-            </a-tooltip>
-            |
-            发布时间：{{rss.pub_date}}
+                        <p>{{rss.rss_description}}</p>
+                        <small>点击访问RSS源</small>
+                    </template>
+                    <span v-on:click="go_to_read(rss.rss_link)">{{rss.rss}}</span>
+                </a-tooltip>
+                |
+                <a-tooltip placement="top">
+                    <template slot="title">
+                        <span>作者</span>
+                    </template>
+                    {{rss.author}}
+                </a-tooltip>
+                |
+                发布时间：{{rss.pub_date}}
             </p>
         </div>
 
