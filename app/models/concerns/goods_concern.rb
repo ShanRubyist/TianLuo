@@ -81,6 +81,63 @@ module GoodsConcern
       end
       goods_hash
     end
+
+    def detail_change_history(data, compare, time = :created_at)
+      prev = data.first
+      period = data.first
+      has_last = nil
+      changed = nil
+
+      period_list = data.map do |item|
+        if item === Array
+          current_indicator = item.send(compare.to_sym).sort
+          prev_indicator = prev.send(compare.to_sym).sort
+        else
+          current_indicator = item.send(compare.to_sym)
+          prev_indicator = prev.send(compare.to_sym)
+        end
+
+        changed = (current_indicator != prev_indicator)
+
+        prev = item
+
+        if changed || has_last.nil?
+          has_last = item.send(time) - period.send(time)
+          period = item
+        end
+      end.compact
+
+      lastest_period_time = Time.now
+      period_list.reverse.map do |item|
+        changed_description = changed ? '有变动' : '暂无变动'
+
+        rst = {
+            compare.to_sym => (item === Array) ? item.send(compare.to_sym).sort : item.send(compare.to_sym),
+            changed: changed_description,
+            from_when: item.created_at.localtime.strftime("%Y-%m-%d %H:%M"),
+            has_last: human_how_long_after(lastest_period_time - item.created_at)
+        }
+
+        lastest_period_time = item.created_at
+        rst
+      end
+    end
+
+    private
+
+    def human_how_long_after(sec)
+      return unless sec
+
+      if sec < 60 * 60
+        "已持续 #{sec.to_i / 60} 分钟"
+      elsif sec < 60 * 60 * 24
+        "已持续 #{sec.to_i / (60 * 60)} 小时"
+      elsif sec < 60 * 60 * 24 * 365
+        "已持续 #{sec.to_i / (60 * 60 * 24)} 天"
+      else
+        "已持续 #{sec.to_i / (60 * 60 * 24 * 365)} 年"
+      end
+    end
   end
 
   module ClassMethods

@@ -1,25 +1,28 @@
+# frozen_string_literal: true
+
 class GoodsController < ApplicationController
+  include GoodsConcern
+
   def coupons
-    if good = Coupon.includes(:good).where(:goods => {spu_id: params[:good_id]}).order("coupons.created_at desc").limit(10)
-      prev = good.first
-      period = good.first
-      rst = good.map do |coupon|
-        changed = (coupon.coupons.sort == prev.coupons.sort) ? '暂无变动' : '有变动'
+    if good = Coupon.includes(:good)
+                  .where(goods: {spu_id: params[:good_id]})
+                  .order('coupons.created_at asc')
+      rst = detail_change_history(good, :coupons, :created_at)
+      render json: rst.to_json
+    else
+      render json: {}
+    end
+  end
 
-        has_last = nil
-        if changed || has_last.nil?
-          has_last = period.created_at - coupon.created_at
-          period = coupon
-        end
+  def ads;
+  end
 
-        prev = coupon
-        {
-            coupons: coupon.coupons,
-            changed: changed,
-            from_when: coupon.created_at.localtime.strftime("%Y-%m-%d %H:%M"),
-            has_last: human_how_long_after(has_last)
-        }
-      end
+  def names
+    if good = GoodsExtra.includes(:good)
+                  .where(goods: {spu_id: params[:good_id]})
+                  .order('goods_extras.created_at asc')
+
+      rst = detail_change_history(good, :name, :created_at)
       render json: rst.to_json
     else
       render json: {}
@@ -27,24 +30,25 @@ class GoodsController < ApplicationController
   end
 
   def prices
-    if good = SkusExtra.includes(:sku => :good).where(:goods => {spu_id: params[:good_id]})
+    if good = SkusExtra.includes(sku: :good).where(goods: {spu_id: params[:good_id]})
       specs = good.map(&:spec).uniq!
 
+      return unless specs
       rlt = {
           legend: specs,
           data: specs.map do |spec|
             {
                 spec: spec,
-                prices: SkusExtra.where("spec = ?", spec)
-                            .order("created_at asc")
+                prices: SkusExtra.where('spec = ?', spec)
+                            .order('created_at asc')
                             .last(7)
                             .map(&:group_price)
             }
           end,
-          time: SkusExtra.where("spec = ?", specs.first)
-                    .order("skus_extras.created_at asc")
+          time: SkusExtra.where('spec = ?', specs.first)
+                    .order('skus_extras.created_at asc')
                     .last(7)
-                    .map { |item| item.created_at.localtime.strftime("%Y-%m-%d %H:%M") }
+                    .map { |item| item.created_at.localtime.strftime('%Y-%m-%d %H:%M') }
       }
       render json: rlt.to_json
     else
@@ -52,20 +56,20 @@ class GoodsController < ApplicationController
     end
   end
 
-  private
+  def comments
+    if good = GoodsExtra.includes(:good).where(goods: {spu_id: params[:good_id]})
 
-  def human_how_long_after(sec)
-    return unless sec
-
-    if sec < 60 * 60
-      "已使用 #{sec.to_i / 60} 分钟"
-    elsif sec < 60 * 60 * 24
-      "已使用 #{sec.to_i / (60 * 60)} 小时"
-    elsif sec < 60 * 60 * 24 * 365
-      "已使用 #{sec.to_i / (60 * 60 * 24)} 天"
+      rlt = {
+          data: good.order('goods_extras.created_at asc')
+                    .last(7)
+                    .map(&:comments_total_num),
+          time: good.order('goods_extras.created_at asc')
+                    .last(7)
+                    .map { |item| item.created_at.localtime.strftime('%Y-%m-%d %H:%M') }
+      }
+      render json: rlt.to_json
     else
-      "已使用 #{sec.to_i / (60 * 60 * 24 * 365)} 年"
+      render json: {}
     end
   end
-
 end

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class SqlController < ApplicationController
   def sql
     authorize SQL
@@ -8,8 +10,8 @@ class SqlController < ApplicationController
       respond_to do |format|
         format.js { render :sql }
       end
-    rescue => e
-      render :js => "alert(\"#{j(e.to_s)}\")"
+    rescue StandardError => e
+      render js: "alert(\"#{j(e.to_s)}\")"
     end
   end
 end

@@ -1,156 +1,186 @@
 <div>
-    <table class="table table-borderless table-responsive">
-        <!--        表格头部-->
-        <thead>
-        <tr class="table-secondary">
-            <th scope="col">商品信息(图片、编码）</th>
-            <th scope="col">销量</th>
-            <th scope="col">总评论数</th>
-            <th scope="col">优惠卷</th>
-            <th scope="col">服务名称</th>
-            <th scope="col">
-                操作
-                <a-button type="link" v-on:click="toggle_show_more">
-                    展开
-                </a-button>
-            </th>
-        </tr>
-        </thead>
+  <table class="table table-borderless table-responsive">
+    <!--        表格头部-->
+    <thead>
+    <tr class="table-secondary">
+      <th scope="col">商品信息(图片、编码）</th>
+      <th scope="col">销量</th>
+      <th scope="col">总评论数</th>
+      <th scope="col">优惠卷</th>
+      <th scope="col">服务名称</th>
+      <th scope="col">
+        操作
+        <a-button type="link" v-on:click="toggle_show_more">
+          展开
+        </a-button>
+      </th>
+    </tr>
+    </thead>
 
-        <!--        表格内容-->
-        <tbody>
+    <!--        表格内容-->
+    <tbody>
+    <template v-for="good in goods_data">
+      <!--            第一行显示店铺信息-->
+      <tr class="table-success" data-good-id="good.id">
+        <td colspan="6">
+          <a v-bind:href="good.shop_url" target="_blank">
+            {{good.shop_name}}({{good.spu_id}})
+            <a-tag color="#87d068">
+              {{good.platform}}
+            </a-tag>
+          </a>
+          <span>&nbsp;</span>
+          <span>商品数量:{{good.goods_num}} </span>
+          <span>&nbsp;</span>
+          <span>销售量: {{good.shop_sales_num}}</span>
+          <span>&nbsp;</span>
+          <span>物流评分: {{good.logistics_score}}</span>
+
+          <span>&nbsp;</span>
+          <span>描述评分: {{good.desc_score}}</span>
+
+          <span>&nbsp;</span>
+          <span>服务评分: {{good.service_score}}</span>
+        </td>
+      </tr>
+
+      <!--            第二行显示商品信息-->
+      <tr>
+        <th scope="row">{{good.name}}({{good.spu_id}})</th>
+        <td>{{good.sales_num}}</td>
+        <td>{{good.comments_total_num}}</td>
+        <td>
+          <template v-for="coupon in good.coupons">
+            <a-tag color="#f50">
+              {{coupon}}
+            </a-tag>
+          </template>
+        </td>
+
+        <td>
+          <template v-for="service in good.mall_services">
+            <a-tag color="#87d068">
+              {{service}}
+            </a-tag>
+          </template>
+        </td>
+
+        <td>
+          <a-button type="primary" v-on:click="showDetail(good)">
+            查看详情
+          </a-button>
+
+          <a-button type="link">
+            展开
+          </a-button>
+        </td>
+      </tr>
+
+      <!--            第三行默认隐藏，显示评论和sku信息-->
+      <tr class="table-warning">
+        <td colspan="6" v-if="show_more">
+          <a-tabs type="card" @change="callback">
+            <a-tab-pane key="1" tab="SKU">
+              <table class="table table-sm">
+                <thead>
+                <tr>
+                  <th scope="col">规格名称</th>
+                  <th scope="col">平台SKU编码</th>
+                  <th scope="col">正常价</th>
+                  <th scope="col">团购价</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr v-for="sku in good.skus">
+                  <th scope="row">{{sku.spec}}</th>
+                  <td>{{sku.skuid}}</td>
+                  <td>{{sku.normal_price}}</td>
+                  <td>{{sku.group_price}}</td>
+                </tr>
+                </tbody>
+              </table>
+            </a-tab-pane>
+            <a-tab-pane key="2" tab="评论">
+              <a-list size="small" bordered :data-source="good.goods_comments">
+                <a-list-item slot="renderItem" slot-scope="item, index">
+                  {{item[1]}}
+                  <br/>
+                  <small>
+                    {{item[0]}}-{{item[2]}}
+                  </small>
+                </a-list-item>
+              </a-list>
+            </a-tab-pane>
+          </a-tabs>
+
+        </td>
+      </tr>
+    </template>
+
+    </tbody>
+  </table>
+
+  <a-drawer
+    placement="right"
+    :closable="true"
+    :visible="visible"
+    @close="onClose"
+    width="90%"
+  >
+    <!--        左侧商品列表-->
+    <div class="good-list-group">
+      <ul class="list-group">
         <template v-for="good in goods_data">
-            <!--            第一行显示店铺信息-->
-            <tr class="table-success" data-good-id="good.id">
-                <td colspan="6">
-                    <a v-bind:href="good.shop_url" target="_blank">
-                        {{good.shop_name}}({{good.spu_id}})
-                        <a-tag color="#87d068">
-                            {{good.platform}}
-                        </a-tag>
-                    </a>
-                    <span>&nbsp;</span>
-                    <span>商品数量:{{good.goods_num}} </span>
-                    <span>&nbsp;</span>
-                    <span>销售量: {{good.shop_sales_num}}</span>
-                    <span>&nbsp;</span>
-                    <span>物流评分: {{good.logistics_score}}</span>
-
-                    <span>&nbsp;</span>
-                    <span>描述评分: {{good.desc_score}}</span>
-
-                    <span>&nbsp;</span>
-                    <span>服务评分: {{good.service_score}}</span>
-                </td>
-            </tr>
-
-            <!--            第二行显示商品信息-->
-            <tr>
-                <th scope="row">{{good.name}}({{good.spu_id}})</th>
-                <td>{{good.sales_num}}</td>
-                <td>{{good.comments_total_num}}</td>
-                <td>
-                    <template v-for="coupon in good.coupons">
-                        <a-tag color="#f50">
-                            {{coupon}}
-                        </a-tag>
-                    </template>
-                </td>
-
-                <td>
-                    <template v-for="service in good.mall_services">
-                        <a-tag color="#87d068">
-                            {{service}}
-                        </a-tag>
-                    </template>
-                </td>
-
-                <td>
-                    <a-button type="primary" v-on:click="showDetail(good)">
-                        查看详情
-                    </a-button>
-
-                    <a-button type="link">
-                        展开
-                    </a-button>
-                </td>
-            </tr>
-
-            <!--            第三行默认隐藏，显示评论和sku信息-->
-            <tr class="table-warning">
-                <td colspan="6" v-if="show_more">
-                    <a-tabs type="card" @change="callback">
-                        <a-tab-pane key="1" tab="SKU">
-                            <table class="table table-sm">
-                                <thead>
-                                <tr>
-                                    <th scope="col">规格名称</th>
-                                    <th scope="col">平台SKU编码</th>
-                                    <th scope="col">正常价</th>
-                                    <th scope="col">团购价</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <tr v-for="sku in good.skus">
-                                    <th scope="row">{{sku.spec}}</th>
-                                    <td>{{sku.skuid}}</td>
-                                    <td>{{sku.normal_price}}</td>
-                                    <td>{{sku.group_price}}</td>
-                                </tr>
-                                </tbody>
-                            </table>
-                        </a-tab-pane>
-                        <a-tab-pane key="2" tab="评论">
-                            <a-list size="small" bordered :data-source="good.goods_comments">
-                                <a-list-item slot="renderItem" slot-scope="item, index">
-                                    {{item[1]}}
-                                    <br/>
-                                    <small>
-                                        {{item[0]}}-{{item[2]}}
-                                    </small>
-                                </a-list-item>
-                            </a-list>
-                        </a-tab-pane>
-                    </a-tabs>
-
-                </td>
-            </tr>
+          <li class="list-group-item list-group-item-card"
+              data-good-id="good.id"
+              v-bind:class="{active: (current_good == good)}"
+              v-on:click="change_good(good)">
+            <div>
+              <div class="img-box">
+                <img v-bind:src="good.goods_images[0]"/>
+              </div>
+              <div class="description">
+                <div>{{good.name}}</div>
+                <div>{{good.spu_id}}</div>
+              </div>
+            </div>
+          </li>
         </template>
+      </ul>
+    </div>
 
-        </tbody>
-    </table>
+    <!--   右侧商品详情信息-->
+    <div class="good-detail">
+      <!--   商品基本信息-->
+      <div class="good-detail-info">
+        <%= import_partial('home/shop_spy/details/shop_info') %>
+      </div>
 
-    <a-drawer
-            placement="right"
-            :closable="true"
-            :visible="visible"
-            @close="onClose"
-            width="90%"
-    >
-        <a-tabs default-active-key="1" :size="size" @change="change_tab">
-            <a-tab-pane key="1" tab="店铺信息">
-                <%= import_partial('home/shop_spy/details/shop_info') %>
-            </a-tab-pane>
+      <!--   商品扩展信息-->
+      <div class="good-detail-extro">
+        <a-tabs default-active-key="1" :size="size" @change="change_good_detail_tab">
+          <a-tab-pane key="1" tab="评论数变动">
+            <%= import_partial('home/shop_spy/details/comments_num_change') %>
+          </a-tab-pane>
 
-            <a-tab-pane key="2" tab="促销变动">
-              <%= import_partial('home/shop_spy/details/coupons_change') %>
-            </a-tab-pane>
+          <a-tab-pane key="2" tab="促销变动">
+            <%= import_partial('home/shop_spy/details/coupons_change') %>
+          </a-tab-pane>
 
-            <a-tab-pane key="3" tab="价格变动">
-              <%= import_partial('home/shop_spy/details/price_change') %>
-            </a-tab-pane>
+          <a-tab-pane key="3" tab="价格变动">
+            <%= import_partial('home/shop_spy/details/price_change') %>
+          </a-tab-pane>
 
-            <a-tab-pane key="4" tab="标题变动">
-              <%= import_partial('home/shop_spy/details/title_change') %>
-            </a-tab-pane>
+          <a-tab-pane key="4" tab="标题变动">
+            <%= import_partial('home/shop_spy/details/title_change') %>
+          </a-tab-pane>
 
-            <a-tab-pane key="5" tab="标语变动">
-              <%= import_partial('home/shop_spy/details/ad_change') %>
-            </a-tab-pane>
-
-            <a-tab-pane key="6" tab="评论数变动">
-              <%= import_partial('home/shop_spy/details/comments_num_change') %>
-            </a-tab-pane>
+          <a-tab-pane key="5" tab="标语变动">
+            <%= import_partial('home/shop_spy/details/ad_change') %>
+          </a-tab-pane>
         </a-tabs>
-    </a-drawer>
+      </div>
+    </div>
+
+  </a-drawer>
 </div>

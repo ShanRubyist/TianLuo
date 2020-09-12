@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ApplicationController < ActionController::Base
   include ApplicationHelper
   include Pundit
@@ -9,7 +11,7 @@ class ApplicationController < ActionController::Base
   private
 
   def user_not_authorized
-    flash[:alert] = "你暂无权限进行此操作!"
+    flash[:alert] = '你暂无权限进行此操作!'
     redirect_to(request.referer || root_path)
   end
 end

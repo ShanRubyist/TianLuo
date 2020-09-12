@@ -89,3 +89,56 @@ body {
     font-size: 4px;
     color: #9d9d9d;
 }
+
+/*商品列表的样式*/
+.good-list-group {
+    float: left;
+    width: 25%;
+    min-width: 96px;
+}
+
+.list-group-item-card {
+    cursor: pointer;
+}
+
+.list-group-item-card:hover {
+    background-color: cadetblue;
+}
+
+.list-group-item-card:active {
+    background-color: darkkhaki;
+}
+
+.img-box {
+    float: left;
+    width: 25%;
+}
+
+.img-box img {
+    width: 100%;
+}
+
+.description {
+    width: 75%;
+    margin: 5px auto;
+}
+
+.good-detail {
+    float: left;
+    width: 75%;
+}
+
+.good-detail-info {
+    width: 92%;
+    background-color: #EFEFEF;
+    border-radius: 15px;
+    margin: 5px auto;
+    padding: 15px 10px;
+}
+
+.good-detail-extro {
+    width: 92%;
+    margin: 5px auto;
+    padding: 5px auto;
+
+}
