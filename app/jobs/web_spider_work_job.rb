@@ -9,7 +9,7 @@ class WebSpiderWorkJob < ApplicationJob
 
   rescue_from(Robot::PDDWebSpider::NeedLoginException) do |exp|
     record_failure(exp)
-    retry_job wait: 60.minutes, queue: :web_spider
+    # retry_job wait: 60.minutes, queue: :web_spider
   end
 
   rescue_from(NoMethodError) do |exp|

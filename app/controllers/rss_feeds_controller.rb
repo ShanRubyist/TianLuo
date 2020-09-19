@@ -14,7 +14,7 @@ class RssFeedsController < ApplicationController
     rss_list_json = rss_list.map do |rss|
       {
         title: rss.title,
-        description: rss.description,
+	description: rss.description.to_s,
         pub_date: rss.pub_date.nil? ? '' : rss.pub_date.localtime.strftime('%Y-%m-%d %H:%M'),
         author: rss.author,
         link: rss.link,

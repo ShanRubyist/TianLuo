@@ -2,7 +2,7 @@ module RSSConcern
   extend ActiveSupport::Concern
 
   included do |base|
-    def rss_list(user_id = current_user.id, page = 1, per = 20)
+    def rss_list(user_id = current_user.id, page = 1, per = 100)
       RssFeed.joins(
           :rss_probe_history => {
               :probe_setting => :user
