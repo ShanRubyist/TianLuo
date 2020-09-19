@@ -6,11 +6,19 @@ module Robot
     attr_accessor :url, :headers, :proxy, :retry_limit,
                   :logger, :need_cache, :cache
 
-    def initialize(url, options = {})
-      @url = url
+    def initialize(host, options = {})
+      @host = host
       @config = options
+      @port = config[:port]
+      if @port.to_s.nil? || @port == 80
+        @url = @host
+      else
+        @url = @host + ':' + @port.to_s
+      end
 
       @headers = config[:headers]
+      @headers[:cookie] = config[:cookies] if config[:cookies]
+
       @proxy = config[:proxy]
       @retry_limit = config[:retry_limit]
       @need_cache = config[:need_cache]
@@ -38,7 +46,7 @@ module Robot
         retry_count = 0
 
         begin
-          RestClient.proxy = config[:proxy] if config[:proxy]
+          RestClient.proxy = @proxy if @proxy
           response = RestClient.get(url, headers).body
           cache.write(url, response, expires_in: 60.minutes) if need_cache
         rescue SocketError => e
@@ -87,7 +95,7 @@ module Robot
     end
 
     def config
-      default_config.merge(@config)
+      default_config.merge(@config.compact)
     end
 
     class WebSpiderException < RuntimeError

@@ -28,7 +28,13 @@ class WebSpiderWorkJob < ApplicationJob
 
   def perform(setting)
     # 获取网页数据
-    data = Robot::PDDWebSpider.new(setting.url).parse
+    data = Robot::PDDWebSpider.new(setting.url,
+                                   port: setting.port,
+                                   proxy: setting.proxy,
+                                   retry_limit: setting.retry_limit,
+                                   log_path: setting.log_path,
+                                   cookies: setting.cookies).parse
+
     # 保存商品信息到数据库
     Good.store_goods_to_db(setting, data)
   end

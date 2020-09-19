@@ -28,7 +28,11 @@ class RssWorkJob < ApplicationJob
 
   def perform(setting)
     # 获取 RSS Feed
-    rss_feeds = Robot::RSSProbe.new(setting.url).parse
+    rss_feeds = Robot::RSSProbe.new(setting.url,
+                                    port: setting.port,
+                                    proxy: setting.proxy,
+                                    retry_limit: setting.retry_limit,
+                                    log_path: setting.log_path).parse
 
     user_id = setting.user_id
 

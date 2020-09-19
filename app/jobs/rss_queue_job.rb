@@ -4,7 +4,7 @@ class RssQueueJob < ApplicationJob
   def perform(*args)
     # 从数据库获取 RSS 探针配置信息
     ProbeSetting.all.each do |s|
-      RssWorkJob.perform_later(s)
+      RssWorkJob.perform_later(s) if s.status
     end
   end
 end
