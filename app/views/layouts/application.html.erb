@@ -53,8 +53,11 @@
 </div>
 
 <div id="footer">
-  <p><%= raw(ENV['BEIAN']) if ENV['BEIAN'] %></p>
+  <p><%= raw(ENV['COPYRIGHT']) %></p>
   <p><%= link_to(ENV['ICP'], ENV['ICP_LINK'], target: '_blank', rel: 'noreferrer') if ENV['ICP'] && !ENV['ICP'].empty? %></p>
+  <p><%= raw(ENV['BAIDU_STATISTIC_CODE']) %></p>
+  <p><%= raw(ENV['TX_STATISTIC_CODE']) %></p>
+  <p><%= raw(ENV['UMENG_STATISTIC_CODE']) %></p>
 </div>
 </body>
 </html>
