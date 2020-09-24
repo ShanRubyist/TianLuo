@@ -1,0 +1,34 @@
+<a-steps :current="new_form_data.step" size="small">
+  <a-step>
+    <template slot="title">
+      选择订阅/监控
+    </template>
+  </a-step>
+
+  <a-step>
+    <template slot="title">
+      填写信息
+    </template>
+  </a-step>
+
+  <a-step>
+    <template slot="title">
+      保存
+    </template>
+  </a-step>
+</a-steps>
+
+<template v-if="new_form_data.step == 0">
+  <span v-on:click="next_step(); new_form_data.type =1">subsribe</span>
+  <span v-on:click="next_step(); new_form_data.type =2">spy</span>
+</template>
+
+<template v-else-if="new_form_data.step == 1">
+  <template v-if="new_form_data.type == 1">
+    <%= import_partial "home/new/rss_form" %>
+  </template>
+
+  <template v-if="new_form_data.type == 2">
+    <%= import_partial "home/new/spy_shop_form" %>
+  </template>
+</template>

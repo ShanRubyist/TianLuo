@@ -1,0 +1,23 @@
+<form id="rss_form">
+  <div class="form-group">
+    <label>URL</label>
+    <input class="form-control" id="rss_url" placeholder="url" v-model="new_form_data.url" required>
+  </div>
+  <div class="form-group">
+    <label>Port</label>
+    <input class="form-control" id="rss_port" placeholder="port" v-model="new_form_data.port">
+  </div>
+  <div class="form-group">
+    <label>Retry Limit</label>
+    <input class="form-control" id="rss_retry_limit" placeholder="retry limit" v-model="new_form_data.retry_limit">
+  </div>
+
+  <div class="form-group">
+    <label>Proxy</label>
+    <input class="form-control" id="rss_proxy" placeholder="proxy" v-model="new_form_data.proxy">
+  </div>
+  <div class="form-group">
+    <label>Status</label>
+    <a-switch v-model:default-checked="new_form_data.status"></a-switch>
+  </div>
+</form>

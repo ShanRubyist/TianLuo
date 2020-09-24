@@ -1,0 +1,20 @@
+<a-modal v-model="dialog_visible" title="添加订阅/监控" centered width="60%" on-ok="handleOk">
+  <template slot="footer" v-if="new_form_data.step == 0">
+    <a-button key="cancel" @click="handleCancel">
+      取消
+    </a-button>
+  </template>
+
+  <template slot="footer" v-else-if="new_form_data.step == 1">
+    <a-button key="back" @click="function () { new_form_data.step -= 1}">
+      上一步
+    </a-button>
+    <a-button key="submit" type="primary" :loading="dialog_loading" @click="handleOk">
+      确定
+    </a-button>
+  </template>
+
+  <template>
+    <%= import_partial 'home/new/add_content' %>
+  </template>
+</a-modal>

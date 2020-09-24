@@ -25,4 +25,7 @@ Rails.application.routes.draw do
   get 'coupons/' => 'goods#coupons'
   get 'ads/' => 'goods#ads'
   get 'names/' => 'goods#names'
+
+  resources :probe_settings
+  resources :web_spider_settings
 end
