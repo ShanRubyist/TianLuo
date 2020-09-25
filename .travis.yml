@@ -21,8 +21,8 @@ before_script:
   - bundle install
   - bundle exec rake db:create
   - bundle exec rake db:migrate
-  - rails webpacker:install
-  - ./bin/webpack-dev-server
+#  - rails webpacker:install
+#  - ./bin/webpack-dev-server
   - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
   - chmod +x ./cc-test-reporter
   - ./cc-test-reporter before-build
