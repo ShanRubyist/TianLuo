@@ -1,19 +1,19 @@
 <div v-if="good">
     <div>
-        <span>店铺名称:<a v-bind:href="good.shop_url" target="_blank">{{good.shop_name}}</a></span>
-        <span>平台: {{good.platform}}</span>
-        <span>商品数量:{{good.goods_num}}</span>
-        <span>销售量:{{good.shop_sales_num}}</span>
-        <span>物流评分:{{good.logistics_score}}</span>
-        <span>描述评分:{{good.desc_score}}</span>
-        <span>服务评分:{{good.service_score}}</span>
+        <span class="good-detail-main">{{good.name}}</span>
     </div>
 
     <div>
-        <span>商品名称:{{good.name}}</span>
-        <span>商品ID:{{good.spu_id}}</span>
-        <span>商品销量: {{good.sales_num}}</span>
+        商品ID:<span class="good-detail-label">{{good.spu_id}}</span>
+        &nbsp;&nbsp;
 
+        平台: <span class="good-detail-label">{{good.platform}}</span>
+        &nbsp;&nbsp;
+
+        商品销量:<span class="good-detail-label">{{good.sales_num}}</span>
+        &nbsp;&nbsp;
+
+        销售规格：
         <a-popover title="SKU">
             <template slot="content" v-for="sku in good.skus">
                 <div>
@@ -22,8 +22,27 @@
                     <span>{{sku.group_price}}</span>
                 </div>
             </template>
-            <span>销售规格</span>
-
+            <span class="good-detail-label">所有销售规格</span>
         </a-popover>
+    </div>
+
+    <div>
+        店铺名称:<span class="good-detail-label"><a v-bind:href="good.shop_url" target="_blank">{{good.shop_name}}</a></span>
+        &nbsp;&nbsp;
+
+        商品数量:<span class="good-detail-label">{{good.goods_num}}</span>
+        &nbsp;&nbsp;
+
+        销售量:<span class="good-detail-label">{{good.shop_sales_num}}</span>
+        &nbsp;&nbsp;
+
+        物流评分:<span class="good-detail-label">{{good.logistics_score}}</span>
+        &nbsp;&nbsp;
+
+        描述评分:<span class="good-detail-label">{{good.desc_score}}</span>
+        &nbsp;&nbsp;
+
+        服务评分:<span class="good-detail-label">{{good.service_score}}</span>
+        &nbsp;&nbsp;
     </div>
 </div>

@@ -130,10 +130,23 @@ body {
 
 .good-detail-info {
     width: 92%;
-    background-color: #EFEFEF;
+    background-color: #f5f5f5;
     border-radius: 15px;
     margin: 5px auto;
     padding: 15px 10px;
+    font-size: 12px;
+    color: #333333;
+    line-height: 20px;
+}
+
+.good-detail-main {
+    line-height: 36px;
+    font-size: 16px;
+    color: #333333;
+}
+
+.good-detail-label {
+    color: #999999;
 }
 
 .good-detail-extro {
