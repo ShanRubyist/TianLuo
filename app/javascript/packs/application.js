@@ -37,6 +37,9 @@ window.$ = window.jQuery = jQuery
 import axios from 'axios'
 window.axios = axios
 
+import echarts from 'echarts'
+window.echarts = echarts
+
 export default window
 
 import 'bootstrap/dist/css/bootstrap.css'
