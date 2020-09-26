@@ -25,10 +25,10 @@
 
 <template v-else-if="new_form_data.step == 1">
   <template v-if="new_form_data.type == 1">
-    <%= import_partial "home/new/rss_form" %>
+    <%= import_partial "home/new/content/rss_form" %>
   </template>
 
   <template v-if="new_form_data.type == 2">
-    <%= import_partial "home/new/spy_shop_form" %>
+    <%= import_partial "home/new/content/spy_shop_form" %>
   </template>
 </template>

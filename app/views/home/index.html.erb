@@ -39,7 +39,7 @@
           查看全部监控/订阅
         </a-button>
 
-        <%= import_partial "home/new/add_dialog" %>
+        <add-dialog v-bind:dialog_visible="dialog_visible"></add-dialog>
 
       </a-tabs>
     </a-col>
@@ -54,22 +54,12 @@
 <script>
     <%= render "home/rss/rss_list.vue.js" %>
     <%= render "home/shop_spy/shop_list.vue.js" %>
+    <%= render "home/new/add_dialog.vue.js" %>
 
     var app = new Vue({
         el: '#app',
         data: {
-            dialog_loading: false,
             dialog_visible: false,
-            new_form_data: {
-                step: 0,
-                type: 0,
-                url: null,
-                port: 80,
-                retry_limit: null,
-                proxy: null,
-                status: true,
-                cookies: ''
-            }
         },
         methods: {
             change_tab: function (key) {
@@ -85,77 +75,11 @@
                     })
                 }
             },
-            handleCancel: function () {
-                this.dialog_visible = false;
-                this.dialog_loading = false;
-            },
-            handleOk: function () {
-                this.dialog_loading = true;
-
-                var that = this;
-                var url = '';
-                var setting = {};
-                if (this.new_form_data.type == 1) {
-                    url = '<%= probe_settings_url %>';
-                    setting = {
-                        authenticity_token: $('meta[name="csrf-token"]').attr('content'),
-                        probe_setting: {
-                            user_id: <%= current_user.id %>,
-                            url: that.new_form_data.url,
-                            port: that.new_form_data.port,
-                            retry_limit: that.new_form_data.retry_limit,
-                            proxy: that.new_form_data.proxy,
-                            cookies: that.new_form_data.cookies,
-                            status: that.new_form_data.status
-                        }
-                    }
-                } else if (this.new_form_data.type == 2) {
-                    url = '<%= web_spider_settings_url %>';
-                    setting = {
-                        authenticity_token: $('meta[name="csrf-token"]').attr('content'),
-                        web_spider_setting: {
-                            user_id: <%= current_user.id %>,
-                            url: that.new_form_data.url,
-                            port: that.new_form_data.port,
-                            retry_limit: that.new_form_data.retry_limit,
-                            proxy: that.new_form_data.proxy,
-                            cookies: that.new_form_data.cookies,
-                            status: that.new_form_data.status
-                        }
-                    }
-                }
-                axios.post(url, setting, {
-                    headers: {
-                        'Accept': 'application/json'
-                    }
-                }).then(function (reason) {
-                    that.$message.info(reason.data.message);
-                    that.dialog_loading = false;
-                    that.dialog_visible = false;
-                    that.clear_new_form_data();
-                }).catch(function (reason) {
-                    that.$message.error(reason.toString());
-                    that.dialog_loading = false;
-                })
-            },
-            clear_new_form_data: function () {
-                this.new_form_data = {
-                    step: 0,
-                    type: 0,
-                    url: null,
-                    port: 80,
-                    retry_limit: null,
-                    proxy: null,
-                    status: true,
-                    cookies: ''
-                }
-            },
             show_add_dialog: function () {
-                this.dialog_visible = true
+                // 需要先置为 false，再设置为 true 才能再次显示添加的对话框
+                this.dialog_visible = false;
+                this.dialog_visible = true;
             },
-            next_step: function () {
-                this.new_form_data.step += 1;
-            }
         },
         mounted: function () {
             window.addEventListener('scroll', this.handleScroll);
