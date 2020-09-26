@@ -120,67 +120,11 @@
     </tbody>
   </table>
 
-  <a-drawer
-    placement="right"
-    :closable="true"
-    :visible="visible"
-    @close="onClose"
-    width="90%"
+  <good-detail
+    v-bind:visible="visible"
+    v-bind:goods_data="goods_data"
+    v-bind:current_good="current_good"
+    v-bind:good="good"
   >
-    <!--        左侧商品列表-->
-    <div class="good-list-group">
-      <ul class="list-group">
-        <template v-for="good in goods_data">
-          <li class="list-group-item list-group-item-card"
-              data-good-id="good.id"
-              v-bind:class="{active: (current_good == good)}"
-              v-on:click="change_good(good)">
-            <div>
-              <div class="img-box">
-                <img v-bind:src="good.goods_images[0]"/>
-              </div>
-              <div class="description">
-                <div>{{good.name}}</div>
-                <div>{{good.spu_id}}</div>
-              </div>
-            </div>
-          </li>
-        </template>
-      </ul>
-    </div>
-
-    <!--   右侧商品详情信息-->
-    <div class="good-detail">
-      <!--   商品基本信息-->
-      <div class="good-detail-info">
-        <%= import_partial('home/shop_spy/details/shop_info') %>
-      </div>
-
-      <!--   商品扩展信息-->
-      <div class="good-detail-extro">
-        <a-tabs default-active-key="1" :size="size" @change="change_good_detail_tab">
-          <a-tab-pane key="1" tab="评论数变动">
-            <%= import_partial('home/shop_spy/details/comments_num_change') %>
-          </a-tab-pane>
-
-          <a-tab-pane key="2" tab="促销变动">
-            <%= import_partial('home/shop_spy/details/coupons_change') %>
-          </a-tab-pane>
-
-          <a-tab-pane key="3" tab="价格变动">
-            <%= import_partial('home/shop_spy/details/price_change') %>
-          </a-tab-pane>
-
-          <a-tab-pane key="4" tab="标题变动">
-            <%= import_partial('home/shop_spy/details/title_change') %>
-          </a-tab-pane>
-
-          <a-tab-pane key="5" tab="标语变动">
-            <%= import_partial('home/shop_spy/details/ad_change') %>
-          </a-tab-pane>
-        </a-tabs>
-      </div>
-    </div>
-
-  </a-drawer>
+  </good-detail>
 </div>

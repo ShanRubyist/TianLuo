@@ -1,6 +1,8 @@
 // shop 的表格组件
 const goods_data = <%= raw(@goods_list.to_json) %>
 
+    <%= render 'home/shop_spy/details/good_detail.vue.js' %>
+
     Vue.component('shop-list', {
         data: function () {
             return {
@@ -9,11 +11,6 @@ const goods_data = <%= raw(@goods_list.to_json) %>
                 visible: false,
                 good: goods_data.first,
                 current_good: this.good,
-                coupon_list: null,
-                price_list: null,
-                comment_list: null,
-                name_list: null,
-                ad_list: null
             }
         },
         methods: {
@@ -24,200 +21,7 @@ const goods_data = <%= raw(@goods_list.to_json) %>
                 this.visible = true
                 this.good = good
                 this.current_good = good
-                this.refresh_tabs()
             },
-            onClose: function () {
-                this.visible = false
-            },
-            refresh_comments_tab: function () {
-                var that = this
-                $.ajax({
-                    url: window.location.href + 'comments',
-                    dataType: "script",
-                    type: "GET",
-                    data: {
-                        good_id: this.current_good.spu_id
-                    },
-                    success: function (data) {
-                        that.comment_list = jQuery.parseJSON(data);
-
-                        // 基于准备好的dom，初始化echarts实例
-                        var myChart = echarts.init(document.getElementById('comment_graph'));
-
-                        // 指定图表的配置项和数据
-                        let option = {
-                            title: {
-                                text: '评价数走势图'
-                            },
-                            tooltip: {
-                                trigger: 'axis'
-                            },
-                            grid: {
-                                left: '3%',
-                                right: '3%',
-                                bottom: '3%',
-                                containLabel: true
-                            },
-                            toolbox: {
-                                feature: {
-                                    saveAsImage: {}
-                                }
-                            },
-                            xAxis: {
-                                type: 'category',
-                                boundaryGap: false,
-                                data: that.comment_list.time
-                            },
-                            yAxis: {
-                                type: 'value'
-                            },
-                            series: [
-                                {
-                                    type: 'line',
-                                    data: that.comment_list.data
-                                }
-                            ]
-                        };
-
-                        // 使用刚指定的配置项和数据显示图表。
-                        myChart.setOption(option);
-                    }
-                })
-
-            },
-            refresh_graph_tab: function () {
-                var that = this
-                $.ajax({
-                    url: window.location.href + 'prices',
-                    dataType: "script",
-                    type: "GET",
-                    data: {
-                        good_id: this.current_good.spu_id
-                    },
-                    success: function (data) {
-                        that.price_list = jQuery.parseJSON(data);
-
-                        // 基于准备好的dom，初始化echarts实例
-                        var myChart = echarts.init(document.getElementById('price_graph'));
-
-                        // 指定图表的配置项和数据
-                        let option = {
-                            title: {
-                                text: '价格走势图'
-                            },
-                            tooltip: {
-                                trigger: 'axis'
-                            },
-                            legend: {
-                                type: 'scroll',
-                                top: 30,
-                                data: that.price_list.legend
-                            },
-                            grid: {
-                                left: '3%',
-                                right: '3%',
-                                top: 80,
-                                bottom: '3%',
-                                containLabel: true
-                            },
-                            toolbox: {
-                                feature: {
-                                    saveAsImage: {}
-                                }
-                            },
-                            xAxis: {
-                                type: 'category',
-                                boundaryGap: false,
-                                data: that.price_list.time
-                            },
-                            yAxis: {
-                                type: 'value'
-                            },
-                            series: []
-                        };
-
-                        that.price_list.data.forEach(function (item) {
-                            option["series"].push({
-                                name: item.spec,
-                                type: 'line',
-                                data: item.prices
-                            })
-                        })
-
-                        // 使用刚指定的配置项和数据显示图表。
-                        myChart.setOption(option);
-                    }
-                })
-
-            },
-            refresh_coupons_tab: function () {
-                var that = this
-                $.ajax({
-                    url: window.location.href + 'coupons',
-                    dataType: "script",
-                    type: "GET",
-                    data: {
-                        good_id: this.current_good.spu_id
-                    },
-                    success: function (data) {
-                        that.coupon_list = jQuery.parseJSON(data);
-                    }
-                })
-            },
-            refresh_names_tab: function () {
-                var that = this
-                $.ajax({
-                    url: window.location.href + 'names',
-                    dataType: "script",
-                    type: "GET",
-                    data: {
-                        good_id: this.current_good.spu_id
-                    },
-                    success: function (data) {
-                        that.name_list = jQuery.parseJSON(data);
-                    }
-                })
-            },
-            refresh_ads_tab: function () {
-                var that = this
-                $.ajax({
-                    url: window.location.href + 'ads',
-                    dataType: "script",
-                    type: "GET",
-                    data: {
-                        good_id: this.current_good.spu_id
-                    },
-                    success: function (data) {
-                        that.ad_list = jQuery.parseJSON(data);
-                    }
-                })
-            },
-            refresh_tabs: function () {
-                this.refresh_coupons_tab()
-                this.refresh_comments_tab()
-                this.refresh_graph_tab()
-                this.refresh_names_tab()
-                this.refresh_ads_tab()
-            },
-            change_good_detail_tab: function (key) {
-                var that = this
-                if (key == 1) {
-                    that.refresh_comments_tab()
-                } else if (key == 2) {
-                    that.refresh_coupons_tab()
-                } else if (key == 3) {
-                    that.refresh_graph_tab()
-                } else if (key == 4) {
-                    that.refresh_names_tab()
-                } else if (key == 5) {
-                    that.refresh_ads_tab()
-                }
-            },
-            change_good: function (good) {
-                this.good = good
-                this.current_good = good
-                this.refresh_tabs()
-            }
         },
         template: '<%= import_partial('home/shop_spy/shop_list_templ') %>'
     })
