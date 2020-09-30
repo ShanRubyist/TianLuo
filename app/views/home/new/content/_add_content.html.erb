@@ -19,8 +19,15 @@
 </a-steps>
 
 <template v-if="new_form_data.step == 0">
-  <span v-on:click="next_step(); new_form_data.type =1">subsribe</span>
-  <span v-on:click="next_step(); new_form_data.type =2">spy</span>
+  <ul class="add-dialog" >
+    <li class="add-dialog-type-card" v-bind:class="{ active: (new_form_data.type == 1) }" v-on:click="next_step(); new_form_data.type =1">
+      添加RSS订阅
+    </li>
+
+    <li class="add-dialog-type-card" v-bind:class="{ active: (new_form_data.type == 2) }" v-on:click="next_step(); new_form_data.type =2">
+      添加监控店铺
+    </li>
+  </ul>
 </template>
 
 <template v-else-if="new_form_data.step == 1">
