@@ -1,0 +1,86 @@
+// 定时轮询正在运行的后台任务数量
+setInterval(function () {
+    axios.get('<%= running_jobs_count_path %>', {
+        headers: {
+            'Accept': 'application/json'
+        }
+    })
+        .then(function (reason) {
+            app._data.rss_running_missions = reason.data.running_rss_jobs_count
+            app._data.good_running_missions = reason.data.running_goods_jobs_count
+        })
+        .catch(function (reason) {
+        })
+}, 5000)
+
+Vue.component('all-rss-list', {
+    props: [],
+    data: function () {
+        return {
+            all_rss_list: <%= raw @all_rss_list_json.to_json %>,
+            tag_color: null
+        }
+    },
+    methods: {
+        color: function (content) {
+            switch (content) {
+                case 'success':
+                    this.tag_color = 'green';
+                    break;
+                case 'fail':
+                    this.tag_color = 'red';
+                    break;
+                case 'performing':
+                    this.tag_color = 'yellow';
+                    break;
+                case 'enqueued':
+                    this.tag_color = '';
+                    break;
+                case 'enqueue':
+                    this.tag_color = 'gray'
+                    break;
+            }
+            return this.tag_color
+        },
+        start_job: function (type, id) {
+            var that = this
+
+            axios.post('<%= start_job_path %>', {
+                    type: type,
+                    id: id,
+                    authenticity_token: $('meta[name="csrf-token"]').attr('content'),
+                },
+                {
+                    headers: {
+                        'Accept': 'application/json'
+                    }
+                })
+                .then(function (reason) {
+                    that.$message.success(reason.data.message)
+                })
+                .catch(function (reason) {
+                    that.$message.error(reason.toString())
+                })
+        },
+        delete_job: function (jid) {
+            var that = this
+
+            axios.delete('<%= delete_job_path %>', {
+                headers: {
+                    'Accept': 'application/json'
+                },
+                params: {
+                    jid: jid,
+                    authenticity_token: $('meta[name="csrf-token"]').attr('content'),
+                }
+            })
+                .then(function (reason) {
+                    that.$message.success(reason.data.message)
+                })
+                .catch(function (reason) {
+                    that.$message.error(reason.toString())
+                })
+        }
+    },
+    template: '<%= import_partial('home/all/rss_list/all_rss_list_templ') %>'
+})

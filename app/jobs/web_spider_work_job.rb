@@ -7,6 +7,10 @@ class WebSpiderWorkJob < ApplicationJob
     record_failure(exp)
   end
 
+  rescue_from(Robot::WebSpider::RetryTooManyTimeException) do |exp|
+    record_failure(exp)
+  end
+
   rescue_from(Robot::PDDWebSpider::NeedLoginException) do |exp|
     record_failure(exp)
     # retry_job wait: 60.minutes, queue: :web_spider
@@ -19,11 +23,9 @@ class WebSpiderWorkJob < ApplicationJob
   def record_failure(exp)
     web_spider_setting = self.arguments.first
 
-    WebSpiderFailureHistory.store_fail_spider_to_db(
-        web_spider_setting.id,
-        exp.message,
-        exp.backtrace.join('<br />')
-    )
+    GoodsRefreshHistory
+        .find_or_create_by(pdd_web_spider_setting_id: web_spider_setting.id, jid: self.job_id)
+        .update({status: 'fail', detail: exp.message + exp.backtrace.join})
   end
 
   def perform(setting)

@@ -19,11 +19,9 @@ class RssWorkJob < ApplicationJob
   def record_failure(exp)
     probe_setting = self.arguments.first
 
-    RssProbeFailureHistory.store_fail_rss_to_db(
-        probe_setting.id,
-        exp.message,
-        exp.backtrace.join('<br />')
-    )
+    RssProbeHistory
+        .find_or_create_by(probe_setting_id: probe_setting.id, jid: self.job_id)
+        .update({status: 'fail', detail: exp.message + exp.backtrace.join})
   end
 
   def perform(setting)
@@ -36,7 +34,10 @@ class RssWorkJob < ApplicationJob
 
     user_id = setting.user_id
 
+    history = RssProbeHistory
+                       .find_by(probe_setting_id: self.arguments.first.id, jid: self.job_id)
+
     # 保持 RSS 信息到数据库
-    RssFeed.store_rss_to_db(user_id, setting.id, rss_feeds)
+    RssFeed.store_rss_to_db(user_id, history.id, rss_feeds)
   end
 end

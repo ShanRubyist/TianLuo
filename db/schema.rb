@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_06_24_152758) do
+ActiveRecord::Schema.define(version: 2020_10_01_024107) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -77,6 +77,18 @@ ActiveRecord::Schema.define(version: 2020_06_24_152758) do
     t.datetime "updated_at", null: false
     t.json "goods_images", default: {}
     t.index ["good_id"], name: "index_goods_images_on_good_id"
+  end
+
+  create_table "goods_refresh_histories", force: :cascade do |t|
+    t.datetime "last_update_date", comment: "最近更新时间"
+    t.string "link", comment: "连接地址"
+    t.string "jid", comment: "sidekiq job id"
+    t.string "status", comment: "job 状态"
+    t.string "detail", comment: "详细说明"
+    t.integer "pdd_web_spider_setting_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["jid"], name: "index_goods_refresh_histories_on_jid"
   end
 
   create_table "mall_services", force: :cascade do |t|
@@ -154,6 +166,10 @@ ActiveRecord::Schema.define(version: 2020_06_24_152758) do
     t.integer "probe_setting_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "status", comment: "job 状态"
+    t.string "detail", comment: "详细说明"
+    t.string "jid", comment: "sidekiq job id"
+    t.index ["jid"], name: "index_rss_probe_histories_on_jid"
     t.index ["probe_setting_id"], name: "index_rss_probe_histories_on_probe_setting_id"
   end
 
@@ -197,6 +213,10 @@ ActiveRecord::Schema.define(version: 2020_06_24_152758) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["sku_id"], name: "index_skus_extras_on_sku_id"
+  end
+
+  create_table "test", id: false, force: :cascade do |t|
+    t.string "name"
   end
 
   create_table "user_rss_feed_ships", force: :cascade do |t|

@@ -28,4 +28,9 @@ Rails.application.routes.draw do
 
   resources :probe_settings
   resources :web_spider_settings
+
+  get 'all' => 'home#all', as: 'all'
+  get 'running_jobs_count' => 'home#running_jobs_count', as: 'running_jobs_count'
+  post 'start_job' => 'home#start_job', as: 'start_job'
+  delete 'delete_job' => 'home#delete_job', as: 'delete_job'
 end

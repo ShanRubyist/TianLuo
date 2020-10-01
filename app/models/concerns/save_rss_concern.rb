@@ -9,7 +9,7 @@ module SaveRSSConcern
   end
 
   module ClassMethods
-    def store_rss_to_db(user_id, probe_setting_id, rss_raw_data)
+    def store_rss_to_db(user_id, rss_probe_history_id, rss_raw_data)
       rss = handle(rss_raw_data)
       title = rss[:title]
       description = rss[:description]
@@ -17,11 +17,11 @@ module SaveRSSConcern
       link = rss[:link]
       items = rss[:items]
 
-      rss_probe_history = RssProbeHistory.create(probe_setting_id: probe_setting_id,
-                                 title: title,
-                                 description: description,
-                                 last_build_date: last_build_date,
-                                 link: link)
+      # rss_probe_history = RssProbeHistory.create(probe_setting_id: probe_setting_id,
+      #                            title: title,
+      #                            description: description,
+      #                            last_build_date: last_build_date,
+      #                            link: link)
 
       items.each do |item|
         # 增量更新，已有的RSS Feed不会重复添加
@@ -29,7 +29,7 @@ module SaveRSSConcern
                                        description: item[:description],
                                        author: item[:author],
                                        pub_date: item[:pub_date],
-                                       rss_probe_history_id: rss_probe_history.id)
+                                       rss_probe_history_id: rss_probe_history_id)
                        .find_or_create_by(link: item[:link])
 
         # 把RSS Feed内容分发到用户的内容队列中，默认为未读
