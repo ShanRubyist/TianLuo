@@ -38,10 +38,9 @@
         <a-button slot="tabBarExtraContent" @click="this.window.location.href = '<%= all_url %>'">
           查看全部监控/订阅
         </a-button>
-
-        <add-dialog v-bind:dialog_visible="dialog_visible"></add-dialog>
-
       </a-tabs>
+      <add-dialog v-bind:dialog_visible="dialog_visible" v-on:close-dialog="dialog_visible = false"></add-dialog>
+
     </a-col>
 
     <a-col :md="4"></a-col>

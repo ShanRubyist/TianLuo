@@ -79,7 +79,7 @@
       <!--            第三行默认隐藏，显示评论和sku信息-->
       <tr class="table-warning">
         <td colspan="6" v-if="show_more">
-          <a-tabs type="card" @change="callback">
+          <a-tabs type="card">
             <a-tab-pane key="1" tab="SKU">
               <table class="table table-sm">
                 <thead>
@@ -124,7 +124,8 @@
     v-bind:visible="visible"
     v-bind:goods_data="goods_data"
     v-bind:current_good="current_good"
-    v-bind:good="good"
+    v-on:close-drawer="visible = false"
+    v-on:change-good="current_good = $event"
   >
   </good-detail>
 </div>

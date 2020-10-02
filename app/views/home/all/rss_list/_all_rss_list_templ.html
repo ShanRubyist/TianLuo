@@ -1,4 +1,4 @@
-<template>
+<div>
     <table class="table table-borderless table-responsive">
         <!--        表格头部-->
         <thead>
@@ -31,7 +31,7 @@
                     <template slot="title">
                         {{rss.detail}}
                     </template>
-                    <a-tag v-bind:color="color(rss.status)">{{rss.status}}</a-tag>
+                    <a-tag v-bind:color="select_tag_color(rss.status)">{{rss.status}}</a-tag>
                 </a-tooltip>
             </td>
             <td>
@@ -50,4 +50,4 @@
         </tr>
         </tbody>
     </table>
-</template>
+</div>

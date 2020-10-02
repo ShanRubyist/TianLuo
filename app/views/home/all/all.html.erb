@@ -28,7 +28,7 @@
         </a-button>
     </a-col>
 
-    <add-dialog v-bind:dialog_visible="dialog_visible"></add-dialog>
+    <add-dialog v-bind:dialog_visible="dialog_visible" v-on:close-dialog="dialog_visible = false"></add-dialog>
   </a-row>
 </div>
 

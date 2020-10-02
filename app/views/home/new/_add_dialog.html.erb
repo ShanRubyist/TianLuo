@@ -1,4 +1,4 @@
-<a-modal v-model="dialog_visible" title="添加订阅/监控" centered width="60%" on-ok="handleOk">
+<a-modal v-model="visible" title="添加订阅/监控" centered width="60%" on-ok="handleOk">
   <template slot="footer" v-if="new_form_data.step == 0">
     <a-button key="cancel" @click="handleCancel">
       取消

@@ -7,10 +7,9 @@ const goods_data = <%= raw(@goods_list.to_json) %>
         data: function () {
             return {
                 goods_data,
-                show_more: false,
                 visible: false,
-                good: goods_data.first,
-                current_good: this.good,
+                show_more: false,
+                current_good: goods_data.first,
             }
         },
         methods: {
@@ -19,7 +18,6 @@ const goods_data = <%= raw(@goods_list.to_json) %>
             },
             showDetail: function (good) {
                 this.visible = true
-                this.good = good
                 this.current_good = good
             },
         },

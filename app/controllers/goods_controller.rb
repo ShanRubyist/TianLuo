@@ -15,6 +15,7 @@ class GoodsController < ApplicationController
   end
 
   def ads;
+    render json: {}
   end
 
   def names

@@ -99,6 +99,7 @@ module Robot
     end
 
     def parse_cookies(cookies)
+      return {} if cookies.nil?
       cookies_hash = {}
       cookies.split(';').map do |cookie|
         cookie.scan(/(.+?)=(.+)/)

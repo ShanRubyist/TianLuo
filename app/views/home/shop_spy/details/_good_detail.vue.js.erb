@@ -1,14 +1,12 @@
 // 商品详情组件
-Vue.component('good-detail', {
+  Vue.component('good-detail', {
     props: [
         'visible',
         'goods_data',
         'current_good',
-        'good'
     ],
     data: function () {
         return {
-            visible: false,
             coupon_list: null,
             price_list: null,
             comment_list: null,
@@ -22,7 +20,7 @@ Vue.component('good-detail', {
     },
     methods: {
         onClose: function () {
-            this.visible = false
+            this.$emit('close-drawer');
         },
         refresh_comments_tab: function () {
             var that = this
@@ -209,8 +207,7 @@ Vue.component('good-detail', {
             }
         },
         change_good: function (good) {
-            this.good = good
-            this.current_good = good
+            this.$emit('change-good', good);
             this.refresh_tabs()
         }
     },

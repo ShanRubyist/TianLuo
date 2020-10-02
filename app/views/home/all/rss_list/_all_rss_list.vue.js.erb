@@ -18,29 +18,32 @@ Vue.component('all-rss-list', {
     data: function () {
         return {
             all_rss_list: <%= raw @all_rss_list_json.to_json %>,
-            tag_color: null
+//            tag_color: null
         }
     },
     methods: {
-        color: function (content) {
+        select_tag_color: function (content) {
+            var tag_color = null;
             switch (content) {
                 case 'success':
-                    this.tag_color = 'green';
+                    tag_color = 'green';
                     break;
                 case 'fail':
-                    this.tag_color = 'red';
+                    tag_color = 'red';
                     break;
                 case 'performing':
-                    this.tag_color = 'yellow';
+                    tag_color = 'yellow';
                     break;
                 case 'enqueued':
-                    this.tag_color = '';
+                    tag_color = '';
                     break;
                 case 'enqueue':
-                    this.tag_color = 'gray'
+                    tag_color = 'gray'
+                    break;
+                default:
                     break;
             }
-            return this.tag_color
+            return tag_color;
         },
         start_job: function (type, id) {
             var that = this
