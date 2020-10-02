@@ -11,12 +11,11 @@ module Robot
 
     private
 
-    # def default_config
-    #   config = super
-    #   config['headers'].merge!({
-    #                       cookies: ''
-    #                   })
-    # end
+    def default_config
+      config = super
+      config[:headers][:cookies] = parse_cookies(ENV['COOKIES'])
+      config
+    end
 
     class PDDWebSpiderException < WebSpiderException
     end

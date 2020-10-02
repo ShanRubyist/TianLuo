@@ -49,6 +49,7 @@ module Robot
           RestClient.proxy = @proxy if @proxy
           response = RestClient.get(url, headers).body
           cache.write(url, response, expires_in: 60.minutes) if need_cache
+          logger.info("pdd web spider:" + response.inspect)
         rescue SocketError => e
           # 无法连接： 域名错误、端口错误
           logger.error(e)
@@ -84,8 +85,7 @@ module Robot
     def default_config
       {
           headers: {
-              user_agent: 'Mozilla/5.0 (Linux; Android 5.0; SM-G900P Build/LRX21T) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.110 Mobile Safari/537.36',
-              cookie: 'api_uid=CiHA5V7iPlODuABJ8t1zAg==; _nano_fp=XpdbXpCJnpXbn5TYXT_ecXxCswGPDgEcSFJPQB6h; PDDAccessToken=3M3NYVKDXFK6FRD3WJ6GGRZ577A5V537OBVIHVRWJ6NXHOKB7NFQ113d496; pdd_user_id=7201829222356; pdd_user_uin=W7U3BUPAEICPD2OZCJULVPRD2I_GEXDA; quick_entrance_click_record=20200611%2C253; ua=Mozilla%2F5.0%20(X11%3B%20Linux%20x86_64)%20AppleWebKit%2F537.36%20(KHTML%2C%20like%20Gecko)%20Chrome%2F70.0.3538.110%20Safari%2F537.36; webp=1'
+              user_agent: 'Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.75 Mobile Safari/537.36'
           },
           retry_limit: 3,
           log_path: "#{self.class}.log",
@@ -96,6 +96,15 @@ module Robot
 
     def config
       default_config.merge(@config.compact)
+    end
+
+    def parse_cookies(cookies)
+      cookies_hash = {}
+      cookies.split(';').map do |cookie|
+        cookie.scan(/(.+?)=(.+)/)
+        cookies_hash[$1.strip] = $2.strip
+      end
+      cookies_hash
     end
 
     class WebSpiderException < RuntimeError

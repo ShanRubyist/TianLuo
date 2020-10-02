@@ -37,9 +37,6 @@ class ApplicationJob < ActiveJob::Base
   end
 
   def log_perform_status
-    Rails.logger.error "before perform"
-    Rails.logger.error self.inspect
-
     if self.arguments.first
 
       if self.arguments.first.class.to_s == 'ProbeSetting'
