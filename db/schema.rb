@@ -215,10 +215,6 @@ ActiveRecord::Schema.define(version: 2020_10_01_024107) do
     t.index ["sku_id"], name: "index_skus_extras_on_sku_id"
   end
 
-  create_table "test", id: false, force: :cascade do |t|
-    t.string "name"
-  end
-
   create_table "user_rss_feed_ships", force: :cascade do |t|
     t.integer "user_id", comment: "用户ID"
     t.integer "rss_feed_id", comment: "RSS Feed ID"

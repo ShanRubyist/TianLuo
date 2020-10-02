@@ -17,7 +17,8 @@ Vue.component('good-detail', {
         }
     },
     updated: function () {
-        this.refresh_tabs()
+        // 会造成无限循环更新
+        // this.refresh_tabs()
     },
     methods: {
         onClose: function () {

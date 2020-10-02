@@ -38,6 +38,6 @@ class RssWorkJob < ApplicationJob
                        .find_by(probe_setting_id: self.arguments.first.id, jid: self.job_id)
 
     # 保持 RSS 信息到数据库
-    RssFeed.store_rss_to_db(user_id, history.id, rss_feeds)
+    RssFeed.store_rss_to_db(user_id, history.id, self.job_id, rss_feeds)
   end
 end

@@ -9,7 +9,7 @@ module SaveRSSConcern
   end
 
   module ClassMethods
-    def store_rss_to_db(user_id, rss_probe_history_id, rss_raw_data)
+    def store_rss_to_db(user_id, rss_probe_history_id, job_id, rss_raw_data)
       rss = handle(rss_raw_data)
       title = rss[:title]
       description = rss[:description]
@@ -22,6 +22,10 @@ module SaveRSSConcern
       #                            description: description,
       #                            last_build_date: last_build_date,
       #                            link: link)
+
+      RssProbeHistory
+          .find_or_create_by(jid: job_id)
+          .update({ title: title, description: description })
 
       items.each do |item|
         # 增量更新，已有的RSS Feed不会重复添加
