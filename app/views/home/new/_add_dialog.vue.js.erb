@@ -40,7 +40,7 @@ Vue.component('add-dialog', {
             if (this.new_form_data.type == 1) {
                 url = '<%= probe_settings_url %>';
                 setting = {
-                    authenticity_token: $('meta[name="csrf-token"]').attr('content'),
+                    authenticity_token: document.getElementsByName("csrf-token")[0].getAttribute('content'),
                     probe_setting: {
                         user_id: <%= current_user.id %>,
                         url: that.new_form_data.url,
@@ -54,7 +54,7 @@ Vue.component('add-dialog', {
             } else if (this.new_form_data.type == 2) {
                 url = '<%= web_spider_settings_url %>';
                 setting = {
-                    authenticity_token: $('meta[name="csrf-token"]').attr('content'),
+                    authenticity_token: document.getElementsByName("csrf-token")[0].getAttribute('content'),
                     web_spider_setting: {
                         user_id: <%= current_user.id %>,
                         url: that.new_form_data.url,

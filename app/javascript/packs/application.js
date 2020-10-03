@@ -29,10 +29,10 @@ window.Vue = Vue;
 Vue.use(ElementUI);
 Vue.use(Antd);
 
-console.log('Hello World from Webpacker')
+console.log('Hello World from TianLuo')
 
-import jQuery from 'jquery/dist/jquery'
-window.$ = window.jQuery = jQuery
+// import jQuery from 'jquery/dist/jquery'
+// window.$ = window.jQuery = jQuery
 
 import axios from 'axios'
 window.axios = axios

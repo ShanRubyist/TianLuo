@@ -51,7 +51,7 @@ Vue.component('all-rss-list', {
             axios.post('<%= start_job_path %>', {
                     type: type,
                     id: id,
-                    authenticity_token: $('meta[name="csrf-token"]').attr('content'),
+                    authenticity_token: document.getElementsByName("csrf-token")[0].getAttribute('content'),
                 },
                 {
                     headers: {
@@ -74,7 +74,7 @@ Vue.component('all-rss-list', {
                 },
                 params: {
                     jid: jid,
-                    authenticity_token: $('meta[name="csrf-token"]').attr('content'),
+                    authenticity_token: document.getElementsByName("csrf-token")[0].getAttribute('content'),
                 }
             })
                 .then(function (reason) {

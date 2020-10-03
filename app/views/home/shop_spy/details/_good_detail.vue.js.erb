@@ -1,5 +1,5 @@
 // 商品详情组件
-  Vue.component('good-detail', {
+Vue.component('good-detail', {
     props: [
         'visible',
         'goods_data',
@@ -14,6 +14,11 @@
             ad_list: null
         }
     },
+    watch: {
+        current_good: function () {
+            this.refresh_tabs();
+        }
+    },
     updated: function () {
         // 会造成无限循环更新
         // this.refresh_tabs()
@@ -24,165 +29,168 @@
         },
         refresh_comments_tab: function () {
             var that = this
-            $.ajax({
-                url: window.location.href + 'comments',
-                dataType: "script",
-                type: "GET",
-                data: {
-                    good_id: this.current_good.spu_id
+
+            axios.get(window.location.href + 'comments', {
+                headers: {
+                    'Accept': 'application/json'
                 },
-                success: function (data) {
-                    that.comment_list = jQuery.parseJSON(data);
-
-                    // 基于准备好的dom，初始化echarts实例
-                    var myChart = echarts.init(document.getElementById('comment_graph'));
-
-                    // 指定图表的配置项和数据
-                    let option = {
-                        title: {
-                            text: '评价数走势图'
-                        },
-                        tooltip: {
-                            trigger: 'axis'
-                        },
-                        grid: {
-                            left: '3%',
-                            right: '3%',
-                            bottom: '3%',
-                            containLabel: true
-                        },
-                        toolbox: {
-                            feature: {
-                                saveAsImage: {}
-                            }
-                        },
-                        xAxis: {
-                            type: 'category',
-                            boundaryGap: false,
-                            data: that.comment_list.time
-                        },
-                        yAxis: {
-                            type: 'value'
-                        },
-                        series: [
-                            {
-                                type: 'line',
-                                data: that.comment_list.data
-                            }
-                        ]
-                    };
-
-                    // 使用刚指定的配置项和数据显示图表。
-                    myChart.setOption(option);
+                params: {
+                    good_id: this.current_good.spu_id
                 }
-            })
+            }).then(function (reason) {
+                that.comment_list = reason.data;
 
+                // 基于准备好的dom，初始化echarts实例
+                var myChart = echarts.init(document.getElementById('comment_graph'));
+
+                // 指定图表的配置项和数据
+                let option = {
+                    title: {
+                        text: '评价数走势图'
+                    },
+                    tooltip: {
+                        trigger: 'axis'
+                    },
+                    grid: {
+                        left: '3%',
+                        right: '3%',
+                        bottom: '3%',
+                        containLabel: true
+                    },
+                    toolbox: {
+                        feature: {
+                            saveAsImage: {}
+                        }
+                    },
+                    xAxis: {
+                        type: 'category',
+                        boundaryGap: false,
+                        data: that.comment_list.time
+                    },
+                    yAxis: {
+                        type: 'value'
+                    },
+                    series: [
+                        {
+                            type: 'line',
+                            data: that.comment_list.data
+                        }
+                    ]
+                };
+
+                // 使用刚指定的配置项和数据显示图表。
+                myChart.setOption(option);
+            }).catch(function (reason) {
+            })
         },
         refresh_graph_tab: function () {
             var that = this
-            $.ajax({
-                url: window.location.href + 'prices',
-                dataType: "script",
-                type: "GET",
-                data: {
-                    good_id: this.current_good.spu_id
+
+            axios.get(window.location.href + 'prices', {
+                headers: {
+                    'Accept': 'application/json'
                 },
-                success: function (data) {
-                    that.price_list = jQuery.parseJSON(data);
-
-                    // 基于准备好的dom，初始化echarts实例
-                    var myChart = echarts.init(document.getElementById('price_graph'));
-
-                    // 指定图表的配置项和数据
-                    let option = {
-                        title: {
-                            text: '价格走势图'
-                        },
-                        tooltip: {
-                            trigger: 'axis'
-                        },
-                        legend: {
-                            type: 'scroll',
-                            top: 30,
-                            data: that.price_list.legend
-                        },
-                        grid: {
-                            left: '3%',
-                            right: '3%',
-                            top: 80,
-                            bottom: '3%',
-                            containLabel: true
-                        },
-                        toolbox: {
-                            feature: {
-                                saveAsImage: {}
-                            }
-                        },
-                        xAxis: {
-                            type: 'category',
-                            boundaryGap: false,
-                            data: that.price_list.time
-                        },
-                        yAxis: {
-                            type: 'value'
-                        },
-                        series: []
-                    };
-
-                    that.price_list.data.forEach(function (item) {
-                        option["series"].push({
-                            name: item.spec,
-                            type: 'line',
-                            data: item.prices
-                        })
-                    })
-
-                    // 使用刚指定的配置项和数据显示图表。
-                    myChart.setOption(option);
+                params: {
+                    good_id: this.current_good.spu_id
                 }
-            })
+            }).then(function (reason) {
+                that.price_list = reason.data;
 
+                // 基于准备好的dom，初始化echarts实例
+                var myChart = echarts.init(document.getElementById('price_graph'));
+
+                // 指定图表的配置项和数据
+                let option = {
+                    title: {
+                        text: '价格走势图'
+                    },
+                    tooltip: {
+                        trigger: 'axis'
+                    },
+                    legend: {
+                        type: 'scroll',
+                        top: 30,
+                        data: that.price_list.legend
+                    },
+                    grid: {
+                        left: '3%',
+                        right: '3%',
+                        top: 80,
+                        bottom: '3%',
+                        containLabel: true
+                    },
+                    toolbox: {
+                        feature: {
+                            saveAsImage: {}
+                        }
+                    },
+                    xAxis: {
+                        type: 'category',
+                        boundaryGap: false,
+                        data: that.price_list.time
+                    },
+                    yAxis: {
+                        type: 'value'
+                    },
+                    series: []
+                };
+
+                that.price_list.data.forEach(function (item) {
+                    option["series"].push({
+                        name: item.spec,
+                        type: 'line',
+                        data: item.prices
+                    })
+                })
+
+                // 使用刚指定的配置项和数据显示图表。
+                myChart.setOption(option);
+            }).catch(function (reason) {
+            })
         },
         refresh_coupons_tab: function () {
             var that = this
-            $.ajax({
-                url: window.location.href + 'coupons',
-                dataType: "script",
-                type: "GET",
-                data: {
-                    good_id: this.current_good.spu_id
+
+            axios.get(window.location.href + 'coupons', {
+                headers: {
+                    'Accept': 'application/json'
                 },
-                success: function (data) {
-                    that.coupon_list = jQuery.parseJSON(data);
+                params: {
+                    good_id: this.current_good.spu_id
                 }
+            }).then(function (reason) {
+                that.coupon_list = reason.data;
+            }).catch(function (reason) {
             })
         },
         refresh_names_tab: function () {
             var that = this
-            $.ajax({
-                url: window.location.href + 'names',
-                dataType: "script",
-                type: "GET",
-                data: {
-                    good_id: this.current_good.spu_id
+
+            axios.get(window.location.href + 'names', {
+                headers: {
+                    'Accept': 'application/json'
                 },
-                success: function (data) {
-                    that.name_list = jQuery.parseJSON(data);
+                params: {
+                    good_id: this.current_good.spu_id
                 }
+            }).then(function (reason) {
+                that.name_list = reason.data;
+            }).catch(function (reason) {
             })
         },
         refresh_ads_tab: function () {
             var that = this
-            $.ajax({
-                url: window.location.href + 'ads',
-                dataType: "script",
-                type: "GET",
-                data: {
-                    good_id: this.current_good.spu_id
+
+            axios.get(window.location.href + 'ads', {
+                headers: {
+                    'Accept': 'application/json'
                 },
-                success: function (data) {
-                    that.ad_list = jQuery.parseJSON(data);
+                params: {
+                    good_id: this.current_good.spu_id
                 }
+            }).then(function (reason) {
+                that.ad_list = reason.data;
+            }).catch(function (reason) {
             })
         },
         refresh_tabs: function () {
@@ -195,20 +203,20 @@
         change_good_detail_tab: function (key) {
             var that = this
             if (key == 1) {
-                that.refresh_comments_tab()
+                that.refresh_names_tab()
             } else if (key == 2) {
-                that.refresh_coupons_tab()
+                that.refresh_ads_tab()
             } else if (key == 3) {
                 that.refresh_graph_tab()
             } else if (key == 4) {
-                that.refresh_names_tab()
+                that.refresh_coupons_tab()
             } else if (key == 5) {
-                that.refresh_ads_tab()
+                that.refresh_comments_tab()
+
             }
         },
         change_good: function (good) {
             this.$emit('change-good', good);
-            this.refresh_tabs()
         }
     },
     template: '<%= import_partial('home/shop_spy/details/good_detail_templ') %>'

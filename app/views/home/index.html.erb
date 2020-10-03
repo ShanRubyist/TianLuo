@@ -63,15 +63,20 @@
         methods: {
             change_tab: function (key) {
                 if (key == 2) {
-                    $.ajax({
-                        url: window.location.href + 'mark_readed',
-                        dataType: "script",
-                        type: "PUT",
-                        data: {
+                    axios.put(window.location.href + 'mark_readed',
+                        {
                             user_id: <%= current_user.id %>,
-                            authenticity_token: $('meta[name="csrf-token"]').attr('content')
-                        }
-                    })
+                            authenticity_token: document.getElementsByName("csrf-token")[0].getAttribute('content')
+                        },
+                        {
+                            headers: {
+                                'Accept': 'application/json'
+                            }
+                        })
+                        .then(function (reason) {
+                        })
+                        .catch(function (reason) {
+                        })
                 }
             },
             show_add_dialog: function () {

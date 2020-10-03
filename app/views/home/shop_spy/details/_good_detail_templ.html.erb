@@ -37,24 +37,24 @@
     <!--   商品扩展信息-->
     <div class="good-detail-extro">
       <a-tabs default-active-key="1" size="small" @change="change_good_detail_tab">
-        <a-tab-pane key="1" tab="评论数变动">
-          <%= import_partial('home/shop_spy/details/content/comments_num_change') %>
+        <a-tab-pane key="1" tab="标题变动">
+          <%= import_partial('home/shop_spy/details/content/title_change') %>
         </a-tab-pane>
 
-        <a-tab-pane key="2" tab="促销变动">
-          <%= import_partial('home/shop_spy/details/content/coupons_change') %>
+        <a-tab-pane key="2" tab="标语变动">
+          <%= import_partial('home/shop_spy/details/content/ad_change') %>
         </a-tab-pane>
 
         <a-tab-pane key="3" tab="价格变动">
           <%= import_partial('home/shop_spy/details/content/price_change') %>
         </a-tab-pane>
 
-        <a-tab-pane key="4" tab="标题变动">
-          <%= import_partial('home/shop_spy/details/content/title_change') %>
+        <a-tab-pane key="4" tab="促销变动">
+          <%= import_partial('home/shop_spy/details/content/coupons_change') %>
         </a-tab-pane>
 
-        <a-tab-pane key="5" tab="标语变动">
-          <%= import_partial('home/shop_spy/details/content/ad_change') %>
+        <a-tab-pane key="5" tab="评论数变动">
+          <%= import_partial('home/shop_spy/details/content/comments_num_change') %>
         </a-tab-pane>
       </a-tabs>
     </div>
