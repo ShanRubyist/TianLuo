@@ -26,6 +26,7 @@
         <a-button type="primary" slot="tabBarExtraContent" @click="show_add_dialog">
           <i class="fa fa-plus"></i>&nbsp;添加监控/订阅
         </a-button>
+      </a-tabs>
     </a-col>
 
     <add-dialog v-bind:dialog_visible="dialog_visible" v-on:close-dialog="dialog_visible = false"></add-dialog>

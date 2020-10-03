@@ -1,0 +1,25 @@
+<div>
+    <a-modal
+            title="Title"
+            :visible="refresh_history_dialog_visible"
+            :setting_id="setting_id"
+            @ok="close"
+            @cancel="close"
+            :footer="null"
+    >
+        <div class="history-content">
+            <a-timeline v-for="history in histories" :key="history.id">
+            <a-timeline-item :color="select_timeline_status(history.status)">
+                {{history.created_at_local_time}}
+                &nbsp;
+                共更新 {{history.new_feeds_count}} 条 RSS
+            </a-timeline-item>
+        </a-timeline>
+
+        <a-button type="link" v-on:click="show_more(setting_id)">
+            <i class="fa fa-caret-down"></i>Load More
+        </a-button>
+        </div>
+
+    </a-modal>
+</div>

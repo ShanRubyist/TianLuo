@@ -33,4 +33,5 @@ Rails.application.routes.draw do
   get 'running_jobs_count' => 'home#running_jobs_count', as: 'running_jobs_count'
   post 'start_job' => 'home#start_job', as: 'start_job'
   delete 'delete_job' => 'home#delete_job', as: 'delete_job'
+  get 'histories' => 'home#histories', as: 'histories'
 end
