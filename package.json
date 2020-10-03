@@ -10,11 +10,15 @@
     "echarts": "^4.9.0",
     "element-ui": "^2.13.1",
     "font-awesome": "^4.7.0",
+    "jest": "^26.4.2",
     "jquery": "^3.5.0",
     "popper.js": "^1.16.1",
     "vue": "^2.6.11"
   },
   "devDependencies": {
     "webpack-dev-server": "^3.10.3"
+  },
+  "scripts": {
+    "test": "jest"
   }
 }
