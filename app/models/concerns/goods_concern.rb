@@ -22,11 +22,20 @@ module GoodsConcern
       #     :skus => :skus_extras
       # ).where(:users => {:id => current_user.id}).page(page).per(per)
 
-      goods = Good.includes(
-          :shop => {
-              :pdd_web_spider_setting => :user
-          }
-      ).where(:users => {:id => current_user.id}).page(page).per(per)
+      goods = Good
+                  .includes(
+                      :shop => {
+                          :pdd_web_spider_setting => :user,
+                      }
+                  )
+                  .includes(
+                      :shop => {
+                          :pdd_web_spider_setting => :goods_refresh_histories
+                      }
+                  )
+                  .where(:users => {:id => current_user.id})
+                  .page(page)
+                  .per(per)
 
       goods_hash = {}
 
@@ -76,6 +85,11 @@ module GoodsConcern
         good_hash['logistics_score'] = good.shop.dsrs.last.try :logistics_score
         good_hash['desc_score'] = good.shop.dsrs.last.try :desc_score
         good_hash['service_score'] = good.shop.dsrs.last.try :service_score
+
+        good_hash['status'] = good.shop.pdd_web_spider_setting.goods_refresh_histories.try(:last).try(:status)
+        good_hash['detail'] = good.shop.pdd_web_spider_setting.goods_refresh_histories.try(:last).try(:detail)
+        good_hash['setting_id'] = good.shop.pdd_web_spider_setting.id
+        good_hash['jid'] = good.shop.pdd_web_spider_setting.goods_refresh_histories.try(:last).try(:jid)
 
         goods_hash[good.spu_id] = good_hash
       end

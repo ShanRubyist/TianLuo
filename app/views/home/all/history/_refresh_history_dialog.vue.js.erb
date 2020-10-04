@@ -1,5 +1,5 @@
 Vue.component('refresh-history-dialog', {
-    props: ['refresh_history_dialog_visible', 'setting_id'],
+    props: ['refresh_history_dialog_visible', 'setting_id', 'type'],
     data: function () {
         return {
             histories: [],
@@ -7,9 +7,11 @@ Vue.component('refresh-history-dialog', {
         }
     },
     watch: {
-        setting_id: function () {
-            this.histories = [];
-            this.page = 1;
+        refresh_history_dialog_visible: function (new_visible, old_visible) {
+            if (new_visible) {
+                this.histories = [];
+                this.page = 1;
+            }
         },
         page: function (new_page, old_page) {
             if (new_page == 0) { return ; }
@@ -22,10 +24,15 @@ Vue.component('refresh-history-dialog', {
                 params: {
                     setting_id: this.setting_id,
                     page: this.page,
+                    type: this.type
                 }
             }).then(function (reason) {
                 that.append_histories(reason.data);
+                if (reason.data.length == 0) {
+                    that.$message.info('暂无更多历史')
+                }
             }).catch(function (reason) {
+                that.$message.error(reason.toString());
             })
         }
     },

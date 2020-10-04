@@ -22,6 +22,7 @@ Vue.component('all-rss-list', {
             all_rss_list: <%= raw @all_rss_list_json.to_json %>,
             refresh_history_dialog_visible: false,
             setting_id: null,
+            type: null
         }
     },
     methods: {
@@ -90,6 +91,7 @@ Vue.component('all-rss-list', {
         show_history_dialog: function (setting_id) {
             this.refresh_history_dialog_visible = true
             this.setting_id = setting_id
+            this.type = 0
         }
     },
     template: '<%= import_partial('home/all/rss_list/all_rss_list_templ') %>'

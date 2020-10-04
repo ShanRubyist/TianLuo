@@ -15,13 +15,13 @@
           </span>
           <all-rss-list></all-rss-list>
         </a-tab-pane>
-        <a-tab-pane key="2">
-          <span slot="tab">
-            监控店铺列表
-            <a-tag color="#FADB14">{{good_running_missions}}</a-tag>
-          </span>
-          <all-good-list></all-good-list>
-        </a-tab-pane>
+<!--        <a-tab-pane key="2">-->
+<!--          <span slot="tab">-->
+<!--            监控店铺列表-->
+<!--            <a-tag color="#FADB14">{{good_running_missions}}</a-tag>-->
+<!--          </span>-->
+<!--          <all-good-list></all-good-list>-->
+<!--        </a-tab-pane>-->
 
         <a-button type="primary" slot="tabBarExtraContent" @click="show_add_dialog">
           <i class="fa fa-plus"></i>&nbsp;添加监控/订阅
@@ -35,7 +35,6 @@
 
 <script>
     <%= render 'home/all/rss_list/all_rss_list.vue.js' %>
-    <%= render 'home/all/good_list/all_good_list.vue.js' %>
     <%= render "home/new/add_dialog.vue.js" %>
 
 

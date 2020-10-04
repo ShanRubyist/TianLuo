@@ -96,7 +96,7 @@ class HomeController < ApplicationController
     end
   end
 
-  def histories
+  def rss_histories
     params[:page] = (params[:page].to_i < 1) ? 1 : params[:page]
 
     rst = RssProbeHistory
@@ -115,5 +115,31 @@ class HomeController < ApplicationController
           SQL
           )
     render json: rst.to_json
+  end
+
+  def goods_histories
+    params[:page] = (params[:page].to_i < 1) ? 1 : params[:page]
+
+    rst = GoodsRefreshHistory
+              .find_by_sql(<<-SQL
+                  select grh.*, to_char(grh.created_at at time zone 'pst', 'yyyy-mm-dd hh24:mi:ss') as created_at_local_time
+                  from goods_refresh_histories as grh
+                  where grh.pdd_web_spider_setting_id = #{params[:setting_id]}
+                  order by grh.created_at desc
+                  limit 10
+                  offset #{ (params[:page].to_i - 1) * 10 }
+          SQL
+          )
+    render json: rst.to_json
+  end
+
+  def histories
+    if params[:type] == '0'
+      rss_histories
+    elsif params[:type] == '1'
+      goods_histories
+    else
+      render json: []
+    end
   end
 end

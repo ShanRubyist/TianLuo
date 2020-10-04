@@ -12,7 +12,9 @@
             <a-timeline-item :color="select_timeline_status(history.status)">
                 {{history.created_at_local_time}}
                 &nbsp;
-                共更新 {{history.new_feeds_count}} 条 RSS
+                <span v-if="history.new_feeds_count != null">
+                    共更新 {{history.new_feeds_count}} 条 RSS
+                </span>
             </a-timeline-item>
         </a-timeline>
 
