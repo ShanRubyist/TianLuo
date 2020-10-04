@@ -8,9 +8,12 @@ Vue.component('refresh-history-dialog', {
     },
     watch: {
         setting_id: function () {
-            this.page += 1;
+            this.histories = [];
+            this.page = 1;
         },
-        page: function () {
+        page: function (new_page, old_page) {
+            if (new_page == 0) { return ; }
+
             var that = this
             axios.get('<%= histories_path %>', {
                 headers: {
@@ -29,8 +32,9 @@ Vue.component('refresh-history-dialog', {
     methods: {
         close: function () {
             this.$emit('close');
+            
+            // 关闭时设为0是为了显示时可以设为1,可以触发page更新监听器
             this.page = 0;
-            this.histories = [];
         },
         append_histories: function (data) {
             var that = this;

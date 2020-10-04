@@ -101,7 +101,7 @@ class HomeController < ApplicationController
 
     rst = RssProbeHistory
               .find_by_sql(<<-SQL
-                  select rph.*, count(rf.id) as new_feeds_count, to_char(rph.created_at at time zone 'cst', 'yyyy-mm-dd hh24:mi:ss') as created_at_local_time
+                  select rph.*, count(rf.id) as new_feeds_count, to_char(rph.created_at at time zone 'pst', 'yyyy-mm-dd hh24:mi:ss') as created_at_local_time
                   from rss_probe_histories as rph
                   left join probe_settings as ps
                   on ps.id = rph.probe_setting_id
