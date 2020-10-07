@@ -4,7 +4,7 @@
 
     <a-col :sm="24" :md="16">
       <!--二级导航-->
-      <a-tabs id="nav-tab" default-active-key="3" @change="change_tab">
+      <a-tabs id="nav-tab" default-active-key="3">
         <a-tab-pane key="1">
           <span slot="tab">
             <i class="fa fa-newspaper-o"></i>&nbsp;最新动态
@@ -34,10 +34,6 @@
         <a-button type="primary" slot="tabBarExtraContent" @click="show_add_dialog">
           <i class="fa fa-plus"></i>&nbsp;添加监控/订阅
         </a-button>
-
-        <a-button slot="tabBarExtraContent" @click="this.window.location.href = '<%= all_url %>'">
-          查看全部监控/订阅
-        </a-button>
       </a-tabs>
       <add-dialog v-bind:dialog_visible="dialog_visible" v-on:close-dialog="dialog_visible = false"></add-dialog>
 
@@ -61,24 +57,6 @@
             dialog_visible: false,
         },
         methods: {
-            change_tab: function (key) {
-                if (key == 2) {
-                    axios.put(window.location.href + 'mark_readed',
-                        {
-                            user_id: <%= current_user.id %>,
-                            authenticity_token: document.getElementsByName("csrf-token")[0].getAttribute('content')
-                        },
-                        {
-                            headers: {
-                                'Accept': 'application/json'
-                            }
-                        })
-                        .then(function (reason) {
-                        })
-                        .catch(function (reason) {
-                        })
-                }
-            },
             show_add_dialog: function () {
                 // 需要先置为 false，再设置为 true 才能再次显示添加的对话框
                 this.dialog_visible = false;

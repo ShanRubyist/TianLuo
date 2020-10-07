@@ -1,4 +1,13 @@
 <div>
+
+    <a-button @click="this.window.location.href = \'all\' ">
+        查看全部RSS
+    </a-button>
+
+    <a-button @click="mark_readed">
+        一键标记为已读
+    </a-button>
+
     <div v-for="rss in rss_list_json">
         <p v-if="is_last_read_position(rss).call()" id="last_read_position">上次读到这里</p>
 

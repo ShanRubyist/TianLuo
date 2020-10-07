@@ -21,6 +21,22 @@ Vue.component('rss-list', {
         }
     },
     methods: {
+        mark_readed: function () {
+            axios.put(window.location.href + 'mark_readed',
+                {
+                    user_id: <%= current_user.id %>,
+                    authenticity_token: document.getElementsByName("csrf-token")[0].getAttribute('content')
+                },
+                {
+                    headers: {
+                        'Accept': 'application/json'
+                    }
+                })
+                .then(function (reason) {
+                })
+                .catch(function (reason) {
+                })
+        },
         is_last_read_position: function (current) {
             // 必须是闭包函数，否则只会是false
             return function () {
