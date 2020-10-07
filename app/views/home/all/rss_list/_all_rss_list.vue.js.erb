@@ -92,6 +92,35 @@ Vue.component('all-rss-list', {
             this.refresh_history_dialog_visible = true
             this.setting_id = setting_id
             this.type = 0
+        },
+        edit_setting: function (setting_id) {
+
+        },
+        delete_setting: function (setting_id) {
+        var that = this;
+
+        this.$confirm({
+                title: 'Confirm',
+                content: 'Do you want to delete this item?',
+                onOk() {
+                    axios.delete('/probe_settings/' + setting_id, {
+                        headers: {
+                            'Accept': 'application/json'
+                        },
+                        params: {
+                            probe_setting_id: setting_id,
+                            authenticity_token: document.getElementsByName("csrf-token")[0].getAttribute('content'),
+                        }
+                    })
+                        .then(function (reason) {
+                            that.$message.success(reason.data.message)
+                        })
+                        .catch(function (reason) {
+                            that.$message.error(reason.toString())
+                        })
+                },
+                onCancel() {},
+            });
         }
     },
     template: '<%= import_partial('home/all/rss_list/all_rss_list_templ') %>'

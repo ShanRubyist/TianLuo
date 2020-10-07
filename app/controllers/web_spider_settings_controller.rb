@@ -16,6 +16,12 @@ class WebSpiderSettingsController < ApplicationController
     end
   end
 
+  def destroy
+    probe_setting = PddWebSpiderSetting.find(params[:probe_setting_id])
+    probe_setting.destroy
+    render json: { message: '删除成功'}
+  end
+
   private
 
   def web_spider_setting_params

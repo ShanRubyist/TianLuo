@@ -90,8 +90,14 @@
           <a-button v-on:click="show_history_dialog(good.setting_id)">
             <i class="fa fa-sticky-note-o"></i>更新日志
           </a-button>
-          <a-button><i class="fa fa-edit"></i>编辑</a-button>
-          <a-button type="danger"><i class="fa fa-trash-o"></i>删除</a-button>
+
+          <a-button>
+            <i class="fa fa-edit"></i>编辑
+          </a-button>
+
+          <a-button type="danger" v-on:click="delete_setting(good.setting_id)">
+            <i class="fa fa-trash-o"></i>删除
+          </a-button>
         </td>
       </tr>
 
