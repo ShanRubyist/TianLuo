@@ -14,8 +14,8 @@ module SaveGoodsConcern
       shop = Shop.create_with(shop_name: data[:shop][:name],
                               shop_url: data[:shop][:shop_url],
                               platform: Platform.find_by_name('拼多多'),
-                              pdd_web_spider_setting: pdd_web_spider_setting)
-                 .find_or_create_by(vendor_id: data[:shop][:id])
+                              vendor_id: data[:shop][:id])
+                 .find_or_create_by(pdd_web_spider_setting: pdd_web_spider_setting)
 
       shop.shops_extras.create(shop_id: shop.id,
                                sales_num: data[:shop][:sales_num],
