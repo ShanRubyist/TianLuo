@@ -21,7 +21,7 @@ class RssFeedsController < ApplicationController
         rss: rss.rss_probe_history.title,
         rss_link: rss.rss_probe_history.link,
         rss_description: rss.rss_probe_history.description,
-        status: rss.user_rss_feed_ship.first.unread
+        status: rss.user_rss_feed_ships.first.unread
       }
     end
 
