@@ -20,15 +20,14 @@ Doorkeeper.configure do
   # every time somebody will try to access the admin web interface.
   #
   admin_authenticator do
-    current_user || warden.authenticate!(scope: :user)
-  #   # Put your admin authentication logic here.
-  #   # Example implementation:
-  #
-  #   if current_user
-  #     head :forbidden unless current_user.admin?
-  #   else
-  #     redirect_to sign_in_url
-  #   end
+    #   # Put your admin authentication logic here.
+    #   # Example implementation:
+
+    if current_user
+      head :forbidden unless current_user.admin?
+    else
+      redirect_to new_user_session_path, notice: 'please login'
+    end
   end
 
   # You can use your own model classes if you need to extend (or even override) default
@@ -229,7 +228,7 @@ Doorkeeper.configure do
   # For more information go to
   # https://doorkeeper.gitbook.io/guides/ruby-on-rails/scopes
   #
-  default_scopes  :public
+  default_scopes :public
   optional_scopes :write, :update
 
   # Allows to restrict only certain scopes for grant_type.
