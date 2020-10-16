@@ -5,6 +5,8 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
 gem 'devise'
 gem 'doorkeeper'
+gem 'omniauth-oauth2'
+gem 'omniauth-weibo-oauth2'
 gem 'rails_admin', '~> 2.0'
 gem 'pundit'
 

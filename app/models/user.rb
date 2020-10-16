@@ -20,6 +20,8 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
 
+  devise :omniauthable, :omniauth_providers => [:weibo]
+
   def admin?
     self.role == 'admin'
   end
