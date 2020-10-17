@@ -36,7 +36,11 @@
         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
           <a class="dropdown-item" href="#"><i class="fa fa-edit"></i>&nbsp;编辑</a>
           <div class="dropdown-divider"></div>
-          <a class="dropdown-item" href="#"><i class="fa fa-sign-out"></i>&nbsp;退出</a>
+          <%= button_to '退出',
+                      destroy_user_session_path,
+                      class: 'dropdown-item fa fa-sign-out',
+                      method: 'delete'
+          %>
         </div>
       </li>
     </ul>
