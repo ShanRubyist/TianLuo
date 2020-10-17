@@ -36,4 +36,10 @@ Rails.application.routes.draw do
   post 'start_job' => 'home#start_job', as: 'start_job'
   delete 'delete_job' => 'home#delete_job', as: 'delete_job'
   get 'histories' => 'home#histories', as: 'histories'
+
+  resources :rss_feeds do
+    member do
+      get :unread_count
+    end
+  end
 end

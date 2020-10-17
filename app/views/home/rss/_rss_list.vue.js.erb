@@ -1,3 +1,19 @@
+// 定时轮询未读的rss feed数量
+setInterval(function () {
+    axios.get('<%= unread_count_rss_feed_path(current_user) %>', {
+        headers: {
+            'Accept': 'application/json'
+        },
+        params: {
+        }
+    })
+        .then(function (reason) {
+            app._data.unread_count = reason.data.unread_count
+        })
+        .catch(function (reason) {
+        })
+}, 5000)
+
 // RSS的列表组件
 Vue.component('rss-list', {
     data: function () {

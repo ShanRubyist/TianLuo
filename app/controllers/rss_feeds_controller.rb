@@ -9,6 +9,11 @@ class RssFeedsController < ApplicationController
     render json: { message: "marked #{rst.size} rss feeds"}
   end
 
+  def unread_count
+    rst = UserRssFeedShip.where(user_id: params[:id], unread: true).count
+    render json: { unread_count: rst }
+  end
+
   def load_more_rss_feed
     rss_list = rss_list(params['user_id'], params['page'], params['per'])
 

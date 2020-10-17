@@ -20,6 +20,7 @@
         <a-tab-pane key="2">
           <span slot="tab">
             <i class="fa fa-rss"></i>&nbsp;RSS
+            <a-tag color="#f50">{{unread_count}}</a-tag>
           </span>
           <rss-list></rss-list>
         </a-tab-pane>
@@ -55,6 +56,7 @@
         el: '#app',
         data: {
             dialog_visible: false,
+            unread_count: 0
         },
         methods: {
             show_add_dialog: function () {
