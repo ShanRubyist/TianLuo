@@ -3,7 +3,7 @@ Vue.component('good-detail', {
     props: [
         'visible',
         'goods_data',
-        'current_good',
+        'current_good'
     ],
     data: function () {
         return {
@@ -11,7 +11,8 @@ Vue.component('good-detail', {
             price_list: null,
             comment_list: null,
             name_list: null,
-            ad_list: null
+            ad_list: null,
+            spinning: false
         }
     },
     watch: {
@@ -29,6 +30,7 @@ Vue.component('good-detail', {
         },
         refresh_comments_tab: function () {
             var that = this
+            that.spinning = true;
 
             axios.get(window.location.href + 'comments', {
                 headers: {
@@ -80,11 +82,14 @@ Vue.component('good-detail', {
 
                 // 使用刚指定的配置项和数据显示图表。
                 myChart.setOption(option);
+                that.spinning = false
             }).catch(function (reason) {
+                that.spinning = false
             })
         },
         refresh_graph_tab: function () {
             var that = this
+            that.spinning = true;
 
             axios.get(window.location.href + 'prices', {
                 headers: {
@@ -145,11 +150,14 @@ Vue.component('good-detail', {
 
                 // 使用刚指定的配置项和数据显示图表。
                 myChart.setOption(option);
+                that.spinning = false;
             }).catch(function (reason) {
+                that.spinning = false;
             })
         },
         refresh_coupons_tab: function () {
             var that = this
+            that.spinning = true;
 
             axios.get(window.location.href + 'coupons', {
                 headers: {
@@ -159,12 +167,15 @@ Vue.component('good-detail', {
                     good_id: this.current_good.spu_id
                 }
             }).then(function (reason) {
+                that.spinning = false;
                 that.coupon_list = reason.data;
             }).catch(function (reason) {
+                that.spinning = false;
             })
         },
         refresh_names_tab: function () {
             var that = this
+            that.spinning = true;
 
             axios.get(window.location.href + 'names', {
                 headers: {
@@ -174,12 +185,15 @@ Vue.component('good-detail', {
                     good_id: this.current_good.spu_id
                 }
             }).then(function (reason) {
+                that.spinning = false;
                 that.name_list = reason.data;
             }).catch(function (reason) {
+                that.spinning = false;
             })
         },
         refresh_ads_tab: function () {
             var that = this
+            that.spinning = true;
 
             axios.get(window.location.href + 'ads', {
                 headers: {
@@ -189,8 +203,10 @@ Vue.component('good-detail', {
                     good_id: this.current_good.spu_id
                 }
             }).then(function (reason) {
+                that.spinning = false;
                 that.ad_list = reason.data;
             }).catch(function (reason) {
+                that.spinning = false;
             })
         },
         refresh_tabs: function () {

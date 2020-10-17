@@ -47,7 +47,11 @@
 
     </div>
 
-    <a-button id="loadmore" type="primary" @click="loadmore">
-        加载更多
-    </a-button>
+    <a-spin :spinning="spinning" tip="Loading...">
+        <div class="spin-content">
+            <a-button id="loadmore" type="primary" @click="loadmore">
+                加载更多
+            </a-button>
+        </div>
+    </a-spin>
 </div>

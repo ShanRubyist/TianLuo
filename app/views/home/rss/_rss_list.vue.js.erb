@@ -17,11 +17,13 @@ Vue.component('rss-list', {
             <% end %>
             <%= raw(rst.to_json) %>,
             prev: null,
-            next_page: 2
+            next_page: 2,
+            spinning: false
         }
     },
     methods: {
         mark_readed: function () {
+            var that = this;
             axios.put(window.location.href + 'mark_readed',
                 {
                     user_id: <%= current_user.id %>,
@@ -33,8 +35,10 @@ Vue.component('rss-list', {
                     }
                 })
                 .then(function (reason) {
+                    that.$message.success(reason.data.message)
                 })
                 .catch(function (reason) {
+                    that.$message.error(reason.toString());
                 })
         },
         is_last_read_position: function (current) {
@@ -61,7 +65,8 @@ Vue.component('rss-list', {
             window.open(link)
         },
         loadmore: function () {
-            let that = this
+            let that = this;
+            that.spinning = true;
 
             axios.get('/load_more_rss_feed',
                 {
@@ -72,10 +77,12 @@ Vue.component('rss-list', {
                     }
                 })
                 .then(function (reason) {
+                    that.spinning = false;
                     that.append_rss_feed(reason.data)
                     that.next_page += 1
                 })
                 .catch(function (reason) {
+                    that.spinning = false;
                     that.$message.error('加载出错!')
                 })
         },

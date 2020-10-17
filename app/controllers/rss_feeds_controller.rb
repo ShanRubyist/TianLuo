@@ -4,8 +4,9 @@ class RssFeedsController < ApplicationController
   include RSSConcern
 
   def mark_readed
-    UserRssFeedShip.where(user_id: params[:user_id])
+    rst = UserRssFeedShip.where(user_id: params[:user_id], unread: true)
                    .update(unread: false)
+    render json: { message: "marked #{rst.size} rss feeds"}
   end
 
   def load_more_rss_feed

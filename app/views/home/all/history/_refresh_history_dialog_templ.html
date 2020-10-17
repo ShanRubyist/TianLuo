@@ -9,19 +9,22 @@
     >
         <div class="history-content">
             <a-timeline v-for="history in histories" :key="history.id">
-            <a-timeline-item :color="select_timeline_status(history.status)">
-                {{history.created_at_local_time}}
-                &nbsp;
-                <span v-if="history.new_feeds_count != null">
+                <a-timeline-item :color="select_timeline_status(history.status)">
+                    {{history.created_at_local_time}}
+                    &nbsp;
+                    <span v-if="history.new_feeds_count != null">
                     共更新 {{history.new_feeds_count}} 条 RSS
                 </span>
-            </a-timeline-item>
-        </a-timeline>
+                </a-timeline-item>
+            </a-timeline>
 
-        <a-button type="link" v-on:click="show_more(setting_id)">
-            <i class="fa fa-caret-down"></i>Load More
-        </a-button>
+            <a-spin :spinning="spinning" tip="Loading...">
+                <div class="spin-content">
+                    <a-button type="link" v-on:click="show_more(setting_id)">
+                        <i class="fa fa-caret-down"></i>Load More
+                    </a-button>
+                </div>
+            </a-spin>
         </div>
-
     </a-modal>
 </div>
