@@ -1,10 +1,11 @@
 // 定时轮询未读的rss feed数量
 setInterval(function () {
-    axios.get('<%= unread_count_rss_feed_path(current_user) %>', {
+    axios.get('<%= unread_count_rss_feeds_path %>', {
         headers: {
             'Accept': 'application/json'
         },
         params: {
+            id: <%= current_user.id %>
         }
     })
         .then(function (reason) {
@@ -40,7 +41,7 @@ Vue.component('rss-list', {
     methods: {
         mark_readed: function () {
             var that = this;
-            axios.put(window.location.href + 'mark_readed',
+            axios.put(window.location.href + 'rss_feeds/mark_readed',
                 {
                     user_id: <%= current_user.id %>,
                     authenticity_token: document.getElementsByName("csrf-token")[0].getAttribute('content')
@@ -84,7 +85,7 @@ Vue.component('rss-list', {
             let that = this;
             that.spinning = true;
 
-            axios.get('/load_more_rss_feed',
+            axios.get('/rss_feeds/load_more_rss_feed',
                 {
                     params: {
                         user_id: <%= current_user.id %>,

@@ -32,7 +32,7 @@ Vue.component('good-detail', {
             var that = this
             that.spinning = true;
 
-            axios.get(window.location.href + 'comments', {
+            axios.get(window.location.href + 'goods/comments', {
                 headers: {
                     'Accept': 'application/json'
                 },
@@ -91,7 +91,7 @@ Vue.component('good-detail', {
             var that = this
             that.spinning = true;
 
-            axios.get(window.location.href + 'prices', {
+            axios.get(window.location.href + 'goods/prices', {
                 headers: {
                     'Accept': 'application/json'
                 },
@@ -159,7 +159,7 @@ Vue.component('good-detail', {
             var that = this
             that.spinning = true;
 
-            axios.get(window.location.href + 'coupons', {
+            axios.get(window.location.href + 'goods/coupons', {
                 headers: {
                     'Accept': 'application/json'
                 },
@@ -177,7 +177,7 @@ Vue.component('good-detail', {
             var that = this
             that.spinning = true;
 
-            axios.get(window.location.href + 'names', {
+            axios.get(window.location.href + 'goods/names', {
                 headers: {
                     'Accept': 'application/json'
                 },
@@ -195,7 +195,7 @@ Vue.component('good-detail', {
             var that = this
             that.spinning = true;
 
-            axios.get(window.location.href + 'ads', {
+            axios.get(window.location.href + 'goods/ads', {
                 headers: {
                     'Accept': 'application/json'
                 },
