@@ -8,4 +8,13 @@ FactoryBot.define do
     log_path {}
     status { true }
   end
+
+  factory :invalid_probe_setting, class: ProbeSetting do
+    association :user
+    port { 80 }
+    retry_limit { 3 }
+    proxy {}
+    log_path {}
+    status { true }
+  end
 end
