@@ -16,6 +16,7 @@ install:
 services:
   - postgresql
   - elasticsearch
+  - redis
 
 before_script:
   - bundle install

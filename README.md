@@ -31,15 +31,19 @@ Things you may want to cover:
 
 ## Deploy
 
-* 安装依赖包
+* 安装依赖包  
 `sudo bundle`
 
-* 执行数据库迁移
+* 执行数据库迁移  
 `rails db:migrate`
 
-* 设定 *config/schedule* 定时任务
-`whenever --update-cron`
+* 设定 *config/schedule* 定时任务  
+`whenever --update-cron`  
 `crontab -l`
 
-* 启动 *sidekiq* 服务
-`bundle exec sidekiq`
+* 启动 *sidekiq* 服务  
+`bundle exec sidekiq`  
+
+* 启动 *webpack* 或者 生成 *assets*  
+`./bin/webpack-dev-server`  
+`rails assets:precompile`
