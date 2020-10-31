@@ -18,7 +18,7 @@ class ProbeSettingsController < ApplicationController
   end
 
   def destroy
-    probe_setting = ProbeSetting.find(params[:probe_setting_id])
+    probe_setting = ProbeSetting.find(params[:id])
     probe_setting.destroy
     render json: { message: '删除成功'}
   end

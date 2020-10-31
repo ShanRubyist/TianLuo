@@ -108,7 +108,6 @@ Vue.component('all-rss-list', {
                             'Accept': 'application/json'
                         },
                         params: {
-                            probe_setting_id: setting_id,
                             authenticity_token: document.getElementsByName("csrf-token")[0].getAttribute('content'),
                         }
                     })

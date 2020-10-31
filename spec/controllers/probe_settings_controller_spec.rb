@@ -29,9 +29,11 @@ RSpec.describe ProbeSettingsController, type: :controller do
 
   describe 'DELETE #destroy' do
     it 'deletes the probe setting' do
-      # expect {
-      #   delete :destroy, params: {probe_setting_id: probe_setting.id}
-      # }.to change(ProbeSetting, :count).by(-1)
+      probe_setting = FactoryBot.create(:probe_setting)
+
+      expect {
+        delete :destroy, params: {id: probe_setting.id}
+      }.to change(ProbeSetting, :count).by(-1)
     end
   end
 end
