@@ -20,9 +20,11 @@ RSpec.describe WebSpiderSettingsController, type: :controller do
 
     context 'with invalid params' do
       it 'raise ActiveRecord::NotNullViolation' do
-        expect {
-          post :create, params: {web_spider_setting: FactoryBot.attributes_for(:invalid_pdd_web_spider_setting)}
-        }.to raise_error(ActiveRecord::NotNullViolation)
+        # expect {
+        #   post :create, params: {web_spider_setting: FactoryBot.attributes_for(:invalid_pdd_web_spider_setting)}
+        # }.to raise_error(ActiveRecord::NotNullViolation)
+        post :create, params: {web_spider_setting: FactoryBot.attributes_for(:invalid_pdd_web_spider_setting)}
+        expect(response).to render_template(:new)
       end
     end
   end

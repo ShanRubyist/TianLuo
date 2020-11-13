@@ -1,5 +1,23 @@
 require 'rails_helper'
 
 RSpec.describe ProbeSetting, type: :model do
-  pending "add some examples to (or delete) #{__FILE__}"
+  before do
+    # @user = FactoryBot.build(:user)
+  end
+
+  it 'is invalid without a url' do
+    # expect{FactoryBot.build(:invalid_probe_setting)}.to have(1).errors_on(:url)
+  end
+
+  it 'is valid with a url' do
+    expect(FactoryBot.build(:probe_setting)).to be_valid
+  end
+
+  it 'should respond to url' do
+    expect(FactoryBot.build(:probe_setting)).to respond_to(:url)
+  end
+
+  it 'is correct url' do
+    expect(FactoryBot.build(:probe_setting).url).to eq('https://ruby-china.org/topics/feed')
+  end
 end

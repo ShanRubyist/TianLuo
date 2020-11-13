@@ -20,9 +20,12 @@ RSpec.describe ProbeSettingsController, type: :controller do
 
     context 'with invalid params' do
       it 'raise ActiveRecord::NotNullViolation' do
-        expect {
-          post :create, params: {probe_setting: FactoryBot.attributes_for(:invalid_probe_setting)}
-        }.to raise_error(ActiveRecord::NotNullViolation)
+        # expect {
+        #   post :create, params: {probe_setting: FactoryBot.attributes_for(:invalid_probe_setting)}
+        # }.to raise_error(ActiveRecord::NotNullViolation)
+
+        post :create, params: {probe_setting: FactoryBot.attributes_for(:invalid_probe_setting)}
+        expect(response).to render_template(:new)
       end
     end
   end
