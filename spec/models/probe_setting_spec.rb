@@ -7,6 +7,7 @@ RSpec.describe ProbeSetting, type: :model do
 
   it 'is invalid without a url' do
     # expect{FactoryBot.build(:invalid_probe_setting)}.to have(1).errors_on(:url)
+    expect(FactoryBot.build(:invalid_probe_setting)).not_to be_valid
   end
 
   it 'is valid with a url' do
