@@ -80,6 +80,9 @@ group :development do
   # 安全检查工具
   gem 'bundle-audit'
   gem 'brakeman'
+
+  # 性能监控工具
+  gem 'rack-mini-profiler'
 end
 
 group :test do
