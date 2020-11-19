@@ -20,11 +20,11 @@ Rails.application.routes.draw do
   end
 
   # 自定义路由
-  resources :probe_settings
+  resources :probe_settings, only: [:create, :destroy]
 
-  resources :web_spider_settings
+  resources :web_spider_settings, only: [:create, :destroy]
 
-  resources :rss_feeds do
+  resources :rss_feeds, only: [] do
     collection do
       get :unread_count
       put :mark_readed
@@ -32,7 +32,7 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :goods do
+  resources :goods, only: [] do
     collection do
       get 'comments'
       get 'prices'

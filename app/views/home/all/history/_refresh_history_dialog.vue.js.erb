@@ -44,7 +44,6 @@ Vue.component('refresh-history-dialog', {
     methods: {
         close: function () {
             this.$emit('close');
-            
             // 关闭时设为0是为了显示时可以设为1,可以触发page更新监听器
             this.page = 0;
         },
