@@ -1,15 +1,17 @@
 require 'rails_helper'
 
-# Specs in this file have access to a helper object that includes
-# the HomeHelper. For example:
-#
-# describe ApplicationHelper do
-#   describe "string concat" do
-#     it "concats two strings with spaces" do
-#       expect(helper.concat_strings("this","that")).to eq("this that")
-#     end
-#   end
-# end
 RSpec.describe ApplicationHelper, type: :helper do
-  pending "add some examples to (or delete) #{__FILE__}"
+  login_user
+
+  describe '#import_partial' do
+    it 'render partial' do
+      pending 'TODO'
+      expect(import_partial('common/nav')).to include('abc')
+    end
+
+    it 'return one line' do
+      pending 'TODO'
+      expect(import_partial('common/nav')).to match(/\n/)
+    end
+  end
 end

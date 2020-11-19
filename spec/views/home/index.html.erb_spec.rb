@@ -13,8 +13,9 @@ RSpec.describe 'home/index' do
   end
 
   it '渲染 index.html.erb 模板' do
-    # render template: 'home/index.html.erb', locals: { current_user: @user }
-    # expect(rendered).to eq 'abc'
+    pending '需要修复运行错误'
+    render template: 'home/index.html.erb', locals: { current_user: @user }
+    expect(rendered).to eq 'abc'
   end
 
   it '渲染 nav.html.erb 模板' do

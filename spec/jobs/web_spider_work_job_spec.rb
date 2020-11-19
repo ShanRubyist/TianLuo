@@ -8,7 +8,7 @@ RSpec.describe WebSpiderWorkJob, type: :job do
       ActiveJob::Base.queue_adapter = :test
       expect {
         WebSpiderWorkJob.perform_later(web_spider_setting)
-      }.to have_enqueued_job
+      }.to have_enqueued_job.with(web_spider_setting).on_queue(:web_spider)
     end
 
     it "matches with performed job" do

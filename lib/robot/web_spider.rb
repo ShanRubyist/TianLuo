@@ -46,7 +46,7 @@ module Robot
         retry_count = 0
 
         begin
-	  # TODO: proxy是全局的，需要隔离独立每个实例
+          # TODO: proxy是全局的，需要隔离独立每个实例
           RestClient.proxy = @proxy
           response = RestClient.get(url, headers).body
           cache.write(url, response, expires_in: 60.minutes) if need_cache
