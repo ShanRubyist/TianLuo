@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_10_16_140945) do
+ActiveRecord::Schema.define(version: 2020_11_19_073431) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -89,6 +89,7 @@ ActiveRecord::Schema.define(version: 2020_10_16_140945) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["jid"], name: "index_goods_refresh_histories_on_jid"
+    t.index ["pdd_web_spider_setting_id"], name: "index_goods_refresh_histories_on_pdd_web_spider_setting_id"
   end
 
   create_table "mall_services", force: :cascade do |t|
