@@ -18,7 +18,7 @@ describe ApplicationPolicy do
       expect(subject).not_to permit(FactoryBot.create(:user), User)
     end
 
-    it "denies access even if user is an admin" do
+    it "grants access even if user is an admin" do
       expect(subject).to permit(FactoryBot.create(:admin), User)
     end
   end

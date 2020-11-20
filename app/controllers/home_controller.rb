@@ -59,6 +59,8 @@ class HomeController < ApplicationController
   end
 
   def running_jobs_count
+    authorize User, :valid_user?
+
     respond_to do |format|
       format.json do
         render json: {

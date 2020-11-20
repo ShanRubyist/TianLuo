@@ -1,11 +1,11 @@
-class SQLPolicy < ApplicationPolicy
+class UserPolicy < ApplicationPolicy
   class Scope < Scope
     def resolve
       scope.all
     end
   end
 
-  def sql?
-    user.admin?
+  def valid_user?
+    !user.nil?
   end
 end
