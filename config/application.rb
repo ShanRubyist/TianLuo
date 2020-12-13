@@ -31,5 +31,18 @@ module TianLuo
     config.eager_load_paths += %W(#{Rails.root}/app/jobs)
 
     config.action_dispatch.rescue_responses["Pundit::NotAuthorizedError"] = :forbidden
+
+    config.action_mailer.delivery_method = :smtp
+    config.action_mailer.smtp_settings = {
+        address: ENV['SMTP_ADDRESS'],
+        port: ENV['SMTP_PORT'],
+        domain: ENV['SMTP_DOMAIN'],
+        user_name: ENV['SMTP_USERNAME'],
+        password: ENV['SMTP_PASSWORD'],
+        authentication: :login,
+        enable_startttls_auto: ENV['SMTP_STARTTTLS_AUTO'],
+        ssl: ENV['SMTP_SSL']
+    }
+
   end
 end

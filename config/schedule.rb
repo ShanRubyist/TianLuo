@@ -29,3 +29,7 @@ end
 every 1.day, at: ['10:00 am'] do
   runner "WebSpiderQueueJob.perform_later", environment: :development
 end
+
+every 7.day, at: ['9:00 am'] do
+  runner "WeeklySummaryJob.perform_later", environment: :development
+end
