@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe RssFeedsController, type: :controller do
+RSpec.describe Rss::RssFeedsController, type: :controller do
   let(:user) { FactoryBot.create(:user) }
 
   login_user

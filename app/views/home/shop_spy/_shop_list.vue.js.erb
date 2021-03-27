@@ -2,7 +2,7 @@
 const goods_data = <%= raw(@goods_list.to_json) %>
 
     <%= render 'home/shop_spy/details/good_detail.vue.js' %>
-    <%= render 'home/all/history/refresh_history_dialog.vue.js' %>
+    <%= render 'history/refresh_history_dialog.vue.js' %>
 
     Vue.component('shop-list', {
         data: function () {

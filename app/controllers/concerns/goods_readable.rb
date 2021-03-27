@@ -1,4 +1,4 @@
-module GoodsConcern
+module GoodsReadable
   extend ActiveSupport::Concern
 
   included do |base|

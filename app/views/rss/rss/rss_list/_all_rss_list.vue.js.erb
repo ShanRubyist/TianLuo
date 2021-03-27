@@ -7,13 +7,13 @@ setInterval(function () {
     })
         .then(function (reason) {
             app._data.rss_running_missions = reason.data.running_rss_jobs_count
-            app._data.good_running_missions = reason.data.running_goods_jobs_count
+            // app._data.good_running_missions = reason.data.running_goods_jobs_count
         })
         .catch(function (reason) {
         })
 }, 5000)
 
-<%= render 'home/all/history/refresh_history_dialog.vue.js' %>
+<%= render 'history/refresh_history_dialog.vue.js' %>
 
 Vue.component('all-rss-list', {
     props: [],
@@ -122,5 +122,5 @@ Vue.component('all-rss-list', {
             });
         }
     },
-    template: '<%= import_partial('home/all/rss_list/all_rss_list_templ') %>'
+    template: '<%= import_partial('rss/rss/rss_list/all_rss_list_templ') %>'
 })

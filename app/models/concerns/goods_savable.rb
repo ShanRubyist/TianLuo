@@ -2,7 +2,7 @@
 
 require 'json'
 
-module SaveGoodsConcern
+module GoodsSavable
   extend ActiveSupport::Concern
 
   included do |base|

@@ -1,6 +1,6 @@
 require 'sidekiq/api'
 
-module RSSSettingListConcern
+module RunningJosbsCountable
   extend ActiveSupport::Concern
 
   included do |base|

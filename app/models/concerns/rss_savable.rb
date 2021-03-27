@@ -2,7 +2,7 @@
 
 require 'rss'
 
-module SaveRSSConcern
+module RssSavable
   extend ActiveSupport::Concern
 
   included do |base|

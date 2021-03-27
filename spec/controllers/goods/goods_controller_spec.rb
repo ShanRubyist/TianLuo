@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe GoodsController, type: :controller do
+RSpec.describe Goods::GoodsController, type: :controller do
   login_user
 
   describe 'GET #coupons' do

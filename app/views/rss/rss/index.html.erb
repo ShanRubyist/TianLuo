@@ -34,7 +34,7 @@
 </div>
 
 <script>
-    <%= render 'home/all/rss_list/all_rss_list.vue.js' %>
+    <%= render 'rss/rss/rss_list/all_rss_list.vue.js' %>
     <%= render "home/new/add_dialog.vue.js" %>
 
 
@@ -43,7 +43,7 @@
         data: {
             dialog_visible: false,
             rss_running_missions: <%= @running_rss_jobs_count %>,
-            good_running_missions: <%= @running_goods_jobs_count %>,
+            // good_running_missions: <%= @running_goods_jobs_count %>,
         },
         methods: {
             show_add_dialog: function () {

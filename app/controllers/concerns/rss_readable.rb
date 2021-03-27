@@ -1,4 +1,4 @@
-module RSSConcern
+module RssReadable
   extend ActiveSupport::Concern
 
   included do |base|
