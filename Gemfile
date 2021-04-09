@@ -10,6 +10,8 @@ gem 'omniauth-weibo-oauth2'
 gem 'rails_admin', '~> 2.0'
 gem 'pundit'
 
+gem "view_component", require: "view_component/engine"
+
 # gem 'jquery-rails'
 # gem 'bootstrap-sass'
 
