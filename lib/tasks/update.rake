@@ -6,9 +6,9 @@ namespace :tianluo do
     Kernel.system cmd
   end
 
-  desc 'sudo bundle update'
-  task :bundle_update do
-    cmd = 'sudo bundle update'
+  desc 'sudo bundle'
+  task :bundle do
+    cmd = 'sudo bundle'
     puts "[*] #{cmd}"
     Kernel.system cmd
   end
@@ -21,6 +21,6 @@ namespace :tianluo do
   end
 
   desc 'project update'
-  task :update => [:git_pull, :bundle_update, :migrate] do
+  task :update => [:git_pull, :bundle, :migrate] do
   end
 end
