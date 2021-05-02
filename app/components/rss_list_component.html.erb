@@ -20,17 +20,19 @@ Vue.component('rss-list', {
 data: function () {
 return {
 rss_list_json:
-<% rst =  @rss_list.map do |rss| %>
-  <% {title: rss.title,
-      description: rss.description.to_s,
-      pub_date: rss.pub_date.nil? ? '' : rss.pub_date.localtime.strftime("%Y-%m-%d %H:%M"),
-      author: rss.author,
-      link: rss.link,
-      rss: rss.rss_probe_history.title,
-      rss_link: rss.rss_probe_history.link,
-      rss_description: rss.rss_probe_history.description,
-      status: rss.user_rss_feed_ships.first.unread
-     } %>
+<% rst = @rss_list.map do |rss| %>
+  <% {
+         title: rss.title,
+         description: Loofah.fragment(rss.description).scrub!(:escape).to_html,
+         pub_date: rss.pub_date.nil? ? '' : rss.pub_date.localtime.strftime("%Y-%m-%d %H:%M"),
+         author: rss.author,
+         link: rss.link,
+         rss: rss.rss_probe_history.title,
+         rss_link: rss.rss_probe_history.link,
+         rss_description: rss.rss_probe_history.description,
+         status: rss.user_rss_feed_ships.first.unread
+     }
+  %>
 <% end %>
 <%= raw(rst.to_json) %>,
 prev: null,
