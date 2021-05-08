@@ -1,8 +1,8 @@
 require "rails_helper"
 
-RSpec.describe WeeklySummaryMailer, type: :mailer do
-  describe 'notify' do
-    let(:mail) { WeeklySummaryMailer.notify }
+RSpec.describe SummaryMailer, type: :mailer do
+  describe 'weekly_notify' do
+    let(:mail) { SummaryMailer.weekly_notify }
 
     it 'renders the headers' do
       expect(mail.subject).to eq('TianLuo Weekly Summary')

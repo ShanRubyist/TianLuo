@@ -25,7 +25,7 @@ RSpec.describe 'RssFeedsController', type: :routing do
     end
 
     it 'routes to #load_more_rss_feed' do
-      expect(get: "/rss_feeds/load_more_rss_feed.json").to route_to("rss_feeds/rss_feeds#load_more_rss_feed", { format: 'json'})
+      expect(get: "/rss_feeds/load_more_rss_feed.json").to route_to("rss/rss_feeds#load_more_rss_feed", { format: 'json'})
     end
   end
 end
