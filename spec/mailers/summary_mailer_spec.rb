@@ -2,7 +2,13 @@ require "rails_helper"
 
 RSpec.describe SummaryMailer, type: :mailer do
   describe 'weekly_notify' do
-    let(:mail) { SummaryMailer.weekly_notify }
+    let(:mail) do
+      if Rails.env == :test
+        ENV['ADMIN_EMAIL'] = 'ADMINMAIL@ADMIN.COM'
+        ENV['EMAIL_FROM_ADDRESS'] = 'FORM@FROM.COM'
+      end
+      SummaryMailer.weekly_notify
+    end
 
     it 'renders the headers' do
       expect(mail.subject).to eq('TianLuo Weekly Summary')
