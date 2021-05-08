@@ -3,7 +3,7 @@ require "rails_helper"
 RSpec.describe SummaryMailer, type: :mailer do
   describe 'weekly_notify' do
     let(:mail) do
-      if Rails.env == :test
+      if Rails.env.test? || Rails.env.development?
         ENV['ADMIN_EMAIL'] = 'ADMINMAIL@ADMIN.COM'
         ENV['EMAIL_FROM_ADDRESS'] = 'FORM@FROM.COM'
       end
