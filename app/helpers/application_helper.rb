@@ -9,4 +9,11 @@ module ApplicationHelper
     res = render(partial).split("\n").join('')
     raw(res)
   end
+
+  def present(object, locals = nil, klass = nil)
+    klass ||= "#{object.class}Presenter".constantize
+    presenter = klass.new(object, locals, self)
+    yield presenter if block_given?
+    presenter
+  end
 end
