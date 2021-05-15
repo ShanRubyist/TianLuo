@@ -1,217 +1,76 @@
-<div class="cat-wrapper" style="flex-basis: 216px;">
-    <div class="expanded-cat">
-        <div class="drag-area"></div>
-        <div id="category_list" class="cat-list">
-            <div class="flexbox cat-list__title" style="justify-content: space-between; align-items: center; flex-wrap: nowrap;"><span class="cat-list__title-text">
+<div v-if="cat_wrapper_visible" class="cat-wrapper" style="flex-basis: 216px;">
+  <div class="expanded-cat">
+    <div class="drag-area"></div>
+
+    <div id="category_list" class="cat-list">
+      <div class="flexbox cat-list__title" style="justify-content: space-between; align-items: center; flex-wrap: nowrap;"><span class="cat-list__title-text">
                 订阅列表
-            </span> <i class="iconfont icon-reload"></i> <i class="iconfont icon-plus-circle-o"></i> <!----></div>
-            <div class="cat-list__filter el-input el-input--prefix el-input--suffix"><!----><input type="text" autocomplete="off" placeholder="筛选订阅" class="el-input__inner"><span class="el-input__prefix"><i class="el-input__icon el-icon-search"></i><!----></span><!----><!---->
-            </div>
-            <div class="cat-list__content">
-                <div>
-                    <div>
-                        <div class="draggable-item">
-                            <div title="5677 篇未读文章" class="nav-item cat-item"><!----> <i class="iconfont icon-unfold"></i>
-                                <span class="nav-item__title text--ellipsis">
+            </span> <i class="iconfont icon-reload"></i> <i class="iconfont icon-plus-circle-o"></i></div>
+      <div class="cat-list__filter el-input el-input--prefix el-input--suffix">
+        <input type="text" autocomplete="off" placeholder="筛选订阅" class="el-input__inner"><span class="el-input__prefix"><i class="el-input__icon el-icon-search"></i></span>
+      </div>
+      <div class="cat-list__content">
+        <div>
+          <div class="draggable-item">
+            <div title="5677 篇未读文章" class="nav-item cat-item">
+              <i class="iconfont icon-unfold"></i>
+              <span class="nav-item__title text--ellipsis">
                                     未分组
                                 </span>
-                                <div class="nav-item__count"><span>999+</span> <!----></div>
-                                <span style="display: none;"><div role="tooltip" id="el-popover-8372" aria-hidden="true" class="el-popover el-popper menu" tabindex="0" style="display: none;"><!----><ul class="el-popover__menu"><!----> <!----> <li class="el-popover__menu-item">
-                                    设为已读
-                                </li></ul> </div><i class="iconfont icon-more el-popover__reference" aria-describedby="el-popover-8372" tabindex="0"></i></span>
-                            </div>
-                            <div style="">
-                                <div id="we_subscription_fa77ed8c-7d1b-4285-bb08-b34b05087b44" class="nav-item"><!---->
-                                    <span class="nav-item__title text--ellipsis"><!---->
-                                        追梦人物的博客
-                                    </span>
-                                    <div title="" class="nav-item__count"><!---->
-                                        <div style="height: 19px; font-size: 13px;">
-                                            <div class="number-flip" style="position: relative; overflow: hidden; height: 0px;">
-                                                <div class="ctnr ctnr0" style="position: relative; display: inline-block; vertical-align: top; transform: translateY(0px);">
-                                                    <div class="digit">0</div>
-                                                    <div class="digit">1</div>
-                                                    <div class="digit">2</div>
-                                                    <div class="digit">3</div>
-                                                    <div class="digit">4</div>
-                                                    <div class="digit">5</div>
-                                                    <div class="digit">6</div>
-                                                    <div class="digit">7</div>
-                                                    <div class="digit">8</div>
-                                                    <div class="digit">9</div>
-                                                    <div class="digit">0</div>
-                                                </div>
-                                                <div class="ctnr ctnr1" style="position: relative; display: inline-block; vertical-align: top; transform: translateY(0px);">
-                                                    <div class="digit">0</div>
-                                                    <div class="digit">1</div>
-                                                    <div class="digit">2</div>
-                                                    <div class="digit">3</div>
-                                                    <div class="digit">4</div>
-                                                    <div class="digit">5</div>
-                                                    <div class="digit">6</div>
-                                                    <div class="digit">7</div>
-                                                    <div class="digit">8</div>
-                                                    <div class="digit">9</div>
-                                                    <div class="digit">0</div>
-                                                </div>
-                                            </div> <!----></div>
-                                    </div>
-                                    <span style="display: none;"><div role="tooltip" id="el-popover-9033" aria-hidden="true" class="el-popover el-popper menu" tabindex="0" style="display: none;"><!----><ul class="el-popover__menu"><li class="el-popover__menu-item">
-                                        编辑分组
-                                    </li> <li class="el-popover__menu-item">
-                                        设为已读
-                                    </li> <li class="el-popover__menu-item">
-                                        取消订阅
-                                    </li> <li class="el-popover__menu-item">
-                                        修改标题
-                                    </li> <li class="el-popover__menu-item">
-                                        设为静默
-                                    </li> <!----> <li class="el-popover__menu-item">
-                                        查看源信息
-                                    </li></ul> </div><i class="iconfont icon-more el-popover__reference" aria-describedby="el-popover-9033" tabindex="0"></i></span>
-                                </div>
-                                <div id="we_subscription_5fb6c6ad-121f-4366-8b4b-177057d9b232" class="nav-item"><!---->
-                                    <span class="nav-item__title text--ellipsis"><!---->
-                                        阮一峰的网络日志
-                                    </span>
-                                    <div title="" class="nav-item__count"><!---->
-                                        <div style="height: 19px; font-size: 13px;">
-                                            <div class="number-flip" style="position: relative; overflow: hidden; height: 0px;">
-                                                <div class="ctnr ctnr0" style="position: relative; display: inline-block; vertical-align: top; transform: translateY(0px);">
-                                                    <div class="digit">0</div>
-                                                    <div class="digit">1</div>
-                                                    <div class="digit">2</div>
-                                                    <div class="digit">3</div>
-                                                    <div class="digit">4</div>
-                                                    <div class="digit">5</div>
-                                                    <div class="digit">6</div>
-                                                    <div class="digit">7</div>
-                                                    <div class="digit">8</div>
-                                                    <div class="digit">9</div>
-                                                    <div class="digit">0</div>
-                                                </div>
-                                                <div class="ctnr ctnr1" style="position: relative; display: inline-block; vertical-align: top; transform: translateY(0px);">
-                                                    <div class="digit">0</div>
-                                                    <div class="digit">1</div>
-                                                    <div class="digit">2</div>
-                                                    <div class="digit">3</div>
-                                                    <div class="digit">4</div>
-                                                    <div class="digit">5</div>
-                                                    <div class="digit">6</div>
-                                                    <div class="digit">7</div>
-                                                    <div class="digit">8</div>
-                                                    <div class="digit">9</div>
-                                                    <div class="digit">0</div>
-                                                </div>
-                                            </div> <!----></div>
-                                    </div>
-                                    <span><div role="tooltip" id="el-popover-901" aria-hidden="true" class="el-popover el-popper menu" tabindex="0">
-                                        <ul class="el-popover__menu"><li class="el-popover__menu-item">
-                                            编辑分组
-                                        </li> <li class="el-popover__menu-item">
-                                            设为已读
-                                        </li> <li class="el-popover__menu-item">
-                                            取消订阅
-                                        </li>
-                                            <li class="el-popover__menu-item">
-                                                查看源信息
-                                            </li>
-                                        </ul>
-                                    </div><i class="iconfont icon-more el-popover__reference" aria-describedby="el-popover-901" tabindex="0"></i></span>
-                                </div>
+            <a-popover>
+              <template slot="content">
+                <ul class="el-popover__menu">
+                  <li class="el-popover__menu-item">
+                    设为已读
+                  </li>
+                </ul>
+              </template>
+              <div class="nav-item__count"><span>999+</span></div>
 
-                            </div>
-                        </div>
-                    </div>
-                </div>
+              <!--                  <i class="iconfont icon-more el-popover__reference" aria-describedby="el-popover-8372" tabindex="0"></i>-->
+
+            </a-popover>
+
             </div>
-            <div class="el-dialog__wrapper" style="display: none;">
-                <div class="el-dialog el-dialog--center" style="width: 350px; margin-top: 35vh;">
-                    <div class="el-dialog__header"><span class="el-dialog__title">创建分组</span><!----></div><!---->
-                    <div class="el-dialog__footer">
-                        <button type="button" class="el-button el-button--default el-button--small"><!----><!----><span>
-                            取 消
-                        </span></button>
-                        <button type="button" class="el-button el-button--primary el-button--small"><!----><!----><span>
-                            确 定
-                        </span></button>
-                    </div>
-                </div>
+          </div>
+          <div style="">
+            <div v-for="rss in rss_list_json" class="nav-item">
+                                    <span class="nav-item__title text--ellipsis">
+                                        {{rss.title}}
+                                    </span>
+
+
+              <a-popover>
+                <template slot="content">
+                  <ul class="el-popover__menu">
+                    <li class="el-popover__menu-item">
+                      编辑分组
+                    </li>
+                    <li class="el-popover__menu-item">
+                      设为已读
+                    </li>
+                    <li class="el-popover__menu-item">
+                      取消订阅
+                    </li>
+                    <li class="el-popover__menu-item">
+                      修改标题
+                    </li>
+                    <li class="el-popover__menu-item">
+                      查看源信息
+                    </li>
+                  </ul>
+                </template>
+                <div class="nav-item__count"><span>999+</span></div>
+
+
+              </a-popover>
+
+
             </div>
-            <div class="el-dialog__wrapper" style="display: none;">
-                <div class="el-dialog el-dialog--center" style="width: 350px; margin-top: 35vh;">
-                    <div class="el-dialog__header"><span class="el-dialog__title">修改分组名称</span>
-                        <button type="button" aria-label="Close" class="el-dialog__headerbtn">
-                            <i class="el-dialog__close el-icon el-icon-close"></i></button>
-                    </div><!---->
-                    <div class="el-dialog__footer">
-                        <button type="button" class="el-button el-button--default el-button--small"><!----><!----><span>
-                            取 消
-                        </span></button>
-                        <button type="button" class="el-button el-button--primary el-button--small"><!----><!----><span>
-                            确 定
-                        </span></button>
-                    </div>
-                </div>
-            </div>
-            <div class="el-dialog__wrapper confirm-dialog" style="display: none;">
-                <div class="el-dialog el-dialog--center" style="width: 300px; margin-top: 35vh;">
-                    <div class="el-dialog__header"><span class="el-dialog__title"></span><!----></div><!---->
-                    <div class="el-dialog__footer">
-                        <button type="button" class="el-button el-button--default el-button--small"><!----><!----><span>
-                            取 消
-                        </span></button>
-                        <button type="button" class="el-button el-button--primary el-button--small"><!----><!----><span>
-                            确 定
-                        </span></button>
-                    </div>
-                </div>
-            </div>
-            <div class="el-dialog__wrapper" style="display: none;">
-                <div class="el-dialog el-dialog--center" style="width: 420px; margin-top: 35vh;">
-                    <div class="el-dialog__header"><span class="el-dialog__title">编辑分组</span>
-                        <button type="button" aria-label="Close" class="el-dialog__headerbtn">
-                            <i class="el-dialog__close el-icon el-icon-close"></i></button>
-                    </div><!---->
-                    <div class="el-dialog__footer">
-                        <button type="button" class="el-button el-button--default el-button--small"><!----><!----><span>
-                            取 消
-                        </span></button>
-                        <button type="button" class="el-button el-button--primary el-button--small"><!----><!----><span>
-                            确 定
-                        </span></button>
-                    </div>
-                </div>
-            </div>
-            <div class="el-dialog__wrapper confirm-dialog" style="display: none;">
-                <div class="el-dialog el-dialog--center" style="width: 300px; margin-top: 35vh;">
-                    <div class="el-dialog__header"><span class="el-dialog__title"></span><!----></div><!---->
-                    <div class="el-dialog__footer">
-                        <button type="button" class="el-button el-button--default el-button--small"><!----><!----><span>
-                            取 消
-                        </span></button>
-                        <button type="button" class="el-button el-button--primary el-button--small"><!----><!----><span>
-                            确 定
-                        </span></button>
-                    </div>
-                </div>
-            </div>
-            <div class="el-dialog__wrapper" style="display: none;">
-                <div class="el-dialog el-dialog--center" style="width: 420px; margin-top: 35vh;">
-                    <div class="el-dialog__header"><span class="el-dialog__title">修改订阅源标题</span>
-                        <button type="button" aria-label="Close" class="el-dialog__headerbtn">
-                            <i class="el-dialog__close el-icon el-icon-close"></i></button>
-                    </div><!---->
-                    <div class="el-dialog__footer">
-                        <button type="button" class="el-button el-button--default el-button--small"><!----><!----><span>
-                            取 消
-                        </span></button>
-                        <button type="button" class="el-button el-button--primary el-button--small"><!----><!----><span>
-                            确 定
-                        </span></button>
-                    </div>
-                </div>
-            </div>
+          </div>
+
         </div>
+      </div>
     </div>
+  </div>
 </div>
