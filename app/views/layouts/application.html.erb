@@ -5,7 +5,11 @@
   <meta name="description" content="<%= meta_description %>">
   <meta name="keywords" content="<%= meta_keywords %>">
 
-  <title><%= ENV['SITE_NAME'] %></title>
+  <title>
+    <%= yield :feed_unread_count %>
+    <%= ENV['SITE_NAME'] %>
+  </title>
+
   <%= csrf_meta_tags %>
   <%= csp_meta_tag %>
 

@@ -2,6 +2,7 @@
 module Rss
   class RssController < ApplicationController
     include RunningJosbsCountable
+    include ApplicationHelper
 
     def index
       @running_rss_jobs_count = running_rss_jobs_count
@@ -46,6 +47,7 @@ module Rss
         }
       end
       # @all_good_list = PddWebSpiderSetting.where(user: current_user).all
+      render template: 'rss/rss/mobile/index'
     end
   end
 end

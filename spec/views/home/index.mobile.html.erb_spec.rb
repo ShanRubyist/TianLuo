@@ -12,9 +12,9 @@ RSpec.describe 'home/index' do
     # expect(rendered).to match(/abc/)
   end
 
-  it '渲染 index.html.erb 模板' do
+  it '渲染 index.mobile.html.erb 模板' do
     pending '需要修复运行错误'
-    render template: 'home/index.html.erb', locals: { current_user: @user }
+    render template: 'home/index.mobile.html.erb', locals: { current_user: @user }
     expect(rendered).to eq 'abc'
   end
 
