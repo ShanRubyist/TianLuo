@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe 'home/index' do
+RSpec.describe 'home/index', type: :view do
   before do
     @user = User.create!(FactoryBot.attributes_for(:user))
   end

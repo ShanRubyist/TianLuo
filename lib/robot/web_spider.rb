@@ -10,9 +10,10 @@ module Robot
       @host = host
       @config = options
       @port = config[:port]
-      if @port.to_s.nil? || @port == 80
+      if @port.nil? || @port == 80
         @url = @host
       else
+        # FIXME: xx.com/feed -> xx.com:8000/feed
         @url = @host + ':' + @port.to_s
       end
 

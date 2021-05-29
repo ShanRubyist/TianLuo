@@ -25,7 +25,7 @@ module RssSavable
 
       RssProbeHistory
           .find_or_create_by(jid: job_id)
-          .update({ title: title, description: description })
+          .update({title: title, description: description})
 
       items.each do |item|
         # 增量更新，已有的RSS Feed不会重复添加
@@ -44,6 +44,7 @@ module RssSavable
     end
 
     private
+
     def handle(response)
       feed = RSS::Parser.parse(response)
       if feed.class == RSS::Atom::Feed
@@ -61,6 +62,7 @@ module RssSavable
             title: feed.title.content,
             description: feed.subtitle.content,
             link: feed.link.href,
+            #atom_link: feed.atom_link.href,
             last_build_date: feed.updated.content,
             items: []
         }
@@ -87,6 +89,7 @@ module RssSavable
             title: feed.channel.title,
             description: feed.channel.description,
             link: feed.channel.link,
+            #atom_link: feed.channel.atom_link,
             last_build_date: feed.channel.lastBuildDate,
             items: []
         }
@@ -94,7 +97,7 @@ module RssSavable
         feed.channel.items.each do |item|
           feed_hash[:items] << {
               title: item.title,
-              description: item.description,
+              description: item.content_encoded || item.description,
               link: item.link,
               author: item.author,
               pub_date: item.pubDate

@@ -52,7 +52,10 @@ Rails.application.routes.draw do
 
   get 'running_jobs_count' => 'jobs_management/jobs_management#running_jobs_count', as: 'running_jobs_count'
   post 'start_job' => 'jobs_management/jobs_management#start_job', as: 'start_job'
+  post 'start_all_job' => 'jobs_management/jobs_management#start_all_job', as: 'start_all_job'
   delete 'delete_job' => 'jobs_management/jobs_management#delete_job', as: 'delete_job'
+
+  get 'rss_list' => 'rss/rss_feeds#rss_list', as: 'rss_feed_rss_list'
 
   get 'histories' => 'histories/histories#histories', as: 'histories'
 end

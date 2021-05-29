@@ -7,7 +7,7 @@
     el: '#app',
     data: {
     dialog_visible: false,
-    unread_count: 0
+    unread_count: 0,
 },
     methods: {
     show_add_dialog: function () {
@@ -15,9 +15,9 @@
     this.dialog_visible = false;
     this.dialog_visible = true;
 },
-},
     mounted: function () {
     window.addEventListener('scroll', this.handleScroll);
+}
 }
 })
 </script>

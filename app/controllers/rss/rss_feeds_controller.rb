@@ -3,6 +3,13 @@ module Rss
   class RssFeedsController < ApplicationController
     include RssReadable
 
+    def rss_list
+      rst = super
+      respond_to do |format|
+        format.json { render json: rst.to_json }
+      end
+    end
+
     def mark_readed
       rst = UserRssFeedShip.where(user_id: params[:user_id], unread: true)
                 .update(unread: false)
@@ -15,7 +22,7 @@ module Rss
     end
 
     def load_more_rss_feed
-      rss_list = rss_list(params['user_id'], params['page'], params['per'])
+      rss_list = rss_list(params['user_id'], params['page'], params['per'], params['rss'])
 
       rss_list_json = rss_list.map do |rss|
         {

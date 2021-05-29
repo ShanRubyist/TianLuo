@@ -1,4 +1,7 @@
-namespace :tianluo do
+desc 'project update'
+task :update => ['update:git_pull', 'update:bundle', 'update:migrate', 'update:whenever']
+
+namespace :update do
   desc 'git pull'
   task :git_pull do
     cmd = 'git pull'
@@ -25,9 +28,5 @@ namespace :tianluo do
     cmd = 'whenever --update-cron'
     puts "[*] #{cmd}"
     Kernel.system cmd
-  end
-
-  desc 'project update'
-  task :update => [:git_pull, :bundle, :migrate, :whenever] do
   end
 end

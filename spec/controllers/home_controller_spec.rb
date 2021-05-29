@@ -10,9 +10,30 @@ RSpec.describe HomeController, type: :controller do
         expect(response).to have_http_status(:success)
       end
 
+      it 'return result with params' do
+        obj = double('')
+        allow(obj).to receive(:abc).with("123").and_return('result')
+        expect(obj.abc('123')).to eq 'result'
+      end
+
+      it 'has correct response headers' do
+        get :index
+        expect(response.headers['X-Frame-Options']).to eq 'SAMEORIGIN'
+        expect(response.headers['Content-Type']).to match(/text\/html; charset=utf-8/)
+      end
+
+      it 'has correct ENV' do
+        stub_const("ENV", "RACK_ENV" => "test")
+        expect(ENV['RACK_ENV']).to eq 'test'
+      end
+
+      it 'assigns the requested rss list to @rss_list' do
+        # expect(assigns(:rss_list)).to eq rss_list
+      end
+
       it "renders the :index view" do
         get :index
-        expect(response).to render_template(:index)
+        expect(response).to render_template('index.web')
       end
     end
   end

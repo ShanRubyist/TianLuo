@@ -1,11 +1,11 @@
-<div v-if="cat_wrapper_visible" class="cat-wrapper" style="flex-basis: 216px;">
+<div v-if="cat_wrapper_visible && !full_screen" class="cat-wrapper" style="flex-basis: 216px;">
   <div class="expanded-cat">
     <div class="drag-area"></div>
 
     <div id="category_list" class="cat-list">
       <div class="flexbox cat-list__title" style="justify-content: space-between; align-items: center; flex-wrap: nowrap;"><span class="cat-list__title-text">
                 订阅列表
-            </span> <i class="iconfont icon-reload"></i> <i class="iconfont icon-plus-circle-o"></i></div>
+            </span> <i class="iconfont icon-reload" @click="refresh_feeds"></i> <i class="iconfont icon-plus-circle-o"></i></div>
       <div class="cat-list__filter el-input el-input--prefix el-input--suffix">
         <input type="text" autocomplete="off" placeholder="筛选订阅" class="el-input__inner"><span class="el-input__prefix"><i class="el-input__icon el-icon-search"></i></span>
       </div>
@@ -34,8 +34,8 @@
             </div>
           </div>
           <div style="">
-            <div v-for="rss in rss_list_json" class="nav-item">
-                                    <span class="nav-item__title text--ellipsis">
+            <div v-for="rss in all_rss_list_json" class="nav-item">
+                                    <span class="nav-item__title text--ellipsis" @click="change_rss(rss.probe_settings_id)">
                                         {{rss.title}}
                                     </span>
 
@@ -60,7 +60,7 @@
                     </li>
                   </ul>
                 </template>
-                <div class="nav-item__count"><span>999+</span></div>
+                <div class="nav-item__count"><span>{{rss.unread_count}}</span></div>
 
 
               </a-popover>
