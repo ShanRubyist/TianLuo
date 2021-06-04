@@ -1,6 +1,8 @@
 class RssFeed < ApplicationRecord
   include RssSavable
 
+  belongs_to :probe_setting
+
   belongs_to :rss_probe_history
 
   has_many :user_rss_feed_ships
