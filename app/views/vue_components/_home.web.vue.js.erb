@@ -15,9 +15,10 @@
            pub_date: rss.pub_date.nil? ? '' : rss.pub_date.localtime.strftime("%Y-%m-%d %H:%M"),
            author: rss.author,
            link: rss.link,
-           rss: rss.rss_probe_history.title,
-           rss_link: rss.rss_probe_history.link,
-           rss_description: rss.rss_probe_history.description,
+           rss: rss.probe_setting.rss_info.title,
+           rss_link: rss.probe_setting.rss_info.link,
+           rss_description: rss.probe_setting.rss_info.description,
+           icon: rss.probe_setting.rss_info.icon,
            status: !rss.user_rss_feed_ships.first.unread
        }
     %>
@@ -51,6 +52,25 @@
         full_screen_mode: function () {
           this.full_screen = !this.full_screen
     },
+    mark_readed: function () {
+            var that = this;
+            axios.put(window.location.href + 'rss_feeds/mark_readed',
+                {
+                    user_id: <%= current_user.id %>,
+                    authenticity_token: document.getElementsByName("csrf-token")[0].getAttribute('content')
+                },
+                {
+                    headers: {
+                        'Accept': 'application/json'
+                    }
+                })
+                .then(function (reason) {
+                    that.$message.success(reason.data.message)
+                })
+                .catch(function (reason) {
+                    that.$message.error(reason.toString());
+                })
+},
     show_add_dialog: function () {
     // 需要先置为 false，再设置为 true 才能再次显示添加的对话框
     this.dialog_visible = false;

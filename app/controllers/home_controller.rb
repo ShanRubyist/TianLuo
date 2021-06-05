@@ -13,17 +13,17 @@ class HomeController < ApplicationController
     per ||= 200
     params['page'] ||= 1
 
-    # where urfs.user_id = #{current_user.id} and ps.user_id = #{current_user.id}
               @all_rss_list = ProbeSetting.find_by_sql(<<-SQL
 select ps.id as id, count(case when unread = true then 1 else NULL end) as unread_count
 from probe_settings as ps
-left join rss_probe_histories as rph
-on rph.probe_setting_id = ps.id
+inner join user_rss_ships as urs
+on urs.user_id = #{current_user.id} and urs.probe_setting_id = ps.id
 left join rss_feeds as rf
-on rf.rss_probe_history_id = rph.id
+on rf.probe_setting_id = ps.id
 left join user_rss_feed_ships as urfs
 on urfs.rss_feed_id = rf.id
-    where urfs.user_id = 1 and ps.user_id = 1
+left join rss_infos as ri
+on ri.probe_setting_id = ps.id
 group by ps.id
       limit #{per}
       offset #{ (params['page'] - 1) * per }
@@ -34,7 +34,8 @@ group by ps.id
     @all_rss_list_json = []
 
     @all_rss_list.each do |rss|
-      rph = RssProbeHistory.find_by_probe_setting_id(rss.id)
+      ri = RssInfo.find_by_probe_setting_id(rss.id)
+      # rph = RssProbeHistory.find_by_probe_setting_id(rss.id)
       @all_rss_list_json << {
           probe_settings_id: rss.id,
           # rss: rss.url,
@@ -45,8 +46,8 @@ group by ps.id
           # status: rss.refresh_status,
           # jid: rss.jid,
           # detail: rss.detail,
-          title: rph.title,
-          dscription: rph.description,
+          title: ri&.title || ProbeSetting.find(rss.id).url,
+          dscription: ri&.description,
           unread_count: rss.unread_count
       }
     end

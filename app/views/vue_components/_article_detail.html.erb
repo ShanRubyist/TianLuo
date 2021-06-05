@@ -22,7 +22,11 @@
                 </span> <div class="info-item__value flexbox"><span class="text--ellipsis">
                     {{current_article.rss_link}}
                 </span> <span class="copy"><i class="iconfont icon-copy"></i></span></div></div></div></div> <!----></div></div> </div>
-          <img src="https://l.ruby-china.com/photo/2016/c309db0b49cab85a32f756541ea0e2b0.png" class="avatar el-popover__reference" aria-describedby="el-popover-6989" tabindex="0" alt="Ruby China"></span>
+          <img :src="current_article.icon"
+               class="avatar el-popover__reference"
+               aria-describedby="el-popover-6989"
+               tabindex="0"
+               :alt="current_article.description"></span>
           <span style="display: none;"></span> <span style="display: none;"></span>
           <span style="display: none;"></span> <span style="display: none;"></span>
           <span class="article-account__title text--ellipsis">
@@ -34,7 +38,9 @@
           <span><i title="添加标签" class="iconfont icon-label el-popover__reference" aria-describedby="el-popover-4023" tabindex="0"></i></span>
           <a title="访问原始文章[V (visit)]" id="ori_link" :href="current_article.link" target="_blank" class="js-external-link article-link">
             <i class="iconfont icon-send"></i></a>
-          <i @click="full_screen_mode" title="全屏阅读[F (fullscreen)]" class="iconfont icon-screennormal"></i>
+
+          <i @click="full_screen_mode" title="全屏阅读[F (fullscreen)]" class="iconfont icon-screenfull"></i>
+
             <a-popover trigger="click" ref="pop">
               <a slot="content">
               <div ref="qrcode"></div>

@@ -4,9 +4,27 @@ module Rss
     include RssReadable
 
     def rss_list
-      rst = super
+      rst = super(current_user.id, params[:rss])
+
+      return_json = []
+      rst.each do |rss|
+        return_json <<
+    {
+           title: rss.title,
+           description: Loofah.fragment(rss.description).scrub!(:escape).to_html,
+           pub_date: rss.pub_date.nil? ? '' : rss.pub_date.localtime.strftime("%Y-%m-%d %H:%M"),
+           author: rss.author,
+           link: rss.link,
+           rss: rss.probe_setting.rss_info.title,
+           rss_link: rss.probe_setting.rss_info.link,
+           rss_description: rss.probe_setting.rss_info.description,
+           icon: rss.probe_setting.rss_info.icon,
+           status: !rss.user_rss_feed_ships.first.unread
+       }
+    end
+
       respond_to do |format|
-        format.json { render json: rst.to_json }
+        format.json { render json: return_json.to_json }
       end
     end
 

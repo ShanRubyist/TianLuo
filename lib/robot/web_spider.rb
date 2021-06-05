@@ -27,20 +27,10 @@ module Robot
       @logger = Logger.new("#{Rails.root}/log/" + config[:log_path])
     end
 
-    # 主入口
-    # 1. 获取网页数据
-    # 2. 处理数据
-    # 3. 转换成系统想要的格式
-    def parse
-      logger.info("[+] Begin to parse #{self.class}: #{url}")
-      response = fetch
-      logger.info("[+] End to parse #{self.class}: #{url}")
-
-      response
-    end
-
     # 获取网页源数据
     def fetch
+      logger.info("[+] Begin to parse #{self.class}: #{url}")
+
       if need_cache && cache.fetch(url)
         cache.fetch(url)
       else
@@ -73,6 +63,9 @@ module Robot
 
           raise RetryTooManyTimeException
         end
+
+        logger.info("[+] End to parse #{self.class}: #{url}")
+
         response
       end
     end

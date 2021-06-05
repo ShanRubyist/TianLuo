@@ -1,7 +1,8 @@
 <div v-show="!full_screen" id="article_list" class="article-list">
     <div class="drag-area"></div>
     <div class="flexbox article-list__toolbar search-header" style="justify-content: space-between; align-items: center; flex-wrap: nowrap;">
-        <div class="search-input el-input el-input--prefix el-input--suffix"><!----><input type="text" autocomplete="off" placeholder="搜索所有文章" class="el-input__inner"><span class="el-input__prefix"><i class="el-input__icon el-icon-search"></i><!----></span><!----><!---->
+        <div class="search-input el-input el-input--prefix el-input--suffix"><!---->
+          <input type="text" autocomplete="off" placeholder="搜索所有文章" class="el-input__inner"><span class="el-input__prefix"><i class="el-input__icon el-icon-search"></i><!----></span><!----><!---->
         </div>
         <div title="只看未读/查看全部" class="article-list__toolbar-unread active"></div>
     </div> <!---->
@@ -12,7 +13,9 @@
         <div v-for="rss in rss_list_json" class="article-item feeds-expanded sm-text text-list" :class="{read: rss.status, active: (current_article == rss)}" @click="change_article(rss)">
           <div class="article-item__wrapper"><!---->
             <div class="flexbox article-item__text-wrapper" style="justify-content: space-between; align-items: center; flex-wrap: wrap;">
-              <img lazyload="auto" src="https://l.ruby-china.com/photo/2016/c309db0b49cab85a32f756541ea0e2b0.png" alt="Ruby China" class="avatar--sm article-item__meta-favicon">
+              <img lazyload="auto"
+                   :src="rss.icon"
+                   :alt="rss.description" class="avatar--sm article-item__meta-favicon">
               <span class="article-item__meta-title text--ellipsis">
                             {{rss.rss}}
                         </span> <span class="article-item__meta-date">

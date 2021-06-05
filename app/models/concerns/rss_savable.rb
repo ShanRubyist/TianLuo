@@ -9,43 +9,47 @@ module RssSavable
   end
 
   module ClassMethods
-    def store_rss_to_db(user_id, rss_probe_history_id, job_id, rss_raw_data)
-      rss = handle(rss_raw_data)
+    def store_rss_to_db(probe_setting, rss_probe_history_id, job_id, rss_raw_data)
+      rss = transform(rss_raw_data)
       title = rss[:title]
       description = rss[:description]
       last_build_date = rss[:last_build_date]
       link = rss[:link]
       items = rss[:items]
 
-      # rss_probe_history = RssProbeHistory.create(probe_setting_id: probe_setting_id,
-      #                            title: title,
-      #                            description: description,
-      #                            last_build_date: last_build_date,
-      #                            link: link)
+      # 更新 rss info 信息
+      RssInfo.create(
+          probe_setting: probe_setting,
+          title: title,
+          description: description,
+          link: link,
+          icon: "#{link}/favicon.ico")
 
+      # 增量更新，同一 probe setting 已有的RSS Feed不会重复添加
+      items.each do |item|
+        rss_feed = RssFeed.create_with(
+            title: item[:title],
+            description: item[:description],
+            author: item[:author],
+            pub_date: item[:pub_date],
+            rss_probe_history_id: rss_probe_history_id
+        ).find_or_create_by(link: item[:link], probe_setting: probe_setting)
+
+        # 把RSS Feed内容分发到用户的内容队列中，默认为未读
+        probe_setting.users.each do |user|
+          UserRssFeedShip.find_or_create_by(user: user, rss_feed: rss_feed)
+        end
+      end
+
+      # 更新历史信息
       RssProbeHistory
           .find_or_create_by(jid: job_id)
           .update({title: title, description: description})
-
-      items.each do |item|
-        # 增量更新，已有的RSS Feed不会重复添加
-        rss_feed = RssFeed.create_with(title: item[:title],
-                                       description: item[:description],
-                                       author: item[:author],
-                                       pub_date: item[:pub_date],
-                                       rss_probe_history_id: rss_probe_history_id)
-                       .find_or_create_by(link: item[:link])
-
-        # 把RSS Feed内容分发到用户的内容队列中，默认为未读
-        # TODO: 应该要分发到有订阅此Rss的用户中
-        UserRssFeedShip.find_or_create_by(user_id: user_id,
-                                          rss_feed_id: rss_feed.id)
-      end
     end
 
     private
 
-    def handle(response)
+    def transform(response)
       feed = RSS::Parser.parse(response)
       if feed.class == RSS::Atom::Feed
         parse_atom(feed)

@@ -4,6 +4,7 @@ module Rss
     include RunningJosbsCountable
     include ApplicationHelper
 
+# for mobile
     def index
       @running_rss_jobs_count = running_rss_jobs_count
       # @running_goods_jobs_count = running_goods_jobs_count
