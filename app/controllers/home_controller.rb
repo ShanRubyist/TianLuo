@@ -14,7 +14,7 @@ class HomeController < ApplicationController
     params['page'] ||= 1
 
               @all_rss_list = ProbeSetting.find_by_sql(<<-SQL
-select ps.id as id, count(case when unread = true then 1 else NULL end) as unread_count
+select ps.id as id, count(case when unread = true and urfs.user_id = #{current_user.id} then 1 else NULL end) as unread_count
 from probe_settings as ps
 inner join user_rss_ships as urs
 on urs.user_id = #{current_user.id} and urs.probe_setting_id = ps.id
