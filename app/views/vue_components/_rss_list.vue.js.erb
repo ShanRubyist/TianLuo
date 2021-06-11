@@ -20,7 +20,7 @@ Vue.component('rss-list', {
     data: function () {
         return {
             rss_list_json:
-            <% rst = @rss_list.map do |rss| %>
+            <% rst = @rss_feeds_list.map do |rss| %>
             <% {
                    title: rss.title,
                    description: Loofah.fragment(rss.description).scrub!(:escape).to_html,

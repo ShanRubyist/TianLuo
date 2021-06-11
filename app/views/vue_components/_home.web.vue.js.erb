@@ -8,7 +8,7 @@
     unread_count: 0,
     cat_wrapper_visible: true,
     rss_list_json:
-    <% rst = @rss_list.map do |rss| %>
+    <% rst = @rss_feeds_list.map do |rss| %>
     <% {
            title: rss.title,
            description: Loofah.fragment(rss.description).scrub!(:escape).to_html,
@@ -42,7 +42,7 @@
     %>
     <% end %>
     <%= raw(rst.to_json) %>,
-    current_article: <%= raw(@rss_list.first.to_json) %>,
+    current_article: <%= raw(@rss_feeds_list.first.to_json) %>,
     current_rss: null,
     qrcode: null,
     full_screen: false
@@ -120,7 +120,7 @@
 },
     refresh_feeds: function(type) {
         var that = this;
-    axios.post('<%= start_all_job_path %>', {
+    axios.post('<%= start_all_jobs_path %>', {
     type: type,
     authenticity_token: document.getElementsByName("csrf-token")[0].getAttribute('content'),
 },

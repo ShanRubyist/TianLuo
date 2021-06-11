@@ -18,7 +18,7 @@ module JobsManagement
       end
     end
 
-    def start_all_job
+    def start_all_jobs
       job_class = case params['type']
                   when 'WebSpiderWorkJob'
                     # WebSpiderWorkJob

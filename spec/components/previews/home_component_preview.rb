@@ -10,7 +10,7 @@ class HomeComponentPreview < ViewComponent::Preview
     
     # TODO: FIXME
     render HomeComponent.new do
-      render RssListComponent.new(rss_list: rss_list, current_user: User.first)
+      render RssListComponent.new(rss_feeds_list: rss_list, current_user: User.first)
       # render(GoodsListComponent.new(goods_list: @goods_list))
       # render(AddDiaglogComponent.new(current_user: User.first))
     end
