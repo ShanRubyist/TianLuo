@@ -1,6 +1,5 @@
 <script>
   <%= render 'vue_components/add_dialog.vue.js' %>
-
     var app = new Vue({
     el: '#app',
     data: {
@@ -8,40 +7,13 @@
     unread_count: 0,
     cat_wrapper_visible: true,
     rss_list_json:
-    <% rst = @rss_feeds_list.map do |rss| %>
-    <% {
-           title: rss.title,
-           description: Loofah.fragment(rss.description).scrub!(:escape).to_html,
-           pub_date: rss.pub_date.nil? ? '' : rss.pub_date.localtime.strftime("%Y-%m-%d %H:%M"),
-           author: rss.author,
-           link: rss.link,
-           rss: rss.probe_setting.rss_info.title,
-           rss_link: rss.probe_setting.rss_info.link,
-           rss_description: rss.probe_setting.rss_info.description,
-           icon: rss.probe_setting.rss_info.icon,
-           status: !rss.user_rss_feed_ships.first.unread
-       }
-    %>
-    <% end %>
-    <%= raw(rst.to_json) %>,
+    <% present('HomePresenter', current_user) do |rss| %>
+    <%= raw(rss.rss_feeds_list) %>
+    <% end %>,
     all_rss_list_json:
-    <% rst = @all_rss_list_json.map do |rss| %>
-    <% {
-            probe_settings_id: rss[:probe_settings_id],
-            rss: rss[:rss],
-            port: rss[:port],
-            proxy: rss[:proxy],
-            latest_updated: rss[:latest_updated],
-            status: rss[:status],
-            jid: rss[:jid],
-            detail: rss[:detail],
-            title: rss[:title],
-            description: rss[:description],
-            unread_count: rss[:unread_count]
-       }
-    %>
-    <% end %>
-    <%= raw(rst.to_json) %>,
+    <% present('HomePresenter', current_user) do |rss| %>
+    <%= raw(rss.all_rss_list_json) %>
+    <% end %>,
     current_article: <%= raw(@rss_feeds_list.first.to_json) %>,
     current_rss: null,
     qrcode: null,
@@ -49,27 +21,27 @@
 
 },
     methods: {
-        full_screen_mode: function () {
-          this.full_screen = !this.full_screen
-    },
+    full_screen_mode: function () {
+    this.full_screen = !this.full_screen
+},
     mark_readed: function () {
-            var that = this;
-            axios.put(window.location.href + 'rss_feeds/mark_readed',
-                {
-                    user_id: <%= current_user.id %>,
-                    authenticity_token: document.getElementsByName("csrf-token")[0].getAttribute('content')
-                },
-                {
-                    headers: {
-                        'Accept': 'application/json'
-                    }
-                })
-                .then(function (reason) {
-                    that.$message.success(reason.data.message)
-                })
-                .catch(function (reason) {
-                    that.$message.error(reason.toString());
-                })
+    var that = this;
+    axios.put(window.location.href + 'rss_feeds/mark_readed',
+{
+    user_id: <%= current_user.id %>,
+    authenticity_token: document.getElementsByName("csrf-token")[0].getAttribute('content')
+},
+{
+    headers: {
+    'Accept': 'application/json'
+}
+})
+    .then(function (reason) {
+    that.$message.success(reason.data.message)
+})
+    .catch(function (reason) {
+    that.$message.error(reason.toString());
+})
 },
     show_add_dialog: function () {
     // 需要先置为 false，再设置为 true 才能再次显示添加的对话框
@@ -95,19 +67,20 @@
 })
 },
     toggle_cat_wrapper: function() {
-        this.cat_wrapper_visible = !this.cat_wrapper_visible
+    this.cat_wrapper_visible = !this.cat_wrapper_visible
 },
     change_article: function(article){
-        this.current_article = article
+    this.current_article = article
 },
     change_rss: function(rss){
-        this.current_rss = rss
+    this.current_rss = rss
     var that = this;
     axios.get('<%= rss_feed_rss_list_path %>', {
     headers: {
     'Accept': 'application/json'
 },
     params: {
+    user_id: <%= current_user.id %>,
     rss: rss,
 }
 }).then(function (reason) {
@@ -119,7 +92,7 @@
 
 },
     refresh_feeds: function(type) {
-        var that = this;
+    var that = this;
     axios.post('<%= start_all_jobs_path %>', {
     type: type,
     authenticity_token: document.getElementsByName("csrf-token")[0].getAttribute('content'),
@@ -140,4 +113,5 @@
     mounted: function () {
 }
 })
+
 </script>

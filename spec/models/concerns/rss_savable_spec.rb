@@ -56,4 +56,9 @@ RSpec.describe RssSavable do
     }.not_to raise_error
     expect(UserRssFeedShip.count).to eq 2
   end
+
+  it '获取 icon 图标' do
+    # icon_url = RssFeed.send(:find_favicon_link, 'https://ruby-china.org/')
+    # expect(icon_url).to eq 'https://l.ruby-china.com/photo/2016/c309db0b49cab85a32f756541ea0e2b0.png'
+  end
 end

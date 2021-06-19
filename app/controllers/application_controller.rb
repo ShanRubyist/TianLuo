@@ -19,6 +19,6 @@ class ApplicationController < ActionController::Base
 
   def render_view_for_device(temp)
     temp += ".#{render_device_path}"
-    render template: temp
+    render temp
   end
 end

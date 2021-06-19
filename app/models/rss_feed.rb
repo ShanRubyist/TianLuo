@@ -1,5 +1,6 @@
 class RssFeed < ApplicationRecord
   include RssSavable
+  include RssReadable
 
   belongs_to :probe_setting
 

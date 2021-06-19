@@ -1,5 +1,5 @@
 desc 'project update'
-task :update => ['update:git_pull', 'update:bundle', 'update:migrate', 'update:whenever']
+task :update => ['update:git_pull', 'update:bundle', 'update:migrate']
 
 namespace :update do
   desc 'git pull'
@@ -19,13 +19,6 @@ namespace :update do
   desc '执行数据库迁移'
   task :migrate do
     cmd = 'rails db:migrate'
-    puts "[*] #{cmd}"
-    Kernel.system cmd
-  end
-
-  desc '设定 config/schedule 定时任务'
-  task :whenever do
-    cmd = 'whenever --update-cron'
     puts "[*] #{cmd}"
     Kernel.system cmd
   end

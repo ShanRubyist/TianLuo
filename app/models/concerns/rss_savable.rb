@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'rss'
+require 'net/http'
 
 module RssSavable
   extend ActiveSupport::Concern
@@ -18,12 +19,14 @@ module RssSavable
       items = rss[:items]
 
       # 更新 rss info 信息
-      RssInfo.create(
-          probe_setting: probe_setting,
-          title: title,
-          description: description,
-          link: link,
-          icon: "#{link}/favicon.ico")
+      favicon_url = find_favicon_link(link) || default_favicon_location(link)
+      RssInfo
+          .find_or_create_by(probe_setting: probe_setting)
+          .update!(
+              title: title,
+              description: description,
+              link: link,
+              icon: favicon_url)
 
       # 增量更新，同一 probe setting 已有的RSS Feed不会重复添加
       items.each do |item|
@@ -48,6 +51,42 @@ module RssSavable
     end
 
     private
+
+    # feedbin
+    def find_favicon_link(host)
+      host = URI(host).host
+      favicon_url = nil
+      url = URI::HTTP.build(host: host)
+      response = Net::HTTP.get(url).to_s
+      html = Nokogiri::HTML(response)
+      favicon_links = html.search(xpath)
+      if favicon_links.present?
+        favicon_url = favicon_links.first.to_s
+        favicon_url = URI.parse(favicon_url)
+        favicon_url.scheme = "http"
+        unless favicon_url.host
+          favicon_url = URI::HTTP.build(scheme: "http", host: host)
+          favicon_url = favicon_url.merge(favicon_links.last.to_s)
+        end
+      end
+      favicon_url
+      rescue
+        nil
+    end
+
+    # feedbin
+    def xpath
+      icon_names = ["shortcut icon", "icon", "apple-touch-icon", "apple-touch-icon-precomposed"]
+      icon_names = icon_names.map { |icon_name|
+        "//link[not(@mask) and translate(@rel, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz') = '#{icon_name}']/@href"
+      }
+      icon_names.join(" | ")
+    end
+
+    # feedbin
+    def default_favicon_location(host)
+      URI::HTTP.build(host: URI(host).host, path: "/favicon.ico")
+    end
 
     def transform(response)
       feed = RSS::Parser.parse(response)

@@ -6,7 +6,7 @@ class WebSpiderSettingsController < ApplicationController
       if @web_spider_setting.save
         format.html { redirect_to web_spider_settings_path, notice: 'web_spider_setting was successfully created.' }
         format.js { redirect_to web_spider_settings_path, notice: 'web_spider_setting was successfully created.' }
-        format.json { render json: { message: 'Created Success' } }
+        format.json { render json: {message: 'Created Success'} }
         # format.json { render :show, status: :created, location: @web_spider_setting }
       else
         format.html { render :new }
@@ -18,8 +18,11 @@ class WebSpiderSettingsController < ApplicationController
 
   def destroy
     probe_setting = PddWebSpiderSetting.find(params[:id])
-    probe_setting.destroy
-    render json: { message: '删除成功'}
+    if probe_setting && probe_setting.destroy
+      render json: {message: '删除成功'}
+    else
+      render json: {message: '记录ID不存在'}
+    end
   end
 
   private

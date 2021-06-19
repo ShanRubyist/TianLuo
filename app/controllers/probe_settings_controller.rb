@@ -1,7 +1,6 @@
 class ProbeSettingsController < ApplicationController
   include RunningJosbsCountable
   include ApplicationHelper
-  include RSSList
 
   # for mobile
   def index
@@ -10,26 +9,7 @@ class ProbeSettingsController < ApplicationController
     per ||= 200
     params['page'] ||= 1
 
-    @all_rss_list = rss_list
-
-    @all_rss_list_json = []
-
-    @all_rss_list.each do |rss_id|
-      rss = ProbeSetting.find_by_id(rss_id)
-
-      @all_rss_list_json << {
-          probe_settings_id: rss.id,
-          rss: rss.url,
-          port: rss.port,
-          proxy: rss.proxy,
-          retry_limit: rss.retry_limit,
-          latest_updated: rss.rss_probe_histories.last.last_build_date,
-          status: rss.rss_probe_histories.last.status,
-          jid: rss.rss_probe_histories.last.jid,
-          detail: rss.rss_probe_histories.last.detail
-      }
-    end
-    render template: 'rss/rss/mobile/index'
+    render 'rss/rss/mobile/index'
   end
 
   def create
@@ -53,8 +33,7 @@ class ProbeSettingsController < ApplicationController
 
   def destroy
     probe_setting = UserRssShip.find_by(user_id: current_user.id, probe_setting_id: params[:id])
-    if probe_setting
-      probe_setting.destroy
+    if probe_setting && probe_setting.destroy
       render json: {message: '删除成功'}
     else
       render json: {message: '记录不存在'}

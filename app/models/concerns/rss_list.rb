@@ -4,16 +4,18 @@ module RSSList
   included do |base|
   end
 
-  def rss_list(user_id = current_user.id, page = 1, per = 100)
-    ProbeSetting.find_by_sql(<<-SQL
-      select ps.id as id, 
-        count(case when unread = true and urfs.user_id = #{user_id} 
-          then 1 
-          else NULL 
+  module ClassMethods
+    def rss_list(user_id, page = 1, per = 100)
+      # FIXME: 修改用 AR 来实现
+      ProbeSetting.find_by_sql(<<-SQL
+      select ps.id as id,
+        count(case when unread = true and urfs.user_id = #{user_id}
+          then 1
+          else NULL
         end) as unread_count
       from probe_settings as ps
       inner join user_rss_ships as urs
-      on urs.user_id = #{current_user.id} and urs.probe_setting_id = ps.id
+      on urs.user_id = #{user_id} and urs.probe_setting_id = ps.id
       left join rss_feeds as rf
         on rf.probe_setting_id = ps.id
       left join user_rss_feed_ships as urfs
@@ -23,10 +25,8 @@ module RSSList
       group by ps.id
       limit #{per}
       offset #{ (page - 1) * per }
-    SQL
-    )
-  end
-
-  module ClassMethods
+      SQL
+      )
+    end
   end
 end

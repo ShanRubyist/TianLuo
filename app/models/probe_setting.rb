@@ -1,4 +1,6 @@
 class ProbeSetting < ApplicationRecord
+  include RSSList
+
   has_many :user_rss_ships
   has_many :users, :through => :user_rss_ships
 

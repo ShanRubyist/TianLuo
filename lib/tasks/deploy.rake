@@ -2,7 +2,7 @@ desc 'run sidekiq & wepacker-dev-server'
 task :deploy => ['deploy:whenever', 'deploy:sidekiq', 'deploy:webpack']
 
 namespace :deploy do
-  desc '更新cron任务'
+  desc '设定 config/schedule 定时任务'
   task :whenever do
     cmd = 'whenever --update-cron'
     puts "[*] #{cmd}"

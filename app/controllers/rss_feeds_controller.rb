@@ -1,30 +1,10 @@
 # frozen_string_literal: true
 class RssFeedsController < ApplicationController
-  include RssReadable
 
   # for web
   def rss_feeds_of_rss
-    rst = rss_feeds_list(current_user.id, params[:rss])
-
-    return_json = []
-    rst.each do |rss|
-      return_json <<
-          {
-              title: rss.title,
-              description: Loofah.fragment(rss.description).scrub!(:escape).to_html,
-              pub_date: rss.pub_date.nil? ? '' : rss.pub_date.localtime.strftime("%Y-%m-%d %H:%M"),
-              author: rss.author,
-              link: rss.link,
-              rss: rss.probe_setting.rss_info.title,
-              rss_link: rss.probe_setting.rss_info.link,
-              rss_description: rss.probe_setting.rss_info.description,
-              icon: rss.probe_setting.rss_info.icon,
-              status: !rss.user_rss_feed_ships.first.unread
-          }
-    end
-
     respond_to do |format|
-      format.json { render json: return_json.to_json }
+      format.json
     end
   end
 
@@ -41,22 +21,9 @@ class RssFeedsController < ApplicationController
   end
 
   def load_more_rss_feed
-    rss_list = rss_feeds_list(params['user_id'], params['rss'], params['page'], params['per'])
-
-    rss_list_json = rss_list.map do |rss|
-      {
-          title: rss.title,
-          description: rss.description.to_s,
-          pub_date: rss.pub_date.nil? ? '' : rss.pub_date.localtime.strftime('%Y-%m-%d %H:%M'),
-          author: rss.author,
-          link: rss.link,
-          rss: rss.rss_probe_history.title,
-          rss_link: rss.rss_probe_history.link,
-          rss_description: rss.rss_probe_history.description,
-          status: rss.user_rss_feed_ships.first.unread
-      }
+    respond_to do |format|
+      format.json
+      format.html { render 'rss_feeds/load_more_rss_feed.json' }
     end
-
-    render json: rss_list_json
   end
 end
