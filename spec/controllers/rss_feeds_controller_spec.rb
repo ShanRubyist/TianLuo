@@ -3,11 +3,12 @@ require 'rails_helper'
 RSpec.describe RssFeedsController, type: :controller do
   let(:user) { FactoryBot.create(:user) }
   let(:probe_setting) { FactoryBot.create(:probe_setting, users: [user]) }
-  let(:rss_feed) { FactoryBot.create(:rss_feed1, probe_setting: probe_setting)}
+  let(:rss_feed) { FactoryBot.create(:rss_feed1, probe_setting: probe_setting) }
+  let(:rss_info) { FactoryBot.create(:rss_info, rss_feed) }
 
   before do
     rss_feed.users = [user]
-    rss_feed.save
+    rss_feed.save!
   end
 
   login_user
@@ -27,14 +28,29 @@ RSpec.describe RssFeedsController, type: :controller do
   end
 
   describe 'GET #load_more_rss_feed' do
-    let(:user) { FactoryBot.create(:user) }
-    let(:page) { 1 }
-    let(:per) { 10 }
-
+    # let(:user) { FactoryBot.create(:user) }
     it 'load more rss feed in text/html content type' do
-      get :load_more_rss_feed, params: {user_id: user.id, rss: probe_setting, page: page, per: per}
+      get :load_more_rss_feed, params: {user_id: user.id, rss: probe_setting.id}, format: :json
       expect(response.headers['Content-Type']).to have_content('application/json')
-      expect(response.body).to match /.*title.*description.*/
+      expect(response).to render_template('rss_feeds/load_more_rss_feed')
+
+      # expect(user.probe_settings).to eq [probe_setting]
+      # expect(rss_feed.users).to eq [user]
+      # expect(UserRssFeedShip.first).to eq ['abc']
+      # rst = RssFeed.includes(:user_rss_feed_ships)
+      #           .includes(:probe_setting)
+      #           .includes(:probe_setting => :rss_info)
+      #           .where(:user_rss_feed_ships => {:user_id => user.id})
+      #
+      # rst = rst.where(:probe_settings => {:id => probe_setting.id})
+      #
+      # rst.order('user_rss_feed_ships.unread desc')
+      #     .order_by_desc
+      #     .page(1)
+      #     .per(100)
+      # expect(rst).to match /.*abc*/
+
+      # expect(response.body).to match /.*title.*description.*/
     end
   end
 
