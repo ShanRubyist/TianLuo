@@ -3,7 +3,7 @@ require_relative '../../lib/robot'
 
 RSpec.describe Robot::WebSpider do
   before do
-    @obj = Robot::WebSpider.new('http://www.baidu.com')
+    @obj = Robot::WebSpider.new('https://www.baidu.com')
   end
 
   describe '#parse_cookies' do
@@ -15,6 +15,7 @@ RSpec.describe Robot::WebSpider do
 
   describe '#fetch' do
     it 'fetch data' do
+      @obj.need_cache = false
       expect(@obj.fetch).to match(/.*html.*body.*/)
     end
   end

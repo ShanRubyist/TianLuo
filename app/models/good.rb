@@ -8,4 +8,5 @@ class Good < ApplicationRecord
   has_many :goods_extras
 
   include GoodsSavable
+  include GoodsReadable
 end

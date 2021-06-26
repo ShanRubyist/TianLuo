@@ -10,9 +10,10 @@ module Robot
       @host = host
       @config = options
       @port = config[:port]
-      if @port.to_s.nil? || @port == 80
+      if @port.nil? || @port == 80
         @url = @host
       else
+        # FIXME: xx.com/feed -> xx.com:8000/feed
         @url = @host + ':' + @port.to_s
       end
 
@@ -26,54 +27,19 @@ module Robot
       @logger = Logger.new("#{Rails.root}/log/" + config[:log_path])
     end
 
-    # 主入口
-    # 1. 获取网页数据
-    # 2. 处理数据
-    # 3. 转换成系统想要的格式
-    def parse
-      logger.info("[+] Begin to parse #{self.class}: #{url}")
-      response = fetch
-      logger.info("[+] End to parse #{self.class}: #{url}")
-
-      response
-    end
-
     # 获取网页源数据
     def fetch
+      logger.info("[+] Begin to parse #{self.class}: #{url}")
+
       if need_cache && cache.fetch(url)
         cache.fetch(url)
       else
-        retry_count = 0
-
-        begin
-          # TODO: proxy是全局的，需要隔离独立每个实例
-          RestClient.proxy = @proxy
-          response = RestClient.get(url, headers).body
-          cache.write(url, response, expires_in: 60.minutes) if need_cache
-          logger.info("pdd web spider:" + response.inspect)
-        rescue SocketError => e
-          # 无法连接： 域名错误、端口错误
-          logger.error(e)
-          raise FetchException
-        rescue Errno::ECONNREFUSED => e
-          # 连接被拒绝
-          logger.error(e)
-          raise FetchException
-        rescue RestClient::NotFound => e
-          # 无法找到页面
-          logger.error(e)
-          raise FetchException
-        rescue => e
-          logger.error(e)
-          logger.info("[+] Retry #{retry_count} times")
-
-          retry_count += 1
-          retry if retry_count <= retry_limit
-
-          raise RetryTooManyTimeException
-        end
-        response
+        response = web_page_request(url, headers)
+        cache.write(url, response, expires_in: 60.minutes) if need_cache
+        logger.info("web spider:" + response.inspect)
       end
+      logger.info("[+] End to parse #{self.class}: #{url}")
+      response
     end
 
     # 处理网页源数据
@@ -82,6 +48,36 @@ module Robot
     # end
 
     private
+
+    def web_page_request(url, headers)
+      retry_count = 0
+
+      begin
+        # TODO: proxy是全局的，需要隔离独立每个实例
+        RestClient.proxy = @proxy
+        response = RestClient.get(url, headers).body
+      rescue SocketError => e
+        # 无法连接： 域名错误、端口错误
+        logger.error(e)
+        raise FetchException
+      rescue Errno::ECONNREFUSED => e
+        # 连接被拒绝
+        logger.error(e)
+        raise FetchException
+      rescue RestClient::NotFound => e
+        # 无法找到页面
+        logger.error(e)
+        raise FetchException
+      rescue => e
+        logger.error(e)
+        logger.info("[+] Retry #{retry_count} times")
+
+        retry_count += 1
+        retry if retry_count <= retry_limit
+
+        raise RetryTooManyTimeException
+      end
+    end
 
     def default_config
       {

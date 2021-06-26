@@ -16,4 +16,9 @@ class ApplicationController < ActionController::Base
     flash[:alert] = '你暂无权限进行此操作!'
     redirect_to(request.referer || root_path)
   end
+
+  def render_view_for_device(temp)
+    temp += ".#{render_device_path}"
+    render temp
+  end
 end

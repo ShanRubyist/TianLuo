@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe 'home/index' do
+RSpec.describe 'home/index', type: :view do
   before do
     @user = User.create!(FactoryBot.attributes_for(:user))
   end
@@ -12,10 +12,12 @@ RSpec.describe 'home/index' do
     # expect(rendered).to match(/abc/)
   end
 
-  it '渲染 index.html.erb 模板' do
-    pending '需要修复运行错误'
-    render template: 'home/index.html.erb', locals: { current_user: @user }
-    expect(rendered).to eq 'abc'
+  it '渲染 index.mobile.html.erb 模板' do
+    allow(controller).to receive(:current_user).and_return(@user)
+    allow(@rss_feeds_list).to receive(:map).and_return([@rss_feed])
+
+    render template: 'home/index.mobile.html.erb'#, locals: { current_user: @user }
+    expect(rendered).to match /.*id="app".*/
   end
 
   it '渲染 nav.html.erb 模板' do

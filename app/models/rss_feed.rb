@@ -1,5 +1,8 @@
 class RssFeed < ApplicationRecord
   include RssSavable
+  include RssReadable
+
+  belongs_to :probe_setting
 
   belongs_to :rss_probe_history
 

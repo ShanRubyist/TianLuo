@@ -1,0 +1,93 @@
+# V2-prev数据迁移
+## 删除 user_rss_feed_ships 表中 user_id 和 rss_feed_id 重复内容，只保留id最小一条
+    delete from user_rss_feed_ships
+    where id not in (
+      select min(id) from user_rss_feed_ships
+      group by user_id, rss_feed_id
+      having  count(*) > 1
+      )
+      and (user_id, rss_feed_id) in (
+      select user_id, rss_feed_id from user_rss_feed_ships
+      group by user_id, rss_feed_id
+      having  count(*) > 1
+      )
+
+## 设置 rss_feeds 表中的 probe_setting_id 外键
+      update rss_feeds
+      set probe_setting_id = t.ps_id
+      from (
+        SELECT ps.url,ps.id as ps_id,rf.id as rf_id,rf.title
+        from rss_feeds as rf
+        left join rss_probe_histories as rph
+            on rf.rss_probe_history_id = rph.id
+        left join probe_settings as ps
+            on rph.probe_setting_id = ps.id
+        ) t
+      where rss_feeds.id = t.rf_id
+
+## 建立 user 和 rss_feed 的多对多关系，相同 url 的 probe_setting_id 只保留一个
+        insert into user_rss_ships(user_id, probe_setting_id, created_at, updated_at)
+          select user_id, id as probe_setting_id, created_at, updated_at
+          from (
+                select join_t.user_id,
+                    (case when join_t2.id is null then join_t.id else join_t2.id end),
+                    (case when join_t2.created_at is null then join_t.created_at else join_t2.created_at end),
+                    (case when join_t2.updated_at is null then join_t.updated_at else join_t2.updated_at end)
+                from probe_settings as join_t
+                left join (
+                    select ps.* from probe_settings ps, probe_settings ps2
+                    where ps.id < ps2.id and ps.url = ps2.url
+                    )  join_t2
+                on join_t.url = join_t2.url
+          ) t2
+
+## 更新历史表中的 probe_setting_id，引用保留的一个 probe_setting_id
+        update rss_probe_histories set probe_setting_id = t.id
+        from (
+            select join_t.id as orig_id,
+                (case when join_t2.id is null then join_t.id else join_t2.id end) as id
+            from probe_settings as join_t
+            left join (
+                select ps.* from probe_settings ps, probe_settings ps2
+                where ps.id < ps2.id and ps.url = ps2.url
+                )  join_t2
+            on join_t.url = join_t2.url
+        ) t
+        where t.orig_id = probe_setting_id
+
+## rss_feeds 表中的 probe_setting_id 外键引用保留的 probe_setting_id，其他的记录后续会删除
+        update rss_feeds set probe_setting_id = t.id
+        from (
+            select join_t.id as orig_id,
+                (case when join_t2.id is null then join_t.id else join_t2.id end) as id
+            from probe_settings as join_t
+            left join (
+                select ps.* from probe_settings ps, probe_settings ps2
+                where ps.id < ps2.id and ps.url = ps2.url
+                )  join_t2
+            on join_t.url = join_t2.url
+        ) t
+        where t.orig_id = probe_setting_id
+
+## 相同 url 只保留一条 probe_setting 记录，删除重复的记录
+delete from probe_settings
+where id in (
+    select ps.id from probe_settings ps, probe_settings ps2
+    where ps.id > ps2.id and ps.url = ps2.url
+)
+
+
+# 后续数据库更改
+## probe_settings
+- 可以给url加个唯一索引
+- 可以删除user_id
+
+## rss_feeds
+- 可以给link和probe_setting_id加个联合唯一索引
+- probe_setting_id null: false
+
+## rss_infos
+- 可以给probe_setting_id加个唯一索引
+
+## rss_probe_histories
+- 删除"title"、"description", "last_build_date"、 "link"

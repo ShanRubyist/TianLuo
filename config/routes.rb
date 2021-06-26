@@ -20,21 +20,20 @@ Rails.application.routes.draw do
   end
 
   # 自定义路由
-  resources :probe_settings, only: [:create, :destroy]
+  resources :probe_settings, only: [:index, :create, :destroy]
 
   resources :web_spider_settings, only: [:create, :destroy]
 
-  scope module: 'rss' do
-    get 'rss' => 'rss#index', as: 'rss'
-
-    resources :rss_feeds, only: [] do
-      collection do
-        get :unread_count
-        put :mark_readed
-        get :load_more_rss_feed
-      end
+  resources :rss_feeds, only: [] do
+    collection do
+      get :unread_count
+      put :mark_readed
+      get :load_more_rss_feed
     end
   end
+  get 'rss_list' => 'rss_feeds#rss_feeds_of_rss', as: 'rss_feed_rss_list'
+
+  get 'rss' => 'probe_settings#index', as: 'rss'
 
   scope module: 'goods' do
     resources :goods, only: [] do
@@ -52,7 +51,7 @@ Rails.application.routes.draw do
 
   get 'running_jobs_count' => 'jobs_management/jobs_management#running_jobs_count', as: 'running_jobs_count'
   post 'start_job' => 'jobs_management/jobs_management#start_job', as: 'start_job'
+  post 'start_all_jobs' => 'jobs_management/jobs_management#start_all_jobs', as: 'start_all_jobs'
   delete 'delete_job' => 'jobs_management/jobs_management#delete_job', as: 'delete_job'
-
   get 'histories' => 'histories/histories#histories', as: 'histories'
 end

@@ -3,5 +3,4 @@
 class HomeComponent < ViewComponent::Base
   def initialize
   end
-
 end

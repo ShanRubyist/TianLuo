@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'rss'
+require 'net/http'
 
 module RssSavable
   extend ActiveSupport::Concern
@@ -9,42 +10,85 @@ module RssSavable
   end
 
   module ClassMethods
-    def store_rss_to_db(user_id, rss_probe_history_id, job_id, rss_raw_data)
-      rss = handle(rss_raw_data)
+    def store_rss_to_db(probe_setting, rss_probe_history_id, job_id, rss_raw_data)
+      rss = transform(rss_raw_data)
       title = rss[:title]
       description = rss[:description]
       last_build_date = rss[:last_build_date]
       link = rss[:link]
       items = rss[:items]
 
-      # rss_probe_history = RssProbeHistory.create(probe_setting_id: probe_setting_id,
-      #                            title: title,
-      #                            description: description,
-      #                            last_build_date: last_build_date,
-      #                            link: link)
+      # 更新 rss info 信息
+      favicon_url = find_favicon_link(link) || default_favicon_location(link)
+      RssInfo
+          .find_or_create_by(probe_setting: probe_setting)
+          .update!(
+              title: title,
+              description: description,
+              link: link,
+              icon: favicon_url)
 
-      RssProbeHistory
-          .find_or_create_by(jid: job_id)
-          .update({ title: title, description: description })
-
+      # 增量更新，同一 probe setting 已有的RSS Feed不会重复添加
       items.each do |item|
-        # 增量更新，已有的RSS Feed不会重复添加
-        rss_feed = RssFeed.create_with(title: item[:title],
-                                       description: item[:description],
-                                       author: item[:author],
-                                       pub_date: item[:pub_date],
-                                       rss_probe_history_id: rss_probe_history_id)
-                       .find_or_create_by(link: item[:link])
+        rss_feed = RssFeed.create_with(
+            title: item[:title],
+            description: item[:description],
+            author: item[:author],
+            pub_date: item[:pub_date],
+            rss_probe_history_id: rss_probe_history_id
+        ).find_or_create_by(link: item[:link], probe_setting: probe_setting)
 
         # 把RSS Feed内容分发到用户的内容队列中，默认为未读
-        # TODO: 应该要分发到有订阅此Rss的用户中
-        UserRssFeedShip.find_or_create_by(user_id: user_id,
-                                          rss_feed_id: rss_feed.id)
+        probe_setting.users.each do |user|
+          UserRssFeedShip.find_or_create_by(user: user, rss_feed: rss_feed)
+        end
       end
+
+      # 更新历史信息
+      RssProbeHistory
+          .find_or_create_by(jid: job_id)
+          .update({title: title, description: description})
     end
 
     private
-    def handle(response)
+
+    # feedbin
+    def find_favicon_link(host)
+      host = URI(host).host
+      favicon_url = nil
+      url = URI::HTTP.build(host: host)
+      response = Net::HTTP.get(url).to_s
+      html = Nokogiri::HTML(response)
+      favicon_links = html.search(xpath)
+      if favicon_links.present?
+        favicon_url = favicon_links.first.to_s
+        favicon_url = URI.parse(favicon_url)
+        favicon_url.scheme = "http"
+        unless favicon_url.host
+          favicon_url = URI::HTTP.build(scheme: "http", host: host)
+          favicon_url = favicon_url.merge(favicon_links.last.to_s)
+        end
+      end
+      favicon_url
+      rescue
+        nil
+    end
+
+    # feedbin
+    def xpath
+      icon_names = ["shortcut icon", "icon", "apple-touch-icon", "apple-touch-icon-precomposed"]
+      icon_names = icon_names.map { |icon_name|
+        "//link[not(@mask) and translate(@rel, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz') = '#{icon_name}']/@href"
+      }
+      icon_names.join(" | ")
+    end
+
+    # feedbin
+    def default_favicon_location(host)
+      URI::HTTP.build(host: URI(host).host, path: "/favicon.ico")
+    end
+
+    def transform(response)
       feed = RSS::Parser.parse(response)
       if feed.class == RSS::Atom::Feed
         parse_atom(feed)
@@ -61,6 +105,7 @@ module RssSavable
             title: feed.title.content,
             description: feed.subtitle.content,
             link: feed.link.href,
+            #atom_link: feed.atom_link.href,
             last_build_date: feed.updated.content,
             items: []
         }
@@ -87,6 +132,7 @@ module RssSavable
             title: feed.channel.title,
             description: feed.channel.description,
             link: feed.channel.link,
+            #atom_link: feed.channel.atom_link,
             last_build_date: feed.channel.lastBuildDate,
             items: []
         }
@@ -94,7 +140,7 @@ module RssSavable
         feed.channel.items.each do |item|
           feed_hash[:items] << {
               title: item.title,
-              description: item.description,
+              description: item.content_encoded || item.description,
               link: item.link,
               author: item.author,
               pub_date: item.pubDate

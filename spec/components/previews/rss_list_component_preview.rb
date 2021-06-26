@@ -7,6 +7,6 @@ class RssListComponentPreview < ViewComponent::Preview
                    .order_by_desc
                    .limit 10
 
-    render(RssListComponent.new(rss_list: rss_list, current_user: User.first))
+    render(RssListComponent.new(rss_feeds_list: rss_list, current_user: User.first))
   end
 end

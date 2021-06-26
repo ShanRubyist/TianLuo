@@ -5,6 +5,13 @@ RSpec.describe ProbeSettingsController, type: :controller do
 
   login_user
 
+  describe 'GET #index' do
+    it 'access to index path' do
+      get :index
+      expect(response).to render_template("index")
+    end
+  end
+
   describe 'POST #create' do
     context 'with valid params' do
       it 'save the new probe setting' do
@@ -32,11 +39,14 @@ RSpec.describe ProbeSettingsController, type: :controller do
 
   describe 'DELETE #destroy' do
     it 'deletes the probe setting' do
-      probe_setting = FactoryBot.create(:probe_setting)
+      # user = FactoryBot.create(:user)
+      probe_setting = FactoryBot.create(:probe_setting, users: [User.first])
 
       expect {
         delete :destroy, params: {id: probe_setting.id}
-      }.to change(ProbeSetting, :count).by(-1)
+      }.to change(UserRssShip, :count).by(-1)
+
+      # expect(response).to redirect_to probe_setting_path
     end
   end
 end

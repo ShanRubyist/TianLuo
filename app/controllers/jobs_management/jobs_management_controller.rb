@@ -18,6 +18,23 @@ module JobsManagement
       end
     end
 
+    def start_all_jobs
+      job_class = case params['type']
+                  when 'WebSpiderWorkJob'
+                    # WebSpiderWorkJob
+                  else
+                    RssWorkJob
+                  end
+
+      ProbeSetting.where(user_id: current_user.id).each do |setting|
+        job_class.perform_later(setting)
+      end
+
+      render(json: {message: '任务启动成功!'})
+    rescue
+      render(json: nil, status: 502)
+    end
+
     def start_job
       setting = nil
 

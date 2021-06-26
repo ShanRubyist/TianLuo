@@ -423,6 +423,7 @@ GEM
     unf (0.1.4)
       unf_ext
     unf_ext (0.0.7.7)
+    useragent (0.16.10)
     view_component (2.30.0)
       activesupport (>= 5.0.0, < 7.0)
     warden (1.2.9)
@@ -490,6 +491,7 @@ DEPENDENCIES
   turbolinks (~> 5)
   tzinfo-data
   uglifier (>= 1.3.0)
+  useragent
   view_component
   web-console (>= 3.3.0)
   webpacker

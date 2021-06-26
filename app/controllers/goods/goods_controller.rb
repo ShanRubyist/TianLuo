@@ -8,7 +8,7 @@ module Goods
       if good = Coupon.includes(:good)
                     .where(goods: {spu_id: params[:good_id]})
                     .order('coupons.created_at asc')
-        rst = detail_change_history(good, :coupons, :created_at)
+        rst = Good.detail_change_history(good, :coupons, :created_at)
         render json: rst.to_json
       else
         render json: {}
@@ -24,7 +24,7 @@ module Goods
                     .where(goods: {spu_id: params[:good_id]})
                     .order('goods_extras.created_at asc')
 
-        rst = detail_change_history(good, :name, :created_at)
+        rst = Good.detail_change_history(good, :name, :created_at)
         render json: rst.to_json
       else
         render json: {}

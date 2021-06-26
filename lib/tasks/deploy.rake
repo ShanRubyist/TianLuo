@@ -1,4 +1,14 @@
-namespace :tianluo do
+desc 'run sidekiq & wepacker-dev-server'
+task :deploy => ['deploy:whenever', 'deploy:sidekiq', 'deploy:webpack']
+
+namespace :deploy do
+  desc '设定 config/schedule 定时任务'
+  task :whenever do
+    cmd = 'whenever --update-cron'
+    puts "[*] #{cmd}"
+    Kernel.system cmd
+  end
+
   desc '启动 sidekiq 服务'
   task :sidekiq do
     cmd = 'bundle exec sidekiq'
@@ -11,9 +21,5 @@ namespace :tianluo do
     cmd = './bin/webpack-dev-server &'
     puts "[*] #{cmd}"
     Kernel.system cmd
-  end
-
-  desc 'run sidekiq & wepacker-dev-server'
-  task :deploy => [:sidekiq, :webpack] do
   end
 end
