@@ -10,10 +10,11 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_06_11_170746) do
+ActiveRecord::Schema.define(version: 2021_07_03_034858) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+  enable_extension "zhparser"
 
   create_table "coupons", force: :cascade do |t|
     t.integer "good_id", null: false
@@ -90,6 +91,15 @@ ActiveRecord::Schema.define(version: 2021_06_11_170746) do
     t.datetime "updated_at", null: false
     t.index ["jid"], name: "index_goods_refresh_histories_on_jid"
     t.index ["pdd_web_spider_setting_id"], name: "index_goods_refresh_histories_on_pdd_web_spider_setting_id"
+  end
+
+  create_table "keywords", force: :cascade do |t|
+    t.integer "origin", default: 1, comment: "标记关键词来源，0:标题,1:摘要"
+    t.string "word", comment: "关键词"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["id"], name: "index_keywords_on_id"
+    t.index ["word"], name: "index_keywords_on_word"
   end
 
   create_table "mall_services", force: :cascade do |t|
@@ -228,6 +238,16 @@ ActiveRecord::Schema.define(version: 2021_06_11_170746) do
     t.string "jid", comment: "sidekiq job id"
     t.index ["jid"], name: "index_rss_probe_histories_on_jid"
     t.index ["probe_setting_id"], name: "index_rss_probe_histories_on_probe_setting_id"
+  end
+
+  create_table "rssfeed_keyword_ships", force: :cascade do |t|
+    t.integer "rss_feed_id", null: false
+    t.integer "keyword_id", null: false
+    t.json "position", comment: "内容中关键词的位置"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["keyword_id"], name: "index_rssfeed_keyword_ships_on_keyword_id"
+    t.index ["rss_feed_id"], name: "index_rssfeed_keyword_ships_on_rss_feed_id"
   end
 
   create_table "shops", force: :cascade do |t|

@@ -20,7 +20,7 @@
 # Learn more: http://github.com/javan/whenever
 
 env :PATH, ENV['PATH']
-set :output, 'log/cron.log'
+set :output, 'log/whenever.log'
 
 every 1.day, at: ['9:00 am'] do
   runner "RssQueueJob.perform_later", environment: :development
@@ -30,6 +30,14 @@ every 1.day, at: ['10:00 am'] do
   runner "WebSpiderQueueJob.perform_later", environment: :development
 end
 
+every 1.day, at: ['11:00 am'] do
+  runner "KeywordsJob.perform_later", environment: :development
+end
+
 every :monday, at: ['9:00 am'] do
   runner "WeeklySummaryJob.perform_later", environment: :development
+end
+
+every 1.month, at: ['9:00 am'] do
+  runner "MonthlySummaryJob.perform_later", environment: :development
 end
