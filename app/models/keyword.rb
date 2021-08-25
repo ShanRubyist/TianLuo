@@ -30,7 +30,7 @@ class Keyword < ApplicationRecord
       RssFeed.find_by_sql(sql_str)
     end
 
-    def self.insert_word_into_db
+    def insert_word_into_db
       rss_feeds = fetch_new_rss_feed
 
       # puts "总共 #{rss_feeds.size} 条记录"
@@ -45,8 +45,30 @@ class Keyword < ApplicationRecord
             word = pair.split(':').first[1...-1]
             position = pair.split(':').last.split(',')
             keyword = Keyword.find_or_create_by(word: word)
-            RssfeedKeywordShip.create(keyword: keyword, rss_feed: rss_feed, position: position)
+
+            tf = tf(rss_feed.id, keyword.id)
+            idf = idf(keyword.id)
+            tf_idf = tf * idf
+            RssfeedKeywordShip.create(keyword: keyword,
+                                      rss_feed: rss_feed,
+                                      position: position,
+                                      tf: tf,
+                                      idf: idf,
+                                      tf_idf: tf_idf)
           end
+        end
+
+        best_matched_tag(rss_feed.id).each do |tag_name|
+          tag = Tag.find_or_create_by(name: tag_name)
+          keyword = Keyword.find_by(word: tag_name)
+
+          # next unless keyword
+
+          tf = tf(rss_feed.id, keyword.id)
+          idf = idf(keyword.id)
+          tf_idf = tf * idf
+
+          RssFeedTagShip.create(tag: tag, rss_feed: rss_feed, tf_idf: tf_idf)
         end
       end
     end
@@ -58,7 +80,7 @@ class Keyword < ApplicationRecord
                                            .includes(:rssfeed_keyword_ships => :keyword)
                                            .where(:rssfeed_keyword_ships => {keyword_id: keyword_id})
                                            .count
-      Math.log(total_rss_feed_count / rss_feed_contain_keyword_count + 1)
+      Math.log(total_rss_feed_count / (rss_feed_contain_keyword_count + 1))
     end
 
     def tf(rss_feed_id, keyword_id)
@@ -68,11 +90,11 @@ class Keyword < ApplicationRecord
         sum + keyword.position.size
       end
 
-      return if total_keywords_count == 0
+      return 0 if total_keywords_count == 0
 
       keyword_count = RssfeedKeywordShip.find_by_rss_feed_id_and_keyword_id(rss_feed_id, keyword_id)&.position&.size
 
-      keyword_count / Float(total_keywords_count)
+      keyword_count.to_f / Float(total_keywords_count)
     end
 
     def tf_idf(rss_feed_id)
@@ -81,17 +103,16 @@ class Keyword < ApplicationRecord
       end
     end
 
-    def best_matched_tag(rss_feed_id)
+    def best_matched_tag(rss_feed_id, threshold=0.5)
       tag = []
       prev_num = 0
 
       RssfeedKeywordShip.where(rss_feed_id: rss_feed_id).each do |keyword|
         number = tf(rss_feed_id, keyword.keyword_id) * idf(keyword.keyword_id)
-        if number > prev_num
-          prev_num = number
-          tag = [sprintf("%s(%2.2f)", Keyword.find_by(id: keyword.keyword_id).word, prev_num)]
-        elsif number = prev_num
-          tag << sprintf("%s(%2.2f)", Keyword.find_by(id: keyword.keyword_id).word, prev_num)
+        if number >= threshold #&& number >= prev_num
+            prev_num = number
+          tag << Keyword.find_by(id: keyword.keyword_id).word
+          # tag << sprintf("%s(%2.2f)", Keyword.find_by(id: keyword.keyword_id).word, prev_num)
         end
       end
       tag

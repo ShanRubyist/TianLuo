@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_07_03_034858) do
+ActiveRecord::Schema.define(version: 2021_08_24_134445) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -188,6 +188,16 @@ ActiveRecord::Schema.define(version: 2021_07_03_034858) do
     t.index ["user_id"], name: "index_probe_settings_on_user_id"
   end
 
+  create_table "rss_feed_tag_ships", force: :cascade do |t|
+    t.integer "rss_feed_id"
+    t.integer "tag_id"
+    t.float "tf_idf"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["rss_feed_id"], name: "index_rss_feed_tag_ships_on_rss_feed_id"
+    t.index ["tag_id"], name: "index_rss_feed_tag_ships_on_tag_id"
+  end
+
   create_table "rss_feeds", force: :cascade do |t|
     t.string "title", comment: "文章标题"
     t.string "description", comment: "文章描述"
@@ -246,8 +256,12 @@ ActiveRecord::Schema.define(version: 2021_07_03_034858) do
     t.json "position", comment: "内容中关键词的位置"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.float "tf"
+    t.float "idf"
+    t.float "tf_idf"
     t.index ["keyword_id"], name: "index_rssfeed_keyword_ships_on_keyword_id"
     t.index ["rss_feed_id"], name: "index_rssfeed_keyword_ships_on_rss_feed_id"
+    t.index ["tf_idf"], name: "index_rssfeed_keyword_ships_on_tf_idf"
   end
 
   create_table "shops", force: :cascade do |t|
@@ -290,6 +304,13 @@ ActiveRecord::Schema.define(version: 2021_07_03_034858) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["sku_id"], name: "index_skus_extras_on_sku_id"
+  end
+
+  create_table "tags", force: :cascade do |t|
+    t.string "name", null: false, comment: "标签名称"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["id"], name: "index_tags_on_id"
   end
 
   create_table "user_rss_feed_ships", force: :cascade do |t|
