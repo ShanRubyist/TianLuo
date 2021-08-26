@@ -8,4 +8,5 @@ json.array! RssFeed.rss_feeds_list(params[:user_id], params[:rss]) do |rss|
   json.rss_link rss.rss_probe_history.link
   json.rss_description rss.rss_probe_history.description
   json.status rss.user_rss_feed_ships.first.unread
+  json.tags rss.tags.map { |tag| "#{tag.name}(#{rss.rss_feed_tag_ships.find_by(tag: tag).tf_idf})"}
 end

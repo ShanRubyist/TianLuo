@@ -40,7 +40,8 @@ class HomePresenter < BasePresenter
           rss_link: rss.probe_setting.rss_info.link,
           rss_description: rss.probe_setting.rss_info.description,
           icon: rss.probe_setting.rss_info.icon,
-          status: !rss.user_rss_feed_ships.first.unread
+          status: !rss.user_rss_feed_ships.first.unread,
+          tags: rss.tags.map { |tag| "#{tag.name}(#{rss.rss_feed_tag_ships.find_by(tag: tag).tf_idf})"}
       }
     end
     rst.to_json

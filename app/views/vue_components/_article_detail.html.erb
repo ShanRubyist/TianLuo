@@ -59,7 +59,12 @@
       </div>
     </div>
     <div class="article-wrapper">
+
       <div id="article-content" class="article-content">
+        <div style="padding-bottom: 20px">
+          <a-tag v-for="tag in current_article.tags" closable @close="del_tag">{{tag}}</a-tag>
+          <a-tag @click="add_tag">+</a-tag>
+        </div>
         <h2 class="article-title">
           {{current_article.title}}
         </h2>
@@ -68,12 +73,17 @@
                     全部文章数: --
                 </div> <div class="account-popover__desc">
                     今日文章数: --
-                </div></div> </div><span class="author el-popover__reference" aria-describedby="el-popover-4775" tabindex="0">
+                </div></div> </div>
+
+
+          <span class="author el-popover__reference" aria-describedby="el-popover-4775" tabindex="0">
           {{current_article.author}}
-        </span></span><!---->
+          </span></span><!---->
           <time datetime="Fri Apr 30 2021 17:00:01 GMT+0800 (中国标准时间)" class="el-tooltip item" aria-describedby="el-tooltip-6055" tabindex="0">
             {{current_article.pub_date}}
-          </time> <!----></div> <!---->
+          </time>
+
+          <!----></div> <!---->
         <div id="article-body" class="article-body locale-chinese" v-html="current_article.description">
         </div>
       </div>
