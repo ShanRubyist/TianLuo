@@ -11,7 +11,7 @@ class SummaryMailer < ApplicationMailer
     @rss_sources = ProbeSetting.select(:url).distinct(true).count
 
     admin_email = ENV['ADMIN_EMAIL']
-    mail(to: admin_email, from: ENV['EMAIL_FROM_ADDRESS'], subject: 'TianLuo Weekly Summary')
+    mail(to: admin_email, subject: 'TianLuo Weekly Summary')
   end
 
   def monthly_notify

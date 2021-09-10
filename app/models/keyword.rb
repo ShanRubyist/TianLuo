@@ -103,7 +103,7 @@ class Keyword < ApplicationRecord
       end
     end
 
-    def best_matched_tag(rss_feed_id, threshold=0.5)
+    def best_matched_tag(rss_feed_id, threshold=0.1)
       tag = []
       prev_num = 0
 
