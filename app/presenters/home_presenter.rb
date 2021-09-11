@@ -27,10 +27,12 @@ class HomePresenter < BasePresenter
     @all_rss_list_json.to_json
   end
 
-  def rss_feeds_list
+  def rss_feeds_list(rss_feed_list)
     rst = []
-    RssFeed.rss_feeds_list(@locals.id).each do |rss|
+    # RssFeed.rss_feeds_list(@locals.id).each do |rss|
+    rss_feed_list.each do |rss|
       rst << {
+          id: rss.id,
           title: rss.title,
           description: Loofah.fragment(rss.description).scrub!(:escape).to_html,
           pub_date: rss.pub_date.nil? ? '' : rss.pub_date.localtime.strftime("%Y-%m-%d %H:%M"),
@@ -41,6 +43,7 @@ class HomePresenter < BasePresenter
           rss_description: rss.probe_setting.rss_info.description,
           icon: rss.probe_setting.rss_info.icon,
           status: !rss.user_rss_feed_ships.first.unread,
+          thumbs_up: rss.user_rss_feed_ships.first.thumbs_up,
           tags: rss.tags.map { |tag| "#{tag.name}(#{rss.rss_feed_tag_ships.find_by(tag: tag).tf_idf})"}
       }
     end

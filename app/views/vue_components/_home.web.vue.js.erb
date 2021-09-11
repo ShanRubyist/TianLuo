@@ -8,7 +8,7 @@
     cat_wrapper_visible: true,
     rss_list_json:
     <% present('HomePresenter', current_user) do |rss| %>
-    <%= raw(rss.rss_feeds_list) %>
+    <%= raw(rss.rss_feeds_list(@rss_feeds_list)) %>
     <% end %>,
     all_rss_list_json:
     <% present('HomePresenter', current_user) do |rss| %>
@@ -23,6 +23,42 @@
     methods: {
     full_screen_mode: function () {
     this.full_screen = !this.full_screen
+},
+    recommend: function () {
+        var that = this;
+    axios.get('<%= recommend_rss_feeds_path %>', {
+    headers: {
+    'Accept': 'application/json'
+},
+    params: {
+    user_id: <%= current_user.id %>,
+}
+}).then(function (reason) {
+    that.rss_list_json = reason.data
+    that.current_article = reason.data[0]
+}).catch(function (reason) {
+    that.$message.error(reason.toString());
+})
+},
+    thumbs_up: function (rss) {
+    var that = this;
+    axios.put(window.location.href + 'rss_feeds/toggle_thumbs_up',
+{
+    user_id: <%= current_user.id %>,
+    rss_feed_id: rss,
+    authenticity_token: document.getElementsByName("csrf-token")[0].getAttribute('content')
+},
+{
+    headers: {
+    'Accept': 'application/json'
+}
+})
+    .then(function (reason) {
+    that.$message.success(reason.data.message)
+})
+    .catch(function (reason) {
+    that.$message.error(reason.toString());
+})
 },
     mark_readed: function () {
     var that = this;

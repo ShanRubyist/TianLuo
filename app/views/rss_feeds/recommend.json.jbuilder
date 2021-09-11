@@ -1,4 +1,4 @@
-json.array! RssFeed.rss_feeds_list(params[:user_id], params[:rss]) do |rss|
+json.array!(RssFeed.recommend_feeds(params[:user_id])) do |rss|
   json.id rss.id
   json.title rss.title
   json.description rss.description.to_s

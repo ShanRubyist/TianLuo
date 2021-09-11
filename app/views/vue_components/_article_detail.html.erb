@@ -34,7 +34,7 @@
                     </span></div>
         <div class="article-actions">
           <span><i title="标记" class="iconfont icon-highlight el-popover__reference" aria-describedby="el-popover-250" tabindex="0"></i></span>
-          <i title="收藏" class="iconfont icon-collection"></i>
+          <i title="收藏" class="iconfont icon-collection" @click="thumbs_up(current_article.id)"></i>
           <span><i title="添加标签" class="iconfont icon-label el-popover__reference" aria-describedby="el-popover-4023" tabindex="0"></i></span>
           <a title="访问原始文章[V (visit)]" id="ori_link" :href="current_article.link" target="_blank" class="js-external-link article-link">
             <i class="iconfont icon-send"></i></a>

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_08_24_134445) do
+ActiveRecord::Schema.define(version: 2021_09_10_133154) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -319,6 +319,7 @@ ActiveRecord::Schema.define(version: 2021_08_24_134445) do
     t.boolean "unread", default: true, comment: "是否已读"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean "thumbs_up", default: false, comment: "是否点赞"
     t.index ["rss_feed_id"], name: "index_user_rss_feed_ships_on_rss_feed_id"
     t.index ["user_id", "rss_feed_id"], name: "index_user_rss_feed_ships_on_user_id_and_rss_feed_id", unique: true
     t.index ["user_id"], name: "index_user_rss_feed_ships_on_user_id"

@@ -29,6 +29,8 @@ Rails.application.routes.draw do
       get :unread_count
       put :mark_readed
       get :load_more_rss_feed
+      put :toggle_thumbs_up
+      get :recommend
     end
   end
   get 'rss_list' => 'rss_feeds#rss_feeds_of_rss', as: 'rss_feed_rss_list'

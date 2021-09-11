@@ -8,6 +8,18 @@ class RssFeedsController < ApplicationController
     end
   end
 
+  def recommend
+    respond_to do |format|
+      format.json
+    end
+  end
+
+  def toggle_thumbs_up
+    rst = UserRssFeedShip.find_by(user_id: params[:user_id], rss_feed_id: params['rss_feed_id'])
+    rst.update(thumbs_up: !rst.thumbs_up)
+    render json: {message: (rst.reload.thumbs_up ? "已点赞" : "取消点赞")}
+  end
+
   def mark_readed
     rst = UserRssFeedShip.where(user_id: params[:user_id], unread: true)
     rst = (params['rss_feed_id'].nil?) ? rst : rst.where(rss_feed_id: params['rss_feed_id'])
