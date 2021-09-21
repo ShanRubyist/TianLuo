@@ -1,13 +1,27 @@
-<div id="app">
-  <%= render(HomeComponent.new) do %>
-    <%#= render(RssListComponent.new(rss_list: @rss_list, current_user: current_user)) do %>
-    <%# end %>
+<script>
+  var user_id = <%= current_user.id %>
+   <% rst = @rss_feeds_list.map do |rss| %>
+      <% {
+             title: rss.title,
+             description: Loofah.fragment(rss.description).scrub!(:escape).to_html,
+             pub_date: rss.pub_date.nil? ? '' : rss.pub_date.localtime.strftime("%Y-%m-%d %H:%M"),
+             author: rss.author,
+             link: rss.link,
+             rss: rss.rss_probe_history.title,
+             rss_link: rss.rss_probe_history.link,
+             rss_description: rss.rss_probe_history.description,
+             status: rss.user_rss_feed_ships.first.unread
+         }
+      %>
+      <% end %>
+  var rss_list_json =  <%= raw(rst.to_json) %>
+  var unread_count_rss_feeds_path = '<%=unread_count_rss_feeds_path %>'
+  
+  var goods_data = <%= raw(@goods_list.to_json) %>
+</script>
 
-    <%#= render(GoodsListComponent.new(goods_list: @goods_list)) do %>
-    <%# end %>
+<%= javascript_pack_tag 'mobile_app' %>
 
-    <%#= render(AddDiaglogComponent.new(current_user: current_user)) %>
-  <% end %>
+<div id="tianluo">
+  <app></app>
 </div>
-
-<%= render partial: 'vue_components/home.vue.js' %>

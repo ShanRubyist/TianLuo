@@ -2,14 +2,26 @@
   (<%= @unread_count %>)
 <% end %>
 
-<div id="app">
-  <add-dialog v-bind:dialog_visible="dialog_visible" v-on:close-dialog="dialog_visible = false"></add-dialog>
-
-  <%= render partial: 'vue_components/home.web' %>
-</div>
-
-<%= render partial: 'vue_components/home.web.vue.js' %>
-
 <% f = File.new("#{Rails.root}/vendor/weread.css") %>
 <% content = f.read %>
 <%= raw(content) %>
+
+<script>
+  var user_id = <%= current_user.id %>
+
+    <% present('HomePresenter', current_user) do |rss| %>
+  var rss_list_json = <%= raw(rss.rss_feeds_list(@rss_feeds_list)) %>
+    <% end %>
+
+    <% present('HomePresenter', current_user) do |rss| %>
+    var all_rss_list_json = <%= raw(rss.all_rss_list_json) %>
+    <% end %>
+
+    var current_article = <%= raw(@rss_feeds_list.first.to_json) %>
+</script>
+
+<%= javascript_pack_tag 'web_app' %>
+
+<div id="tianluo">
+  <app></app>
+</div>

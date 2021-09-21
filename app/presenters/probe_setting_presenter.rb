@@ -15,10 +15,10 @@ class ProbeSettingPresenter < BasePresenter
           port: rss.port,
           proxy: rss.proxy,
           retry_limit: rss.retry_limit,
-          latest_updated: rss.rss_probe_histories.last.last_build_date,
-          status: rss.rss_probe_histories.last.status,
-          jid: rss.rss_probe_histories.last.jid,
-          detail: rss.rss_probe_histories.last.detail
+          latest_updated: rss.rss_probe_histories.last&.last_build_date,
+          status: rss.rss_probe_histories.last&.status,
+          jid: rss.rss_probe_histories.last&.jid,
+          detail: rss.rss_probe_histories.last&.detail
       }
     end
     @all_rss_list_json.to_json
