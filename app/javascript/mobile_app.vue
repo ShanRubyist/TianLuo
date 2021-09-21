@@ -24,7 +24,6 @@
 
             <rss-list
               :user_id="user_id"
-              :unread_count_rss_feeds_path="unread_count_rss_feeds_path"
               :rss_list_json="rss_list_json"
             ></rss-list>
           </a-tab-pane>
@@ -77,8 +76,28 @@ export default {
     }
   },
   mounted: function() {
-    window.addEventListener("scroll", this.handleScroll);
+    // window.addEventListener("scroll", this.handleScroll);
+
+    // 定时轮询未读的rss feed数量
+    setInterval(function() {
+      axios
+              .get(unread_count_rss_feeds_path, {
+                headers: {
+                  Accept: "application/json"
+                },
+                params: {
+                  id: user_id
+                }
+              })
+              .then(function(reason) {
+                // app._data.unread_count = reason.data.unread_count;
+                // app.__vue__._data.unread_count = reason.data.unread_count;
+                app.__vue__.unread_count = reason.data.unread_count;
+              })
+              .catch(function(reason) {});
+    }, 5000);
   },
+
   components: {
     "rss-list": RssList,
     "goods-list": GoodsList,

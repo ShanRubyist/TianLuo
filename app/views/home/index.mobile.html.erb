@@ -15,7 +15,7 @@
       %>
       <% end %>
   var rss_list_json =  <%= raw(rst.to_json) %>
-  var unread_count_rss_feeds_path = '<%=unread_count_rss_feeds_path %>'
+  var unread_count_rss_feeds_path = '<%= unread_count_rss_feeds_path %>'
   
   var goods_data = <%= raw(@goods_list.to_json) %>
 </script>

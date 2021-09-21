@@ -47,31 +47,13 @@
 
 <script>
 export default {
-  props: ["user_id", "unread_count_rss_feeds_path", "rss_list_json"],
+  props: ["user_id", "rss_list_json"],
   data: function() {
     return {
       prev: null,
       next_page: 2,
       spinning: false
     };
-  },
-  mounted: function() {
-    // 定时轮询未读的rss feed数量
-    setInterval(function() {
-      axios
-        .get(unread_count_rss_feeds_path, {
-          headers: {
-            Accept: "application/json"
-          },
-          params: {
-            id: user_id
-          }
-        })
-        .then(function(reason) {
-          app._data.unread_count = reason.data.unread_count;
-        })
-        .catch(function(reason) {});
-    }, 5000);
   },
   methods: {
     mark_readed: function() {
