@@ -1,12 +1,14 @@
-<template v-for="name in name_list">
+<template>
   <div>
-    <div>{{name.name}}</div>
+    <template v-for="name in name_list">
+      <div>{{name.name}}</div>
 
-    <span>
-      {{name.changed}}
-      从{{name.from_when}}开始，{{name.has_last}}
-    </span>
-    <br />
+      <span>
+        {{name.changed}}
+        从{{name.from_when}}开始，{{name.has_last}}
+      </span>
+      <br />
+    </template>
   </div>
 </template>
 

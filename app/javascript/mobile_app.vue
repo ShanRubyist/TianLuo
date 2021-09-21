@@ -33,7 +33,7 @@
             <span slot="tab">
               <i class="fa fa-shopping-cart"></i>&nbsp;店铺监控
             </span>
-            <goods-list></goods-list>
+            <goods-list :goods_data="goods_data"></goods-list>
           </a-tab-pane>
 
           <a-button type="primary" slot="tabBarExtraContent" @click="show_add_dialog">

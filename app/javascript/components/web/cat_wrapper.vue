@@ -110,8 +110,7 @@ export default {
           }
         })
         .then(function(reason) {
-          that.rss_list_json = reason.data;
-          that.current_article = reason.data[0];
+          that.$emit('change_rss', reason.data)
         })
         .catch(function(reason) {
           that.$message.error(reason.toString());

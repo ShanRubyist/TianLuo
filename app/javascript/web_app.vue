@@ -3,11 +3,14 @@
     <div class="app-wrapper">
       <!--    工具栏区域-->
       <sidebar :full_screen="full_screen"
-      @toggle_cat_wrapper="toggle_cat_wrapper"></sidebar>
+      @toggle_cat_wrapper="toggle_cat_wrapper"
+      @recommend="recommend"></sidebar>
 
       <!--    订阅列表区域-->
       <cat-wrapper :full_screen="full_screen"
-      :cat_wrapper_visible="cat_wrapper_visible"></cat-wrapper>
+      :all_rss_list_json="all_rss_list_json"
+      :cat_wrapper_visible="cat_wrapper_visible"
+      @change_rss="change_rss"></cat-wrapper>
 
       <!--Feed 列表区域-->
       <article-list :full_screen="full_screen"
@@ -231,12 +234,20 @@ export default {
     change_article: function(article) {
       this.current_article = article;
     },
+    recommend: function(data) {
+      this.rss_list_json = data;
+      this.current_article = data[0];
+    },
     toggle_cat_wrapper: function() {
       this.cat_wrapper_visible = !this.cat_wrapper_visible;
     },
     full_screen_mode: function() {
       this.full_screen = !this.full_screen;
     },
+    change_rss: function(data) {
+      this.rss_list_json = data;
+      thit.current_article = data[0];
+    }
   },
   mounted: function() {},
   components: {

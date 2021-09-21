@@ -49,11 +49,11 @@
               </a-tab-pane>
 
               <a-tab-pane key="4" tab="促销变动">
-                <coupons_change :coupon_list="coupon_list"></coupons_change>
+                <coupons-change :coupon_list="coupon_list"></coupons-change>
               </a-tab-pane>
 
               <a-tab-pane key="5" tab="评论数变动">
-                <comments_num_change></comments_num_change>
+                <comments-num-change></comments-num-change>
               </a-tab-pane>
             </a-tabs>
           </div>
@@ -322,7 +322,7 @@ export default {
     "ad-change": AdChange,
     "title-change": TitleChange,
     "coupons-change": CouponsChange,
-    comments_num_change: CommentsNumChange,
+    'comments-num-change': CommentsNumChange,
     "price-change": PriceChange
   }
 };
