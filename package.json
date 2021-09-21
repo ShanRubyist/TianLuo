@@ -5,7 +5,7 @@
     "@rails/webpacker": "5.1.1",
     "animate.css": "^3.7.2",
     "ant-design-vue": "^1.5.3",
-    "axios": "^0.21.1",
+    "axios": "^0.21.2",
     "bootstrap": "^4.4.1",
     "echarts": "^4.9.0",
     "element-ui": "^2.13.1",
