@@ -246,7 +246,7 @@ export default {
     },
     change_rss: function(data) {
       this.rss_list_json = data;
-      thit.current_article = data[0];
+      this.current_article = data[0];
     }
   },
   mounted: function() {},

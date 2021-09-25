@@ -7,14 +7,14 @@
 <%= raw(content) %>
 
 <script>
-  var user_id = <%= current_user.id %>
+    var user_id =  <%= current_user.id %>
 
-    <% present('HomePresenter', current_user) do |rss| %>
-  var rss_list_json = <%= raw(rss.rss_feeds_list(@rss_feeds_list)) %>
+    <% present('RssFeedPresenter', user_id: current_user) do |rss| %>
+    var rss_list_json = <%= raw(rss.rss_feed.to_json) %>
     <% end %>
 
-    <% present('HomePresenter', current_user) do |rss| %>
-    var all_rss_list_json = <%= raw(rss.all_rss_list_json) %>
+    <% present('RssPresenter', user_id: current_user.id) do |rss| %>
+    var all_rss_list_json = <%= raw(rss.rss.to_json) %>
     <% end %>
 
     var current_article = <%= raw(@rss_feeds_list.first.to_json) %>

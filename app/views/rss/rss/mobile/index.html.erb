@@ -1,6 +1,6 @@
 <script>
-    <% present(current_user.probe_settings.first, current_user) do |probe_setting_persenter| %>
-    var all_rss_list = <%= raw probe_setting_persenter.rss %>
+    <% present('RssPresenter', user_id: current_user.id) do |rss| %>
+    var all_rss_list = <%= raw(rss.rss.to_json) %>
     <% end %>
 
     var running_rss_jobs_count = '<%= @running_rss_jobs_count %>'

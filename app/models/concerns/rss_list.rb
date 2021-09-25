@@ -6,6 +6,9 @@ module RSSList
 
   module ClassMethods
     def rss_list(user_id, page = 1, per = 100)
+      page ||= 1
+      per ||= 100
+
       # FIXME: 修改用 AR 来实现
       ProbeSetting.find_by_sql(<<-SQL
       select ps.id as id,
