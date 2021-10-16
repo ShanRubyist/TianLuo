@@ -22,7 +22,9 @@
       <article-detail
       :full_screen="full_screen"
       :current_article="current_article"
-      @full_screen_mode="full_screen_mode">
+      :font_list="font_list"
+      @full_screen_mode="full_screen_mode"
+      >
       </article-detail>
 
       <div class="fixed-audio__wrapper" style="display: none;">
@@ -227,7 +229,8 @@ export default {
       current_article: window.current_article,
       current_rss: null,
       qrcode: null,
-      full_screen: false
+      full_screen: false,
+      font_list: window.font_list
     };
   },
   methods: {

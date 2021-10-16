@@ -81,6 +81,14 @@
             <span class="article-account__title text--ellipsis">{{current_article.rss}}</span>
           </div>
           <div class="article-actions">
+            <select v-model="ff">
+              <option v-for="font in font_list"
+              :style='{fontFamily: font}'
+              >
+              {{font}}
+              </option>
+            </select>
+
             <span>
               <i
                 title="标记"
@@ -205,7 +213,12 @@
 
 <script>
 export default {
-  props: ['current_article', 'full_screen'],
+  props: ['current_article', 'full_screen', 'font_list'],
+  data: function() {
+    return {
+      ff: localStorage.getItem('defaultFontFamily')
+    }
+  },
   methods: {
     del_tag: function() {},
     add_tag: function() {},
@@ -255,6 +268,17 @@ export default {
         correctLevel: QRCode.CorrectLevel.H
       });
     }
+  },
+  watch: {
+    ff: function(font_family) {
+      var article_body = document.getElementsByClassName('article-body')[0]
+      article_body.style.fontFamily = font_family
+      localStorage.setItem('defaultFontFamily', font_family) 
+    }
+  },
+  mounted: function() {
+      var article_body = document.getElementsByClassName('article-body')[0]
+      article_body.style.fontFamily = this.ff
   }
 };
 </script>
