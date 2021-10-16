@@ -5,7 +5,10 @@ module RssReadable
   end
 
   module ClassMethods
-    def rss_feeds_list(user_id, rss = nil, page = 1, per = 100)
+    def rss_feeds_list(user_id, rss = nil, page = nil, per = nil)
+      page ||= 1
+      per ||= 100
+
       rst = RssFeed.includes(:user_rss_feed_ships)
                 .includes(:rss_feed_tag_ships)
                 .includes(:tags)
