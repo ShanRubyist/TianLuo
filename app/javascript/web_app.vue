@@ -223,6 +223,7 @@ export default {
   data: function() {
     return {
       unread_count: 0,
+      unread_count_rss_feeds_path: window.unread_count_rss_feeds_path,
       cat_wrapper_visible: true,
       rss_list_json: window.rss_list_json,
       all_rss_list_json: window.all_rss_list_json,
@@ -252,7 +253,27 @@ export default {
       this.current_article = data[0];
     }
   },
-  mounted: function() {},
+  mounted: function() {
+    // 定时轮询未读的rss feed数量
+    setInterval(function() {
+      axios
+              .get(unread_count_rss_feeds_path, {
+                headers: {
+                  Accept: "application/json"
+                },
+                params: {
+                  id: user_id
+                }
+              })
+              .then(function(reason) {
+                // app._data.unread_count = reason.data.unread_count;
+                // app.__vue__._data.unread_count = reason.data.unread_count;
+                app.__vue__.unread_count = reason.data.unread_count;
+                window.favicon.badge(reason.data.unread_count)
+              })
+              .catch(function(reason) {});
+    }, 5000);
+  },
   components: {
     sidebar: Sidebar,
     "cat-wrapper": CatWarpper,
