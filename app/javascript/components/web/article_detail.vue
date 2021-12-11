@@ -150,7 +150,7 @@
           </div>
         </div>
       </div>
-      <div class="article-wrapper">
+      <div class="article-wrapper"  ref="article_wrapper">
         <div id="article-content" class="article-content">
           <div style="padding-bottom: 20px">
             <a-tag v-for="tag in current_article.tags" closable @close="del_tag">{{tag}}</a-tag>
@@ -279,6 +279,9 @@ export default {
   mounted: function() {
       var article_body = document.getElementsByClassName('article-body')[0]
       article_body.style.fontFamily = this.ff
+  },
+  updated: function() {
+      this.$refs.article_wrapper.scrollTop = 0;
   }
 };
 </script>
