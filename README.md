@@ -3,6 +3,7 @@
 [![Build Status](https://travis-ci.org/ShanRubyist/TianLuo.svg?branch=master)](https://travis-ci.org/ShanRubyist/TianLuo)
 [![Coverage Status](https://coveralls.io/repos/github/ShanRubyist/TianLuo/badge.svg)](https://coveralls.io/github/ShanRubyist/TianLuo)
 [![security](https://hakiri.io/github/ShanRubyist/TianLuo/master.svg)](https://hakiri.io/github/ShanRubyist/TianLuo/master)
+![Alt](https://repobeats.axiom.co/api/embed/53b9bd22627cee5ce3694fb2cd940a4603ec7caa.svg "Repobeats analytics image")
 
 # README
 
