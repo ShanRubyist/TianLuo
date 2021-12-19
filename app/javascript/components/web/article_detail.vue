@@ -157,10 +157,15 @@
                 v-for="tag in current_article.tags"
                 closable
                 @close="del_tag"
-                :color="tag.recomend? 'green':''">
+                :color="tag.recommend? 'green':''">
                     <a-tooltip>
                        <template slot="title">
-                          你曾收藏过相关标签内容
+                         <template v-if="tag.recommend">
+                           你曾收藏过相关标签内容
+                         </template>
+                         <template v-else>
+                           文章相关标签
+                         </template>
                         </template>
                         {{tag.name + tag.tf_idf}}
                     </a-tooltip>

@@ -1,10 +1,10 @@
-recommend_tags, rss = RssFeed.recommend_feeds(params[:user_id])
-json.array!(rss) do |rss|
+recommend_tags, rss_list = RssFeed.recommend_feeds(params[:user_id])
+json.array!(rss_list) do |rss|
   json.id rss.id
   json.title rss.title
   json.description rss.description.to_s
   json.pub_date rss.pub_date.nil? ? '' : rss.pub_date.localtime.strftime('%Y-%m-%d %H:%M')
-  json.author rss.author
+  json.author rss.authors
   json.link rss.link
   json.rss rss.rss_probe_history.title
   json.rss_link rss.rss_probe_history.link
@@ -14,6 +14,6 @@ json.array!(rss) do |rss|
   json.tags rss.tags.map do |tag|
     json.name tag.name
     json.tf_idf rss.rss_feed_tag_ships.find_by(tag: tag).tf_idf
-    json.recomend recommend_tags.map(&:tag_id).include?(tag.id)
+    json.recommend recommend_tags.map(&:tag_id).include?(tag.id)
   end
 end
