@@ -153,8 +153,17 @@
       <div class="article-wrapper"  ref="article_wrapper">
         <div id="article-content" class="article-content">
           <div style="padding-bottom: 20px">
-            <a-tag v-for="tag in current_article.tags" closable @close="del_tag" :color="tag.recomend? green : null">
-            {{tag.name + tag.tf_idf}}
+            <a-tag
+                v-for="tag in current_article.tags"
+                closable
+                @close="del_tag"
+                :color="tag.recomend? 'green':''">
+                    <a-tooltip>
+                       <template slot="title">
+                          你曾收藏过相关标签内容
+                        </template>
+                        {{tag.name + tag.tf_idf}}
+                    </a-tooltip>
             </a-tag>
             <a-tag @click="add_tag">+</a-tag>
           </div>
