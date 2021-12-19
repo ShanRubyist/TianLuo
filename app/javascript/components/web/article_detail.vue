@@ -153,7 +153,9 @@
       <div class="article-wrapper"  ref="article_wrapper">
         <div id="article-content" class="article-content">
           <div style="padding-bottom: 20px">
-            <a-tag v-for="tag in current_article.tags" closable @close="del_tag">{{tag}}</a-tag>
+            <a-tag v-for="tag in current_article.tags" closable @close="del_tag" :color="tag.recomend? green : null">
+            {{tag.name + tag.tf_idf}}
+            </a-tag>
             <a-tag @click="add_tag">+</a-tag>
           </div>
           <h2 class="article-title">{{current_article.title}}</h2>

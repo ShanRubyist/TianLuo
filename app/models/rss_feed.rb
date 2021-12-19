@@ -30,7 +30,7 @@ class RssFeed < ApplicationRecord
       limit #{max_limit}
     SQL
     )
-
+    return [rst,
     RssFeed.includes(:user_rss_feed_ships)
         .includes(:rss_feed_tag_ships)
         .includes(:tags)
@@ -40,5 +40,6 @@ class RssFeed < ApplicationRecord
         .where(:rss_feed_tag_ships => {tag_id: rst.map(&:tag_id)})
         .order('rss_feed_tag_ships.tf_idf desc, user_rss_feed_ships.unread desc')
         .limit(100)
+    ]
   end
 end
