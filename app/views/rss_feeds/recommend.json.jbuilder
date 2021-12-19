@@ -14,6 +14,6 @@ json.array!(rss) do |rss|
   json.tags rss.tags.map do |tag|
     json.name tag.name
     json.tf_idf rss.rss_feed_tag_ships.find_by(tag: tag).tf_idf
-    json.recomend recommend_tags.include?(tag.id)
+    json.recomend recommend_tags.map(&:tag_id).include?(tag.id)
   end
 end
