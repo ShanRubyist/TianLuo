@@ -16,7 +16,11 @@ class RssFeedPresenter < BasePresenter
           icon: rss.probe_setting.rss_info.icon,
           status: !rss.user_rss_feed_ships.first&.unread,
           thumbs_up: rss.user_rss_feed_ships.first&.thumbs_up,
-          tags: rss.tags.map { |tag| "#{tag.name}(#{rss.rss_feed_tag_ships.find_by(tag: tag).tf_idf})" }
+          tags: {
+            name: tag.name,
+            tf_idf: rss.rss_feed_tag_ships.find_by(tag: tag).tf_idf,
+            recommend: recommend_tags.map(&:tag_id).include?(tag.id)
+          }
       }
     end
   end

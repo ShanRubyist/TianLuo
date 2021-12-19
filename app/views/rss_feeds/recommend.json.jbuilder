@@ -4,7 +4,7 @@ json.array!(rss_list) do |rss|
   json.title rss.title
   json.description rss.description.to_s
   json.pub_date rss.pub_date.nil? ? '' : rss.pub_date.localtime.strftime('%Y-%m-%d %H:%M')
-  json.author rss.authors
+  json.author rss.author
   json.link rss.link
   json.rss rss.rss_probe_history.title
   json.rss_link rss.rss_probe_history.link
