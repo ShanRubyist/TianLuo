@@ -97,7 +97,12 @@
                 tabindex="0"
               ></i>
             </span>
-            <i title="收藏" class="iconfont icon-collection" @click="thumbs_up(current_article.id)"></i>
+            <i title="收藏"
+               class="iconfont"
+               :class="this.current_article.thumbs_up?'icon-collection_fill':'icon-collection'"
+               @click="thumbs_up(current_article.id)">
+
+            </i>
             <span>
               <i
                 title="添加标签"
@@ -232,7 +237,7 @@ export default {
   props: ['current_article', 'full_screen', 'font_list'],
   data: function() {
     return {
-      ff: localStorage.getItem('defaultFontFamily')
+      ff: localStorage.getItem('defaultFontFamily'),
     }
   },
   methods: {
@@ -257,6 +262,7 @@ export default {
           }
         )
         .then(function(reason) {
+          that.current_article.thumbs_up = !that.current_article.thumbs_up
           that.$message.success(reason.data.message);
         })
         .catch(function(reason) {

@@ -17,8 +17,6 @@
     var all_rss_list_json = <%= raw(rss.rss.to_json) %>
     <% end %>
 
-    var current_article = <%= raw(@rss_feeds_list.first.to_json) %>
-
     var font_list = <%= raw @font_list %>
 
     var unread_count_rss_feeds_path = '<%= unread_count_rss_feeds_path %>'

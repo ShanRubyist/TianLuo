@@ -271,7 +271,7 @@ export default {
       cat_wrapper_visible: true,
       rss_list_json: window.rss_list_json,
       all_rss_list_json: window.all_rss_list_json,
-      current_article: window.current_article,
+      current_article: window.rss_list_json[0],
       current_rss: null,
       qrcode: null,
       full_screen: false,
