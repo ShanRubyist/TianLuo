@@ -19,6 +19,18 @@ class RssFeed < ApplicationRecord
   scope :order_by_desc, -> { order('rss_feeds.created_at desc') }
 
   def self.favor(user_id)
+    rst = UserRssFeedShip.find_by_sql(<<-SQL
+      select rss_feed_tag_ships.tag_id, count(*) as n
+      from user_rss_feed_ships
+      inner join rss_feed_tag_ships
+      on rss_feed_tag_ships.rss_feed_id = user_rss_feed_ships.rss_feed_id
+     where user_rss_feed_ships.user_id = #{user_id} and user_rss_feed_ships.thumbs_up is true
+      group by rss_feed_tag_ships.tag_id
+      order by count(*) desc
+      limit #{max_limit}
+    SQL
+    )
+    return [rst,
     RssFeed.includes(:user_rss_feed_ships)
            .includes(:rss_feed_tag_ships)
            .includes(:tags)
@@ -27,6 +39,7 @@ class RssFeed < ApplicationRecord
            .where(:user_rss_feed_ships => {:user_id => user_id, :thumbs_up => true})
            .order('user_rss_feed_ships.created_at desc')
            .limit(100)
+    ]
   end
 
   def self.recommend_feeds(user_id, max_limit = 10)

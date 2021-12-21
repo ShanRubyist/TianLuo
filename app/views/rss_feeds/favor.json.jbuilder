@@ -1,4 +1,4 @@
-rss_feeds = RssFeed.favor(params[:user_id])
+recommend_tags, rss_feeds = RssFeed.favor(params[:user_id])
 json.array!(rss_feeds) do |rss|
   json.id rss.id
   json.title rss.title
