@@ -14,6 +14,12 @@ class RssFeedsController < ApplicationController
     end
   end
 
+  def favor
+    respond_to do |format|
+      format.json
+    end
+  end
+
   def toggle_thumbs_up
     rst = UserRssFeedShip.find_by(user_id: params[:user_id], rss_feed_id: params['rss_feed_id'])
     rst.update(thumbs_up: !rst.thumbs_up)

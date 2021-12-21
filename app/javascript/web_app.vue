@@ -3,9 +3,12 @@
     <div class="app-wrapper">
       <!--    工具栏区域-->
       <sidebar id="sidebar"
-        :full_screen="full_screen"
-        @toggle_cat_wrapper="toggle_cat_wrapper"
-        @recommend="recommend"
+               :full_screen="full_screen"
+               :unread_count="unread_count"
+               @rss_feed="rss_feed"
+               @recommend="recommend"
+               @favor="favor"
+               @toggle_cat_wrapper="toggle_cat_wrapper"
       ></sidebar>
 
       <!--    订阅列表区域-->
@@ -282,9 +285,20 @@ export default {
     change_article: function (article) {
       this.current_article = article;
     },
+    rss_feed: function () {
+      this.rss_list_json = window.rss_list_json;
+      this.current_article = window.rss_list_json[0];
+      this.cat_wrapper_visible = true
+    },
     recommend: function (data) {
       this.rss_list_json = data;
       this.current_article = data[0];
+      this.cat_wrapper_visible = false;
+    },
+    favor: function (data) {
+      this.rss_list_json = data;
+      this.current_article = data[0];
+      this.cat_wrapper_visible = false;
     },
     toggle_cat_wrapper: function () {
       this.cat_wrapper_visible = !this.cat_wrapper_visible;
