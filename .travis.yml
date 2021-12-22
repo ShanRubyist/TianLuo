@@ -5,10 +5,10 @@ env:
 language: ruby
 
 rvm:
-  - 2.5
+  - 2.7
 
 node_js:
-  - 11.0.0
+  - 12.0.0
 
 install: 
   - gem install rails
