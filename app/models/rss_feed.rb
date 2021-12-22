@@ -18,7 +18,8 @@ class RssFeed < ApplicationRecord
   # default_scope -> { order('created_at desc') }
   scope :order_by_desc, -> { order('rss_feeds.created_at desc') }
 
-  def self.favor(user_id)
+  # TODO: 整合 favor 和 recommend_feeds
+  def self.favor(user_id, max_limit=10)
     rst = UserRssFeedShip.find_by_sql(<<-SQL
       select rss_feed_tag_ships.tag_id, count(*) as n
       from user_rss_feed_ships
