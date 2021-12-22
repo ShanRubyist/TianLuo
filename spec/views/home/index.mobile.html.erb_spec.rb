@@ -17,7 +17,7 @@ RSpec.describe 'home/index', type: :view do
     allow(@rss_feeds_list).to receive(:map).and_return([@rss_feed])
 
     render template: 'home/index.mobile.html.erb'#, locals: { current_user: @user }
-    expect(rendered).to match /.*id="app".*/
+    expect(rendered).to match /.* <app><\/app>.*/
   end
 
   it '渲染 nav.html.erb 模板' do
