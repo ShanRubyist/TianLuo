@@ -9,7 +9,6 @@
 
     <div>
       <a-button
-        type="button"
         class="el-button sub-btn circle el-button--primary"
         @click="show_add_dialog"
       >
