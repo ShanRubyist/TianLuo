@@ -8,7 +8,14 @@
     ></read-dialog>
 
     <div class="recommend" v-if="visible">
-      <h3>相关内容</h3><span @click="close">X</span>
+      <div class="recommend-wrap-header">
+        <div>
+          <h3>相关内容</h3>
+        </div>
+
+        <div @click="close">收起 ></div>
+      </div>
+
       <div class="recommend-wrap">
         <div class="recommend-list">
           <div v-for="i in recommend_list"
@@ -38,10 +45,18 @@
             </p>
 
           </div>
+
+          <div class="tip" v-if="recommend_list==null || recommend_list.length==0">
+            <span>此文章暂无相关内容</span>
+          </div>
         </div>
       </div>
     </div>
-    <div class="fixed-button" v-else @click="open">
+
+    <div
+        v-else
+        class="fixed-button"
+        @click="open">
       < 展开相关内容
     </div>
   </div>
@@ -79,6 +94,10 @@ export default {
 <style scoped>
 .recommend {
   position: absolute;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
   right: 16px;
   bottom: 60px;
   width: 600px;
@@ -90,10 +109,19 @@ export default {
   padding: 8px;
 }
 
+.recommend-wrap-header {
+  display: flex;
+  width: 100%;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
 .recommend-wrap {
   display: flex;
+  flex-direction: row;
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-start;
   width: 100%;
 }
 
@@ -101,7 +129,7 @@ export default {
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-  align-items: flex-start;
+  align-items: center;
   width: 100%;
 }
 
@@ -117,6 +145,11 @@ export default {
   text-overflow: ellipsis;
   white-space: nowrap;
   cursor: pointer;
+}
+
+.tip {
+  color: #2E2F30;
+  line-height: 120%;
 }
 
 .fixed-button {

@@ -356,6 +356,7 @@ export default {
   },
   updated: function() {
       this.$refs.article_wrapper.scrollTop = 0;
+      this.show_recommend_tip()
   }
 };
 </script>
