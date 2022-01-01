@@ -67,4 +67,23 @@ class RssFeed < ApplicationRecord
         .limit(100)
     ]
   end
+
+  def self.recommend_feeds_of_specify_feed(rss_feed_id, user_id, max_limit = 3)
+    rst = RssFeedTagShip
+      .select(:tag_id)
+            .where(rss_feed_id: rss_feed_id)
+            .order('tf_idf desc')
+
+    return [rst,
+            RssFeed.includes(:user_rss_feed_ships)
+                   .includes(:rss_feed_tag_ships)
+                   .includes(:tags)
+                   .includes(:probe_setting)
+                   .includes(:probe_setting => :rss_info)
+                   .where(:user_rss_feed_ships => {:user_id => user_id})
+                   .where(:rss_feed_tag_ships => {tag_id: rst.map(&:tag_id)})
+                   .order('rss_feed_tag_ships.tf_idf desc, user_rss_feed_ships.unread desc')
+                   .limit(max_limit)
+    ]
+  end
 end

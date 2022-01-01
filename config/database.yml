@@ -21,6 +21,7 @@ default: &default
   # http://guides.rubyonrails.org/configuring.html#database-pooling
   pool: <%= ENV.fetch('RAILS_MAX_THREADS') { 25 } %>
 
+
 development:
   <<: *default
   database: <%= ENV.fetch('DEVELOPMENT_DATABASE_NAME') { 'tianluo_development' } %>

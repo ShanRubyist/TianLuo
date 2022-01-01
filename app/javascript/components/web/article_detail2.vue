@@ -227,12 +227,6 @@
         <i class="iconfont icon-right"></i>
       </div>
 
-      <Recommend
-          :visible="visible"
-          :recommend_list="recommend_list"
-          @close="close"
-          @open="open"
-      ></Recommend>
     </div>
     <!---->
     <div class="center" style="display: none;">
@@ -243,15 +237,13 @@
 
 <script>
 
-import Recommend from "./recommend";
 export default {
-  components: {Recommend},
   props: ['current_article', 'full_screen', 'font_list'],
   data: function() {
     return {
       ff: localStorage.getItem('defaultFontFamily'),
-      visible: false,
-      recommend_list: null
+      visible: true,
+      recommend_list: [this.current_article, this.current_article]
     }
   },
   methods: {
@@ -335,12 +327,6 @@ export default {
         colorLight: "#ffffff",
         correctLevel: QRCode.CorrectLevel.H
       });
-    },
-    close: function () {
-      this.visible = false
-    },
-    open: function () {
-      this.visible = true
     }
   },
   watch: {

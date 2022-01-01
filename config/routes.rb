@@ -32,6 +32,7 @@ Rails.application.routes.draw do
       put :toggle_thumbs_up
       get :recommend
       get :favor
+      get :recommend_feeds_of_specify_feed
     end
   end
   get 'rss_list' => 'rss_feeds#rss_feeds_of_rss', as: 'rss_feed_rss_list'
