@@ -348,6 +348,10 @@ export default {
       var article_body = document.getElementsByClassName('article-body')[0]
       article_body.style.fontFamily = font_family
       localStorage.setItem('defaultFontFamily', font_family) 
+    },
+    current_article: function () {
+      this.$refs.article_wrapper.scrollTop = 0;
+      this.show_recommend_tip()
     }
   },
   mounted: function() {
@@ -355,8 +359,6 @@ export default {
       article_body.style.fontFamily = this.ff
   },
   updated: function() {
-      this.$refs.article_wrapper.scrollTop = 0;
-      this.show_recommend_tip()
   }
 };
 </script>
