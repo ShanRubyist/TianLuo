@@ -359,6 +359,9 @@ export default {
       if (article_body!=undefined) {
         article_body.style.fontFamily = this.ff
       }
+      if (this.current_article==undefined) {
+        // this.full_screen_mode();
+      }
   },
   updated: function() {
   }
