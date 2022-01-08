@@ -1,6 +1,6 @@
 <template>
   <div class="article-detail">
-    <div style>
+    <div style v-if="current_article!=undefined">
       <div>
         <div class="article-toolbar__drag-area"></div>
         <div
@@ -235,7 +235,7 @@
       ></Recommend>
     </div>
     <!---->
-    <div class="center" style="display: none;">
+    <div class="center" v-else>
       <div class="nothing">NOTHING IS IMPOSSIBLE</div>
     </div>
   </div>
@@ -356,7 +356,9 @@ export default {
   },
   mounted: function() {
       var article_body = document.getElementsByClassName('article-body')[0]
-      article_body.style.fontFamily = this.ff
+      if (article_body!=undefined) {
+        article_body.style.fontFamily = this.ff
+      }
   },
   updated: function() {
   }
