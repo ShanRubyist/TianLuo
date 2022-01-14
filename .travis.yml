@@ -8,7 +8,7 @@ rvm:
   - 2.7
 
 node_js:
-  - 12.22.8
+  - 12
 
 install: 
   - gem install rails
