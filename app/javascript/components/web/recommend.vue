@@ -7,7 +7,7 @@
         @close-dialog="read_visible = false"
     ></read-dialog>
 
-    <div class="recommend animate__animated animate__fadeInBottomRight" v-if="visible">
+    <div class="recommend animate__animated" :class="{animate__fadeInBottomRight: visible, animate__bounceOutRight: !visible}">
       <div class="recommend-wrap-header">
         <div>
           <h3>相关内容</h3>
@@ -54,7 +54,7 @@
     </div>
 
     <div
-        v-else
+        v-if="!visible"
         class="fixed-button"
         @click="open">
       < 展开相关内容
