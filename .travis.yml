@@ -8,7 +8,7 @@ rvm:
   - 2.7
 
 node_js:
-  - 12.0.0
+  - 12.22.8
 
 install: 
   - gem install rails
@@ -22,7 +22,7 @@ before_script:
   - bundle install
   - bundle exec rake db:create
   - bundle exec rake db:migrate
-#  - rails webpacker:install
+  - rails webpacker:install
   - rails yarn:install
   - ./bin/webpack-dev-server
   - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
