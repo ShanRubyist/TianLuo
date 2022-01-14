@@ -7,7 +7,7 @@
         @close-dialog="read_visible = false"
     ></read-dialog>
 
-    <div class="recommend" v-if="visible">
+    <div class="recommend animate__animated animate__fadeInBottomRight" v-if="visible">
       <div class="recommend-wrap-header">
         <div>
           <h3>相关内容</h3>
@@ -94,20 +94,35 @@ export default {
 <style scoped>
 .recommend {
   position: absolute;
+  /*animation: slidein 1s ease-in .2s;*/
+  /*animation-fill-mode: forwards;*/
+  /*width: 0px;*/
+  /*height: 0px;*/
+  width: 600px;
+  height: 300px;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
   right: 16px;
   bottom: 60px;
-  width: 600px;
-  height: 300px;
   overflow: auto;
   border-radius: 15px;
   box-shadow: 5px 2px 25px #41b883;
   background-color: rgba(253, 253, 253, .95);
   padding: 8px;
 }
+
+/*@keyframes slidein {*/
+/*  from {*/
+/*    width: 0px;*/
+/*    height: 0px;*/
+/*  }*/
+/*  to {*/
+/*    width: 600px;*/
+/*    height: 300px;*/
+/*  }*/
+/*}*/
 
 .recommend-wrap-header {
   display: flex;
