@@ -26,7 +26,7 @@ module ApplicationHelper
   end
 
   def mobile_browser?
-    device_platform =~ /iOS|android/i
+    device_platform =~ /iPhone|iOS|android|Mobile/i
   end
 
   def device_platform
@@ -37,7 +37,7 @@ module ApplicationHelper
     case device_platform
     when /Linux|Windows|Macintosh|X11/i
       'web'
-    when /iOS|android/i
+    when /iPhone|iOS|android|Mobile/i
       'mobile'
     else
       'web'
