@@ -80,3 +80,13 @@
 </body>
 </html>
 
+<script type="text/javascript" charset="utf-8">
+  window.onload = function () {
+        let now = new Date();
+
+        if ((now.getMonth() == '3' && now.getDay() == '4') || (now.getMonth() == '4') && now.getDay() == '7'){
+            let body = document.getElementsByTagName('body')[0]
+            body.style.filter = 'grayscale(100%)'
+        }
+    }
+</script>
