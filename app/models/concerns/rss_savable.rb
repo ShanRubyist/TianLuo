@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 require 'rss'
-require 'net/http'
+require 'rest-client'
 
 module RssSavable
   extend ActiveSupport::Concern
@@ -54,22 +54,25 @@ module RssSavable
 
     # feedbin
     def find_favicon_link(host)
-      host = URI(host).host
       favicon_url = nil
-      url = URI::HTTP.build(host: host)
-      response = Net::HTTP.get(url).to_s
+
+      response = RestClient.get(host).body
       html = Nokogiri::HTML(response)
       favicon_links = html.search(xpath)
+
       if favicon_links.present?
         favicon_url = favicon_links.first.to_s
         favicon_url = URI.parse(favicon_url)
         favicon_url.scheme = "http"
+
         unless favicon_url.host
           favicon_url = URI::HTTP.build(scheme: "http", host: host)
           favicon_url = favicon_url.merge(favicon_links.last.to_s)
         end
       end
-      favicon_url
+
+      favicon_url.to_s
+
       rescue
         nil
     end
