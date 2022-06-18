@@ -27,7 +27,7 @@ Rails.application.routes.draw do
   resources :rss_feeds, only: [] do
     collection do
       get :unread_count
-      put :mark_readed
+      put :mark_all_as_read
       get :load_more_rss_feed
       put :toggle_thumbs_up
       get :recommend
@@ -58,4 +58,12 @@ Rails.application.routes.draw do
   post 'start_all_jobs' => 'jobs_management/jobs_management#start_all_jobs', as: 'start_all_jobs'
   delete 'delete_job' => 'jobs_management/jobs_management#delete_job', as: 'delete_job'
   get 'histories' => 'histories/histories#histories', as: 'histories'
+
+  # constraints subdomain: "api" do
+    namespace :api, path: nil do
+      # namespace :v1 do
+        match "*path", to: "api#gone", via: :all
+      # end
+    end
+  # end
 end

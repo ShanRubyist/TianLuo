@@ -15,13 +15,13 @@ RSpec.describe RssFeedsController, type: :controller do
 
   describe 'PUT #mark_read' do
     it 'mark all rss feed readed' do
-      patch :mark_readed, params: {user_id: user.id}
+      patch :mark_all_as_read, params: { user_id: user.id}
       expect(response).to have_http_status(:success)
       expect(UserRssFeedShip.where(user: user, unread: true).count).to eq 0
     end
 
     it 'mark specific rss feed readed' do
-      patch :mark_readed, params: {user_id: user.id, rss_feed_id: rss_feed.id}
+      patch :mark_all_as_read, params: { user_id: user.id, rss_feed_id: rss_feed.id}
       expect(response).to have_http_status(:success)
       expect(UserRssFeedShip.find_by(user: user, rss_feed: rss_feed).unread).to eq false
     end

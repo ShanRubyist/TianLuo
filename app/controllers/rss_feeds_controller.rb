@@ -32,7 +32,7 @@ class RssFeedsController < ApplicationController
     render json: {message: (rst.reload.thumbs_up ? "已点赞" : "取消点赞")}
   end
 
-  def mark_readed
+  def mark_all_as_read
     rst = UserRssFeedShip.where(user_id: params[:user_id], unread: true)
     rst = (params['rss_feed_id'].nil?) ? rst : rst.where(rss_feed_id: params['rss_feed_id'])
     rst.update(unread: false)
