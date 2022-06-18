@@ -54,6 +54,7 @@ module RssSavable
 
     # feedbin
     def find_favicon_link(host)
+      host = URI(host).host
       favicon_url = nil
 
       response = RestClient.get(host).body
