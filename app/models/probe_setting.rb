@@ -12,4 +12,9 @@ class ProbeSetting < ApplicationRecord
   has_many :rss_probe_failure_histories
 
   validates :url, presence: true#, uniqueness: true
+
+  def save(*)
+    super
+    RssWorkJob.perform_later(self)
+  end
 end
