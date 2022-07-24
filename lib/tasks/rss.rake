@@ -17,4 +17,10 @@ namespace :rss do
     response = Robot::RSSProbe.new(args[:url]).fetch
     pp Anonymous.send :transform, response
   end
+
+  desc 'get favicon'
+  task :find_favicon_link, :url do |_, args|
+    pp Anonymous.send :find_favicon_link, args[:url]
+  end
+
 end
