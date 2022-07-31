@@ -34,6 +34,6 @@ class UpdateUserUnreadCountJob < ApplicationJob
       rss_list: rss_list
     }
 
-    ActionCable.server.broadcast "tl_channel", info: rst
+    ActionCable.server.broadcast "tl_#{args[:user_id]}_channel", info: rst
   end
 end

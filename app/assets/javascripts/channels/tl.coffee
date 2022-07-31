@@ -1,4 +1,7 @@
-App.tl = App.cable.subscriptions.create "TlChannel",
+App.tl = App.cable.subscriptions.create {
+  channel: 'TlChannel',
+  user_id: ''
+},
   connected: ->
     # Called when the subscription is ready for use on the server
 

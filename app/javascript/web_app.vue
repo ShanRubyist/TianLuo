@@ -316,7 +316,7 @@ export default {
       ws.onopen = function () {
         console.log("connected");
         ws.send(JSON.stringify({
-          "command": "subscribe", "identifier": '{"channel":"TlChannel"}'
+          "command": "subscribe", "identifier": '{"channel":"TlChannel","user_id":' + user_id + '}'
         }))
       };
 
