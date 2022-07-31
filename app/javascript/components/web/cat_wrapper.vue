@@ -40,10 +40,13 @@
             </div>
             <div style>
               <div v-for="rss in all_rss_list_json" class="nav-item">
+                <a-space><a-spin :spinning="is_spinning('rss.status')" size="small" /></a-space>
                 <span
                   class="nav-item__title text--ellipsis"
                   @click="change_rss(rss.probe_settings_id)"
-                >{{rss.title}}</span>
+                >{{rss.title}}
+                </span>
+
 
                 <a-popover>
                   <template slot="content">
@@ -144,6 +147,17 @@ export default {
         .catch(function(reason) {
           that.$message.error(reason.toString());
         });
+    },
+    is_spinning: function(status) {
+      console.log('rss job status: '+status)
+      if(status == 'fail' || status == 'success') {
+        return false;
+      } else if(status == 'enqueued' || status == 'performing') {
+        return true;
+      }
+      else {
+        return false;
+      }
     }
   }
 };
