@@ -19,6 +19,8 @@ Rails.application.routes.draw do
     mount Sidekiq::Web => '/sidekiq'
   end
 
+  mount ActionCable.server => '/cable'
+
   # 自定义路由
   resources :probe_settings, only: [:index, :create, :destroy]
 

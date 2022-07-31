@@ -269,7 +269,7 @@ import ArticleDetail from "components/web/article_detail.vue";
 export default {
   data: function () {
     return {
-      unread_count: 0,
+      unread_count: window.unread_count,
       unread_count_rss_feeds_path: window.unread_count_rss_feeds_path,
       cat_wrapper_visible: true,
       rss_list_json: window.rss_list_json,
@@ -310,27 +310,54 @@ export default {
       this.rss_list_json = data;
       this.current_article = data[0];
     },
+    init_websocket: function () {
+      let ws = new WebSocket("ws://" + window.location.host + "/cable");
+
+      ws.onopen = function () {
+        console.log("connected");
+        ws.send(JSON.stringify({
+          "command": "subscribe", "identifier": '{"channel":"TlChannel"}'
+        }))
+      };
+
+      let that = this;
+      window.favicon.badge(that.unread_count);
+      ws.onmessage = function (data) {
+        console.log("ws get message: " + data.data);
+        let info = JSON.parse(data.data);
+
+        if ((info['type'] == undefined) || (info['type'] == null)) {
+          let total_unread_count = info['message']['info']['total_unread_count'];
+
+          that.unread_count = total_unread_count;
+          window.favicon.badge(that.unread_count);
+          that.all_rss_list_json = info['message']['info']["rss_list"];
+        }
+      };
+    }
   },
   mounted: function () {
     // 定时轮询未读的rss feed数量
-    setInterval(function () {
-      axios
-        .get(unread_count_rss_feeds_path, {
-          headers: {
-            Accept: "application/json",
-          },
-          params: {
-            id: user_id,
-          },
-        })
-        .then(function (reason) {
-          // app._data.unread_count = reason.data.unread_count;
-          // app.__vue__._data.unread_count = reason.data.unread_count;
-          app.__vue__.unread_count = reason.data.unread_count;
-          window.favicon.badge(reason.data.unread_count);
-        })
-        .catch(function (reason) {});
-    }, 5000);
+    // setInterval(function () {
+    //   axios
+    //     .get(unread_count_rss_feeds_path, {
+    //       headers: {
+    //         Accept: "application/json",
+    //       },
+    //       params: {
+    //         id: user_id,
+    //       },
+    //     })
+    //     .then(function (reason) {
+    //       // app._data.unread_count = reason.data.unread_count;
+    //       // app.__vue__._data.unread_count = reason.data.unread_count;
+    //       app.__vue__.unread_count = reason.data.unread_count;
+    //       window.favicon.badge(reason.data.unread_count);
+    //     })
+    //     .catch(function (reason) {});
+    // }, 5000);
+
+    this.init_websocket();
 
     // 新手教程
     if (!localStorage.getItem("has_show_tutor")) {

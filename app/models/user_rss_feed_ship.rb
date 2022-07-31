@@ -4,4 +4,6 @@ class UserRssFeedShip < ApplicationRecord
 
   validates :user_id, presence: true
   validates :rss_feed_id, presence: true
+
+  after_create_commit { UpdateUserUnreadCountJob.perform_later(user_id: self.user_id) }
 end
