@@ -22,6 +22,7 @@
       <!--Feed 列表区域-->
       <article-list id="article-list"
         :full_screen="full_screen"
+                    :article_list_loading="article_list_loading"
         :rss_list_json="rss_list_json"
         :current_article="current_article"
         @change_article="change_article"
@@ -30,7 +31,8 @@
       <!--    Feed 详情内容-->
       <article-detail id="article-detail"
         :full_screen="full_screen"
-        :current_article="current_article"
+                      :article_list_loading="article_list_loading"
+                      :current_article="current_article"
         :font_list="font_list"
         @full_screen_mode="full_screen_mode"
       >
@@ -279,6 +281,7 @@ export default {
       qrcode: null,
       full_screen: false,
       font_list: window.font_list,
+      article_list_loading: false,
     };
   },
   methods: {
@@ -309,6 +312,7 @@ export default {
     change_rss: function (data) {
       this.rss_list_json = data;
       this.current_article = data[0];
+      this.article_list_loading = false;
     },
     init_websocket: function () {
       let ws = new WebSocket("ws://" + window.location.host + "/cable");

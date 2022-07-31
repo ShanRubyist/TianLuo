@@ -155,7 +155,7 @@
           </div>
         </div>
       </div>
-      <div class="article-wrapper"  ref="article_wrapper" @scroll="scrollEvent">
+      <div v-loading="article_list_loading" class="article-wrapper"  ref="article_wrapper" @scroll="scrollEvent">
         <div id="article-content" class="article-content">
           <div style="padding-bottom: 20px">
             <a-tag
@@ -246,7 +246,7 @@
 import Recommend from "./recommend";
 export default {
   components: {Recommend},
-  props: ['current_article', 'full_screen', 'font_list'],
+  props: ['current_article', 'full_screen', 'font_list', 'article_list_loading'],
   data: function() {
     return {
       ff: localStorage.getItem('defaultFontFamily'),

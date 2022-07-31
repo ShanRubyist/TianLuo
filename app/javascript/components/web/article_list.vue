@@ -21,7 +21,7 @@
     <div class="article-list__refresh">
       <span class="article-list__refresh-tip">订阅有 11 篇新文章，点击刷新</span>
     </div>
-    <div class="article-list__main text-list" id="article-list__main">
+    <div v-loading="article_list_loading" class="article-list__main text-list" id="article-list__main">
       <div
         v-for="rss in rss_list_json"
         class="article-item feeds-expanded sm-text text-list"
@@ -110,7 +110,7 @@
 
 <script>
 export default {
-  props: ["full_screen", "rss_list_json", "current_article"],
+  props: ["full_screen", "rss_list_json", "current_article", "article_list_loading"],
   methods: {
     change_article: function(article) {
       this.$emit('change_article', article)

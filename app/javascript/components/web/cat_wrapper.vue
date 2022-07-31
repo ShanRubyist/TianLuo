@@ -96,25 +96,30 @@ export default {
           that.$message.error(reason.toString());
         });
     },
-    change_rss: function(rss) {
+    change_rss: async function(rss) {
       this.current_rss = rss;
       var that = this;
-      axios
-        .get("/rss_list", {
-          headers: {
-            Accept: "application/json"
-          },
-          params: {
-            user_id: user_id,
-            rss: rss
-          }
-        })
-        .then(function(reason) {
-          that.$emit('change_rss', reason.data)
-        })
-        .catch(function(reason) {
-          that.$message.error(reason.toString());
-        });
+
+      try {
+        app.__vue__.article_list_loading = true;
+        let promise = axios
+            .get("/rss_list", {
+              headers: {
+                Accept: "application/json"
+              },
+              params: {
+                user_id: user_id,
+                rss: rss
+              }
+            })
+
+        let response = await promise;
+        // console.log(response.data)
+
+        that.$emit('change_rss', response.data)
+      } catch (error) {
+          that.$message.error(error.toString());
+      };
     },
     refresh_feeds: function(type) {
       var that = this;
