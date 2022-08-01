@@ -15,6 +15,7 @@
       <cat-wrapper id="cat-wrapper"
         :full_screen="full_screen"
         :all_rss_list_json="all_rss_list_json"
+                   :unread_count="unread_count"
         :cat_wrapper_visible="cat_wrapper_visible"
         @change_rss="change_rss"
       ></cat-wrapper>

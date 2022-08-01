@@ -23,7 +23,7 @@
             <div class="draggable-item">
               <div title="5677 篇未读文章" class="nav-item cat-item">
                 <i class="iconfont icon-unfold"></i>
-                <span class="nav-item__title text--ellipsis">未分组</span>
+                <span class="nav-item__title text--ellipsis">全部</span>
                 <a-popover>
                   <template slot="content">
                     <ul class="el-popover__menu">
@@ -31,7 +31,7 @@
                     </ul>
                   </template>
                   <div class="nav-item__count">
-                    <span>999+</span>
+                    <span>{{unread_count}}</span>
                   </div>
 
                   <!--                  <i class="iconfont icon-more el-popover__reference" aria-describedby="el-popover-8372" tabindex="0"></i>-->
@@ -40,7 +40,7 @@
             </div>
             <div style>
               <div v-for="rss in all_rss_list_json" class="nav-item">
-                <a-space><a-spin :spinning="is_spinning('rss.status')" size="small" /></a-space>
+                <a-space><a-spin :spinning="is_spinning(rss.status)" size="small" /></a-space>
                 <span
                   class="nav-item__title text--ellipsis"
                   @click="change_rss(rss.probe_settings_id)"
@@ -73,7 +73,7 @@
 
 <script>
 export default {
-  props: ["all_rss_list_json", "cat_wrapper_visible", "full_screen"],
+  props: ["all_rss_list_json", "cat_wrapper_visible", "full_screen", "unread_count"],
   methods: {
     mark_readed: function() {
       var that = this;
