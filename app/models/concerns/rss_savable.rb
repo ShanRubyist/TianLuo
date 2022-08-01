@@ -122,7 +122,7 @@ module RssSavable
               link: item.link.href,
               author: item.author.name.content,
               pub_date: item.published.content,
-              enclosure: item.enclosure&.url
+              # enclosure: item.enclosure&.url
           }
         end
         feed_hash
