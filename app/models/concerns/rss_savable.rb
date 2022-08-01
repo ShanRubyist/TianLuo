@@ -120,7 +120,8 @@ module RssSavable
               description: item.content.content,
               link: item.link.href,
               author: item.author.name.content,
-              pub_date: item.published.content
+              pub_date: item.published.content,
+              enclosure: item.enclosure&.url
           }
         end
         feed_hash
@@ -147,7 +148,8 @@ module RssSavable
               description: item.content_encoded || item.description,
               link: item.link,
               author: item.author,
-              pub_date: item.pubDate
+              pub_date: item.pubDate,
+              enclosure: item.enclosure&.url
           }
         end
         feed_hash

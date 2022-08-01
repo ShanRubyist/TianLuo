@@ -217,6 +217,11 @@
             v-html="current_article.description"
           >
           </div>
+
+          <template v-if="current_article.enclosure">
+            <audio src="current_article.enclosure" controls></audio>
+          </template>
+
         </div>
       </div>
 

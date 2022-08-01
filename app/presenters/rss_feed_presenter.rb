@@ -9,6 +9,7 @@ class RssFeedPresenter < BasePresenter
         description: Loofah.fragment(rss.description).scrub!(:escape).to_html,
         pub_date: rss.pub_date.nil? ? '' : rss.pub_date.localtime.strftime("%Y-%m-%d %H:%M"),
         author: rss.author,
+        enclosure: rss.enclosure,
         link: rss.link,
         rss: rss.probe_setting&.rss_info&.title,
         rss_link: rss.probe_setting&.rss_info&.link,
