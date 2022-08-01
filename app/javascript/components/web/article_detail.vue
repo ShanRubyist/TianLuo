@@ -219,7 +219,7 @@
           </div>
 
           <template v-if="current_article.enclosure">
-            <audio src="current_article.enclosure" controls></audio>
+            <audio :src="current_article.enclosure" controls></audio>
           </template>
 
         </div>
