@@ -35,6 +35,7 @@ module RssSavable
             description: item[:description],
             author: item[:author],
             pub_date: item[:pub_date],
+            enclosure: item[:enclosure],
             rss_probe_history_id: rss_probe_history_id
         ).find_or_create_by(link: item[:link], probe_setting: probe_setting)
 
