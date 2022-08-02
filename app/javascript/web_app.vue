@@ -316,7 +316,13 @@ export default {
       this.article_list_loading = false;
     },
     init_websocket: function () {
-      let ws = new WebSocket("ws://" + window.location.host + "/cable");
+      let url;
+      if(window.location.protocol == "https:") {
+        url = "wss://" + window.location.host + "/cable"
+      } else {
+        url = "ws://" + window.location.host + "/cable"
+      }
+      let ws = new WebSocket(url)
 
       ws.onopen = function () {
         console.log("connected");
@@ -326,12 +332,12 @@ export default {
       };
 
       let that = this;
-      window.favicon.badge(that.unread_count);
       ws.onmessage = function (data) {
-        console.log("ws get message: " + data.data);
         let info = JSON.parse(data.data);
 
         if ((info['type'] == undefined) || (info['type'] == null)) {
+          console.log("ws get message: " + info);
+
           let total_unread_count = info['message']['info']['total_unread_count'];
 
           that.unread_count = total_unread_count;
@@ -362,6 +368,7 @@ export default {
     //     .catch(function (reason) {});
     // }, 5000);
 
+    window.favicon.badge(this.unread_count);
     this.init_websocket();
 
     // 新手教程
