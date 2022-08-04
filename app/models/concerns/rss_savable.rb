@@ -93,15 +93,45 @@ module RssSavable
       URI::HTTP.build(host: URI(host).host, path: "/favicon.ico")
     end
 
+    # def transform(response)
+    #   feed = RSS::Parser.parse(response)
+    #   if feed.class == RSS::Atom::Feed
+    #     parse_atom(feed)
+    #   elsif feed.class == RSS::Rss
+    #     parse_rss(feed)
+    #   else
+    #     raise Robot::RSSProbe::UnknownRssFormatException
+    #   end
+    # end
+
     def transform(response)
-      feed = RSS::Parser.parse(response)
-      if feed.class == RSS::Atom::Feed
-        parse_atom(feed)
-      elsif feed.class == RSS::Rss
-        parse_rss(feed)
-      else
-        raise Robot::RSSProbe::UnknownRssFormatException
+      feed = Feedjira.parse(response)
+      begin
+        feed_hash = {
+          title: feed.title,
+          description: feed.description,
+          link: feed.url,
+          #atom_link: feed.entries.atom_link,
+          last_build_date: feed.last_built,
+          items: []
+        }
+
+        feed.entries.each do |item|
+          feed_hash[:items] << {
+            title: item.title,
+            description: item.summary,
+            link: item.url,
+            author: item.author,
+            pub_date: item.published,
+            enclosure: (item&.enclosure_url rescue nil)
+          }
+        end
+        feed_hash
+      rescue RSS::NotWellFormedError => e
+        logger.error(e)
+        raise Robot::WebSpider::ParseException
       end
+
     end
 
     def parse_atom(feed)
