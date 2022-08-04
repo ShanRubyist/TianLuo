@@ -112,7 +112,7 @@ module RssSavable
           description: feed.description,
           link: feed.url,
           #atom_link: feed.entries.atom_link,
-          last_build_date: feed.last_built,
+          last_build_date: (feed.last_built rescue nil),
           items: []
         }
 
