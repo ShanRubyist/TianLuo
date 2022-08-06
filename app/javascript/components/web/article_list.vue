@@ -40,7 +40,7 @@
         </div>
         <div data-v-9ac9b68a class="infinite-status-prompt" style="display: none;">No results :(</div>
       </div>
-      <div v-if="current_page === total_page" data-v-9ac9b68a class="infinite-status-prompt">No more
+      <div data-v-9ac9b68a class="infinite-status-prompt" style="display: none;">No more
         data :)</div>
 
       <hr data-content="这是底线" class="hr-text" />
@@ -61,7 +61,7 @@
               <i class="iconfont icon-layout el-popover__reference" aria-describedby="el-popover-7006" tabindex="0"></i>
             </span>
           </div>
-          <span class="bottom-toolbar__label">{{ current_page }} / {{ total_page }}</span>
+          <span class="bottom-toolbar__label">{{ current_page }}</span>
           <div class="bottom-toolbar__right">
             <span>
               <i class="iconfont icon-more el-popover__reference" aria-describedby="el-popover-7846" tabindex="0"></i>
@@ -89,10 +89,6 @@ export default {
       this.$emit('change_article', article)
     },
     next_page: async function () {
-      if (this.current_page == this.total_page) {
-        return;
-      }
-
       var that = this;
 
       try {
