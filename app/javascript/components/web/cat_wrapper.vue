@@ -41,7 +41,7 @@
             <div style>
               <div v-for="rss in all_rss_list_json" class="nav-item">
                 <template v-if="rss.status == 'enqueued' || rss.status == 'performing'">
-                  <a-space><a-spin spinning="true" size="small" /></a-space>
+                  <a-space><a-spin :spinning="true" size="small" /></a-space>
                 </template>
                 <template v-else-if="rss.status == 'fail'">
                     <i class="iconfont icon-error"></i>

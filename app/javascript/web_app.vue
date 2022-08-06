@@ -358,7 +358,7 @@ export default {
       ws.onmessage = function (data) {
         let info = JSON.parse(data.data);
 
-        if ((info['type'] == undefined) || (info['type'] == null)) {
+        if (info['type'] == 'tl_update_unread_count') {
           console.log("ws get message: " + info);
 
           let total_unread_count = info['message']['info']['total_unread_count'];
@@ -366,6 +366,10 @@ export default {
           that.unread_count = total_unread_count;
           window.favicon.badge(that.unread_count);
           that.all_rss_list_json = info['message']['info']["rss_list"];
+        } else if (info['type'] == 'tl_update_status') {
+          console.log("ws get message: " + info);
+
+          that.rss_list_json = info['message']['info']["rss_feed_list"];
         }
       };
     }

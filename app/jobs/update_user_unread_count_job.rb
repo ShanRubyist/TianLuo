@@ -30,6 +30,7 @@ class UpdateUserUnreadCountJob < ApplicationJob
     end
 
     rst = {
+      type: 'tl_update_unread_count',
       total_unread_count: total_unread_count,
       rss_list: rss_list
     }
