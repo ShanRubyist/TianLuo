@@ -358,18 +358,18 @@ export default {
       ws.onmessage = function (data) {
         let info = JSON.parse(data.data);
 
-        if (info['type'] == 'tl_update_unread_count') {
+        if ((info['type'] == null) || (info['type'] == undefined)) {
           console.log("ws get message: " + info);
 
-          let total_unread_count = info['message']['info']['total_unread_count'];
+          if (info['message']['info']['type'] == 'tl_update_unread_count') {
+            let total_unread_count = info['message']['info']['total_unread_count'];
 
-          that.unread_count = total_unread_count;
-          window.favicon.badge(that.unread_count);
-          that.all_rss_list_json = info['message']['info']["rss_list"];
-        } else if (info['type'] == 'tl_update_status') {
-          console.log("ws get message: " + info);
-
-          that.rss_list_json = info['message']['info']["rss_feed_list"];
+            that.unread_count = total_unread_count;
+            window.favicon.badge(that.unread_count);
+            that.all_rss_list_json = info['message']['info']["rss_list"];
+          } else if (info['message']['info']['type'] == 'tl_update_status') {
+            that.rss_list_json = info['message']['info']["rss_feed_list"];
+          }
         }
       };
     }
