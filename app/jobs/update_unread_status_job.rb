@@ -5,7 +5,7 @@ class UpdateUnreadStatusJob < ApplicationJob
     args[:page] ||= 1
     args[:per_page] ||= 10
 
-    rss_feed_list =   RssFeed.rss_feeds_list(args[:user_id, args[:rss]]).map do |rss|
+    rss_feed_list =   RssFeed.rss_feeds_list(args[:user_id], args[:rss]).map do |rss|
       {
         id: rss.id,
         title: rss.title,
