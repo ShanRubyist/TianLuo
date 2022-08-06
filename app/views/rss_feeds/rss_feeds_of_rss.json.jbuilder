@@ -14,12 +14,12 @@
 #   json.tags rss.tags.map { |tag| "#{tag.name}(#{rss.rss_feed_tag_ships.find_by(tag: tag).tf_idf})"}
 # end
 
-json.array! (
-                present('RssFeedPresenter',
+rss_list =          present('RssFeedPresenter',
                         user_id: current_user,
                         rss: params[:rss],
                         page: params[:page],
                         per: params[:per])
                     .rss_feed
-            )
+                   
 
+json.data rss_list

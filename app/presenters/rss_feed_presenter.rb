@@ -2,7 +2,10 @@ class RssFeedPresenter < BasePresenter
   presents :rss_feed
 
   def rss_feed
-    RssFeed.rss_feeds_list(@locals[:user_id], @locals[:rss], @locals[:page], @locals[:per]).map do |rss|
+    @locals[:page] ||= 1
+    @locals[:per] ||= 100
+
+    rss_list =     RssFeed.rss_feeds_list(@locals[:user_id], @locals[:rss], @locals[:page], @locals[:per]).map do |rss|
       {
         id: rss.id,
         title: rss.title,
@@ -26,5 +29,12 @@ class RssFeedPresenter < BasePresenter
         end
       }
     end
+
+    {
+      current_page: @locals[:page].to_i,
+                total_page: RssFeed.rss_feeds_list(@locals[:user_id], @locals[:rss]).size / @locals[:per].to_i + ((rss_list.size % @locals[:per].to_i == 0) ? 0 : 1),
+                rss_list: rss_list
+    }
+
   end
 end

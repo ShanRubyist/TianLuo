@@ -1,10 +1,8 @@
 <template>
   <div v-show="!full_screen" id="article_list" class="article-list">
     <div class="drag-area"></div>
-    <div
-      class="flexbox article-list__toolbar search-header"
-      style="justify-content: space-between; align-items: center; flex-wrap: nowrap;"
-    >
+    <div class="flexbox article-list__toolbar search-header"
+      style="justify-content: space-between; align-items: center; flex-wrap: nowrap;">
       <div class="search-input el-input el-input--prefix el-input--suffix">
         <!---->
         <input type="text" autocomplete="off" placeholder="搜索所有文章" class="el-input__inner" />
@@ -22,101 +20,108 @@
       <span class="article-list__refresh-tip">订阅有 11 篇新文章，点击刷新</span>
     </div>
     <div v-loading="article_list_loading" class="article-list__main text-list" id="article-list__main">
-      <div
-        v-for="rss in rss_list_json"
-        class="article-item feeds-expanded sm-text text-list"
-        :class="{read: rss.status, active: (current_article == rss)}"
-        @click="change_article(rss)"
-      >
+      <div v-for="rss in rss_list_json" class="article-item feeds-expanded sm-text text-list"
+        :class="{ read: rss.status, active: (current_article == rss) }" @click="change_article(rss)">
         <div class="article-item__wrapper">
-          <!---->
-          <div
-            class="flexbox article-item__text-wrapper"
-            style="justify-content: space-between; align-items: center; flex-wrap: wrap;"
-          >
-            <img
-              lazyload="auto"
-              :src="rss.icon"
-              :alt="rss.description"
-              class="avatar--sm article-item__meta-favicon"
-            />
-            <span class="article-item__meta-title text--ellipsis">{{rss.rss}}</span>
+          <div class="flexbox article-item__text-wrapper"
+            style="justify-content: space-between; align-items: center; flex-wrap: wrap;">
+            <img lazyload="auto" :src="rss.icon" :alt="rss.description" class="avatar--sm article-item__meta-favicon" />
+            <span class="article-item__meta-title text--ellipsis">{{ rss.rss }}</span>
             <span class="article-item__meta-date">
-              <time :datetime="rss.pub_date" class="el-tooltip item">{{rss.pub_date}}</time>
+              <time :datetime="rss.pub_date" class="el-tooltip item">{{ rss.pub_date }}</time>
             </span>
-            <h6 class="article-item__title">{{rss.title}}</h6>
+            <h6 class="article-item__title">{{ rss.title }}</h6>
           </div>
         </div>
       </div>
       <div data-v-9ac9b68a class="infinite-loading-container">
-        <div data-v-9ac9b68a style="display: none;">
+        <div data-v-9ac9b68a v-if="load_more_loading">
           <i data-v-10a220cc data-v-9ac9b68a class="loading-default"></i>
         </div>
         <div data-v-9ac9b68a class="infinite-status-prompt" style="display: none;">No results :(</div>
-        <div data-v-9ac9b68a class="infinite-status-prompt" style="display: none;">No more data :)</div>
       </div>
+      <div v-if="current_page === total_page" data-v-9ac9b68a class="infinite-status-prompt">No more
+        data :)</div>
+
       <hr data-content="这是底线" class="hr-text" />
-    </div>
-    <!---->
-    <!---->
-    <div class="article-list__bottom-toolbar">
-      <div
-        role="progressbar"
-        aria-valuenow="1"
-        aria-valuemin="0"
-        aria-valuemax="100"
-        class="el-progress el-progress--line el-progress--without-text"
-      >
-        <div class="el-progress-bar">
-          <div class="el-progress-bar__outer" style="height: 1px;">
-            <div
-              class="el-progress-bar__inner"
-              style="width: 1%; background-color: rgb(245, 108, 108);"
-            >
-              <!---->
+      <div class="article-list__bottom-toolbar">
+        <div role="progressbar" aria-valuenow="1" aria-valuemin="0" aria-valuemax="100"
+          class="el-progress el-progress--line el-progress--without-text">
+          <div class="el-progress-bar">
+            <div class="el-progress-bar__outer" style="height: 1px;">
+              <div class="el-progress-bar__inner" style="width: 1%; background-color: rgb(245, 108, 108);">
+              </div>
             </div>
           </div>
         </div>
-        <!---->
-      </div>
-      <div
-        class="flexbox bottom-toolbar__content"
-        style="justify-content: space-between; align-items: center; flex-wrap: nowrap;"
-      >
-        <div class="bottom-toolbar__left">
-          <span>
-            <i
-              class="iconfont icon-layout el-popover__reference"
-              aria-describedby="el-popover-7006"
-              tabindex="0"
-            ></i>
-          </span>
-        </div>
-        <span class="bottom-toolbar__label">6 / 5667</span>
-        <div class="bottom-toolbar__right">
-          <span>
-            <i
-              class="iconfont icon-more el-popover__reference"
-              aria-describedby="el-popover-7846"
-              tabindex="0"
-            ></i>
-          </span>
-          <i class="iconfont icon-unfold collase-detail__arrow" style="transform: rotate(180deg);"></i>
+        <div class="flexbox bottom-toolbar__content"
+          style="justify-content: space-between; align-items: center; flex-wrap: nowrap;">
+          <div class="bottom-toolbar__left">
+            <span>
+              <i class="iconfont icon-layout el-popover__reference" aria-describedby="el-popover-7006" tabindex="0"></i>
+            </span>
+          </div>
+          <span class="bottom-toolbar__label">{{ current_page }} / {{ total_page }}</span>
+          <div class="bottom-toolbar__right">
+            <span>
+              <i class="iconfont icon-more el-popover__reference" aria-describedby="el-popover-7846" tabindex="0"></i>
+            </span>
+            <i class="iconfont icon-unfold collase-detail__arrow" @click="next_page()"
+              style="transform: rotate(180deg);"></i>
+          </div>
         </div>
       </div>
     </div>
+
   </div>
 </template>
 
 <script>
 export default {
-  props: ["full_screen", "rss_list_json", "current_article", "article_list_loading"],
+  props: ["full_screen", "rss_list_json", "rss_list_json1", "current_article", "current_rss", "article_list_loading", "current_page", "total_page"],
+  data: function () {
+    return {
+      load_more_loading: false,
+    };
+  },
   methods: {
-    change_article: function(article) {
+    change_article: function (article) {
       this.$emit('change_article', article)
-    }
+    },
+    next_page: async function () {
+      if (this.current_page == this.total_page) {
+        return;
+      }
+
+      var that = this;
+
+      try {
+        // app.__vue__.article_list_loading = true;
+        that.load_more_loading = true;
+        let promise = axios
+          .get("/rss_list", {
+            headers: {
+              Accept: "application/json"
+            },
+            params: {
+              user_id: user_id,
+              rss: that.current_rss,
+              page: that.current_page + 1,
+            }
+          })
+
+        let response = await promise;
+        // console.log(response.data)
+
+        that.$emit('next_page', response.data.data)
+        that.load_more_loading = false;
+      } catch (error) {
+        that.$message.error(error.toString());
+      };
+    },
   }
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+</style>

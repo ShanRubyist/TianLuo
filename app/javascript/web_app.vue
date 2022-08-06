@@ -25,8 +25,14 @@
         :full_screen="full_screen"
                     :article_list_loading="article_list_loading"
         :rss_list_json="rss_list_json"
+        :rss_list_json1="rss_list_json1"
+        :current_rss="current_rss"
         :current_article="current_article"
+        :current_page="current_page"
+        :total_page="total_page"
         @change_article="change_article"
+        @next_page="next_page"
+
       ></article-list>
 
       <!--    Feed 详情内容-->
@@ -275,7 +281,8 @@ export default {
       unread_count: window.unread_count,
       unread_count_rss_feeds_path: window.unread_count_rss_feeds_path,
       cat_wrapper_visible: true,
-      rss_list_json: window.rss_list_json,
+      rss_list_json1: rss_list_json1,
+      rss_list_json: rss_list_json,
       all_rss_list_json: window.all_rss_list_json,
       current_article: window.rss_list_json[0],
       current_rss: null,
@@ -283,6 +290,8 @@ export default {
       full_screen: false,
       font_list: window.font_list,
       article_list_loading: false,
+      current_page: window.rss_list_json1.current_page,
+      total_page: window.rss_list_json1.total_page,
     };
   },
   methods: {
@@ -310,10 +319,24 @@ export default {
     full_screen_mode: function () {
       this.full_screen = !this.full_screen;
     },
-    change_rss: function (data) {
-      this.rss_list_json = data;
-      this.current_article = data[0];
+    change_rss: function (rss, data) {
+      this.rss_list_json1 = data;
+      this.rss_list_json = this.rss_list_json1.rss_list;
+      this.current_article = this.rss_list_json[0];
+      this.current_rss = rss;
       this.article_list_loading = false;
+      this.current_page = this.rss_list_json1.current_page;
+      this.total_page = this.rss_list_json1.total_page;
+    },
+    next_page: function (data) {
+      // console.log(this.rss_list_json1)
+      this.rss_list_json1 = data;
+      this.rss_list_json = this.rss_list_json.concat(this.rss_list_json1.rss_list);
+
+      this.current_article = this.rss_list_json[0];
+      // this.article_list_loading = false;
+      this.current_page = this.rss_list_json1.current_page;
+      this.total_page = this.rss_list_json1.total_page;
     },
     init_websocket: function () {
       let url;

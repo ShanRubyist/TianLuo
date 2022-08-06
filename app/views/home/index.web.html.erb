@@ -10,7 +10,8 @@
     var user_id =  <%= current_user.id %>
 
     <% present('RssFeedPresenter', user_id: current_user) do |rss| %>
-    var rss_list_json = <%= raw(rss.rss_feed.to_json) %>
+    var rss_list_json1 = <%= raw(rss.rss_feed.to_json) %>
+    var rss_list_json = rss_list_json1.rss_list
     <% end %>
 
     <% present('RssPresenter', user_id: current_user.id) do |rss| %>

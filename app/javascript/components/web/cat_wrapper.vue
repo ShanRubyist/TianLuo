@@ -125,7 +125,7 @@ export default {
         let response = await promise;
         // console.log(response.data)
 
-        that.$emit('change_rss', response.data)
+        that.$emit('change_rss', rss, response.data.data)
       } catch (error) {
           that.$message.error(error.toString());
       };
