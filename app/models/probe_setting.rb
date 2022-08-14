@@ -14,7 +14,8 @@ class ProbeSetting < ApplicationRecord
   validates :url, presence: true#, uniqueness: true
 
   def save(*)
-    super
-    RssWorkJob.perform_later(self)
+    res = super
+    RssWorkJob.perform_later(self) if res
+    res
   end
 end

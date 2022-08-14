@@ -7,7 +7,7 @@ RSpec.describe 'RssFeedsController', type: :routing do
     end
 
     it 'routes to #mark_all_as_read' do
-      expect(put: "/rss_feeds/mark_all_as_read").to route_to("rss_feeds#mark_readed")
+      expect(put: "/rss_feeds/mark_all_as_read").to route_to("rss_feeds#mark_all_as_read")
     end
 
     it 'routes to #load_more_rss_feed' do
@@ -21,7 +21,7 @@ RSpec.describe 'RssFeedsController', type: :routing do
     end
 
     it 'routes to #mark_all_as_read' do
-      expect(put: "/rss_feeds/mark_all_as_read.json").to route_to("rss_feeds#mark_readed", { format: 'json'})
+      expect(put: "/rss_feeds/mark_all_as_read.json").to route_to("rss_feeds#mark_all_as_read", { format: 'json'})
     end
 
     it 'routes to #load_more_rss_feed' do
