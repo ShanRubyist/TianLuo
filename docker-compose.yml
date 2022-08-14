@@ -30,4 +30,5 @@ app:
      rails db:migrate
      whenever --update-cron
      ./bin/webpack-dev-server &
+     bundle exec sidekiq
      bundle exec rails s -b 0.0.0.0
