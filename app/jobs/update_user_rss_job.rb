@@ -1,4 +1,4 @@
-class UpdateUserUnreadCountJob < ApplicationJob
+class UpdateUserRssJob < ApplicationJob
   queue_as :default
 
   # rescue_from(StandardError) do |exp|
@@ -6,7 +6,7 @@ class UpdateUserUnreadCountJob < ApplicationJob
 
   def perform(args)
     args[:page] ||= 1
-    args[:per_page] ||= 10
+    args[:per_page] ||= 100
     total_unread_count = UserRssFeedShip.where(user_id: args[:user_id], unread: true).count
 
     rss_list = ProbeSetting.rss_list(args[:user_id], args[:page], args[:per]).map do |rss|

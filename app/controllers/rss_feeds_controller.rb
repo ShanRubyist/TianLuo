@@ -36,6 +36,9 @@ class RssFeedsController < ApplicationController
     rst = UserRssFeedShip.where(user_id: params[:user_id], unread: true)
     rst = (params['rss_feed_id'].nil?) ? rst : rst.where(rss_feed_id: params['rss_feed_id'])
     rst.update(unread: false)
+
+    UpdateUserRssJob.perform_now(user_id: params[:user_id])
+
     render json: {message: "marked #{rst.size} rss feeds"}
   end
 

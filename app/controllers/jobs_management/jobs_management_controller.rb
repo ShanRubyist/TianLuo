@@ -30,6 +30,8 @@ module JobsManagement
         job_class.perform_later(setting)
       end
 
+      UpdateUserRssJob.perform_later(user_id: current_user.id)
+
       render(json: {message: '任务启动成功!'})
     rescue
       render(json: nil, status: 502)
@@ -50,6 +52,9 @@ module JobsManagement
       # job_class = params['type'].constantize
 
       rst = job_class.perform_later(setting)
+
+      UpdateUserRssJob.perform_later(user_id: current_user.id)
+
       rst ? render(json: {message: '任务启动成功!'}) : render(json: nil, status: 502)
     end
 

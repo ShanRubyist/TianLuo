@@ -1,4 +1,4 @@
-class UpdateUnreadStatusJob < ApplicationJob
+class UpdateUserRssFeedJob < ApplicationJob
   queue_as :default
 
   def perform(args)
