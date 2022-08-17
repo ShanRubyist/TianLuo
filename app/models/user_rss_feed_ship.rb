@@ -6,7 +6,6 @@ class UserRssFeedShip < ApplicationRecord
   validates :rss_feed_id, presence: true
 
   after_create do
-    UpdateUserRssJob.perform_later(user_id: self.user_id)
-    # UpdateUserRssFeedJob.perform_later(user_id: self.user_id, rss: RssFeed.find_by_id(self.rss_feed_id).probe_setting_id)
+    # UpdateUserRssJob.perform_later(user_id: self.user_id)
   end
 end

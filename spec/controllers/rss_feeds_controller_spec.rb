@@ -13,12 +13,19 @@ RSpec.describe RssFeedsController, type: :controller do
 
   login_user
 
-  describe 'PUT #mark_read' do
+  describe 'PUT #mark_all_as_read' do
     it 'mark all rss feed readed' do
       patch :mark_all_as_read, params: { user_id: user.id}
       expect(response).to have_http_status(:success)
       expect(UserRssFeedShip.where(user: user, unread: true).count).to eq 0
     end
+
+    # it 'should have enqueued UpdateUserRssJob jobs' do
+    #   ActiveJob::Base.queue_adapter = :test
+    #   expect {
+    #     patch :mark_all_as_read, params: { user_id: user.id }
+    #   }.to have_enqueued_job(UpdateUserRssJob)
+    # end
 
     it 'mark specific rss feed readed' do
       patch :mark_all_as_read, params: { user_id: user.id, rss_feed_id: rss_feed.id}

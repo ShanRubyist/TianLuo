@@ -3,6 +3,14 @@ require 'robot'
 class RssWorkJob < ApplicationJob
   queue_as :rss_job
 
+  after_perform :update_all_user_rss_job
+
+  def update_all_user_rss_job
+    self.arguments.first.users.each do |user|
+      UpdateUserRssJob.perform_later(user_id: user.id)
+    end
+  end
+
   rescue_from(Robot::RSSProbe::FetchException) do |exp|
     record_failure(exp)
   end
@@ -18,6 +26,8 @@ class RssWorkJob < ApplicationJob
 
   def record_failure(exp)
     probe_setting = self.arguments.first
+
+    update_all_user_rss_job
 
     RssProbeHistory
         .find_or_create_by(probe_setting_id: probe_setting.id, jid: self.job_id)
