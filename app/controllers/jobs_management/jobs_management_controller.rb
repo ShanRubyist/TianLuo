@@ -26,7 +26,7 @@ module JobsManagement
                     RssWorkJob
                   end
 
-      ProbeSetting.where(user_id: current_user.id).each do |setting|
+      current_user.probe_settings.each do |setting|
         job_class.perform_later(setting)
       end
 
