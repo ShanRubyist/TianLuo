@@ -347,6 +347,8 @@ export default {
       }
       let ws = new WebSocket(url)
 
+      let that = this;
+
       ws.onopen = function () {
         console.log("connected");
         ws.send(JSON.stringify({
@@ -354,7 +356,6 @@ export default {
         }))
       };
 
-      let that = this;
       ws.onmessage = function (data) {
         let info = JSON.parse(data.data);
 
@@ -372,6 +373,19 @@ export default {
           }
         }
       };
+
+      ws.onclose = function () {
+        console.log("disconnected");
+        that.reconnect_websocket();
+      }
+    },
+    reconnect_websocket: function (){
+      var that = this;
+      console.log("websocker 重连");
+
+      setTimeout(function () {
+        that.init_websocket();
+      }, 10 * 1000);
     }
   },
   mounted: function () {
