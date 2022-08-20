@@ -34,6 +34,7 @@
                     :unread_count="unread_count"
         :latest_unread_count="latest_unread_count"
                     :unread_count_of_current_rss="unread_count_of_current_rss"
+                    :abc="abc"
         @change_article="change_article"
         @next_page="next_page"
                     @refresh_list="change_rss"
@@ -300,6 +301,7 @@ export default {
       latest_total_num: null,
       latest_unread_count: null,
       unread_count_of_current_rss: unread_count,
+      abc: rss_list_json1.total_num,
     };
   },
   methods: {
@@ -355,7 +357,9 @@ export default {
         this.article_list_loading = false;
         this.current_page = this.rss_list_json1.current_page;
         this.total_num = this.rss_list_json1.total_num_of_current_rss;
-        this.latest_total_num = this.total_num;
+        this.abc = this.rss_list_json1.total_num;
+        this.latest_total_num = this.rss_list_json1.total_num;
+
         this.unread_count_of_current_rss = this.rss_list_json1.total_unread_count_of_current_rss;
         this.latest_unread_count = this.unread_count_of_current_rss;
       } catch (error) {
@@ -372,7 +376,9 @@ export default {
       this.current_page = this.rss_list_json1.current_page;
 
       this.total_num = this.rss_list_json1.total_num_of_current_rss;
-      this.latest_total_num = this.total_num;
+      this.abc = this.rss_list_json1.total_num;
+
+      this.latest_total_num = this.rss_list_json1.total_num;
       this.unread_count_of_current_rss = this.rss_list_json1.total_unread_count_of_current_rss;
       this.latest_unread_count = this.unread_count_of_current_rss;
     },
@@ -398,7 +404,7 @@ export default {
         let info = JSON.parse(data.data);
 
         if ((info['type'] == null) || (info['type'] == undefined)) {
-          console.log("ws get message: " + info['message']);
+          console.log("ws get message: " + info['message']['info']);
 
           if (info['message']['info']['type'] == 'tl_update_unread_count') {
             let total_unread_count = info['message']['info']['total_unread_count'];
@@ -407,7 +413,7 @@ export default {
             window.favicon.badge(that.unread_count);
 
             that.all_rss_list_json = info['message']['info']["rss_list"];
-            that.latest_total_num = info['message']['info']["total_num_of_current_rss"];
+            that.latest_total_num = info['message']['info']["total_num"];
             that.latest_unread_count = info['message']['info']["total_unread_count_of_current_rss"];
           } else if (info['message']['info']['type'] == 'tl_update_status') {
             // that.rss_list_json = info['message']['info']["rss_feed_list"];

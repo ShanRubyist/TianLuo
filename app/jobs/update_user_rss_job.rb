@@ -33,13 +33,14 @@ class UpdateUserRssJob < ApplicationJob
                                  .includes(:user_rss_feed_ships)
                                  .where(user_rss_feed_ships: { user_id: args[:user_id] })
 
-    user_rss_feeds = user_rss_feeds.where(probe_setting: args[:rss]) if args[:rss]
+    user_rss_feeds2 = @locals[:rss] ? user_rss_feeds.where(probe_setting: @locals[:rss]) : user_rss_feeds
 
     rst = {
       type: 'tl_update_unread_count',
       total_unread_count: total_unread_count,
       rss_list: rss_list,
-      total_num_of_current_rss: user_rss_feeds.count,
+      total_num_of_current_rss: user_rss_feeds2.count,
+      total_num: user_rss_feeds.count,
       total_unread_count_of_current_rss: user_rss_feeds.where(user_rss_feed_ships: { unread: true }).count,
     }
 
