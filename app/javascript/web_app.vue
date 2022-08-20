@@ -363,7 +363,7 @@ export default {
       // this.article_list_loading = false;
       this.current_page = this.rss_list_json1.current_page;
 
-      this.total_num = this.rss_list_json1.totoal_num_of_current_rss;
+      this.total_num = this.rss_list_json1.total_num_of_current_rss;
     },
     init_websocket: function () {
       let url;
@@ -387,13 +387,14 @@ export default {
         let info = JSON.parse(data.data);
 
         if ((info['type'] == null) || (info['type'] == undefined)) {
-          console.log("ws get message: " + info);
+          console.log("ws get message: " + info['message']);
 
           if (info['message']['info']['type'] == 'tl_update_unread_count') {
             let total_unread_count = info['message']['info']['total_unread_count'];
 
             that.unread_count = total_unread_count;
             window.favicon.badge(that.unread_count);
+
             that.all_rss_list_json = info['message']['info']["rss_list"];
             that.latest_total_num = info['message']['info']["total_num_of_current_rss"];
           } else if (info['message']['info']['type'] == 'tl_update_status') {

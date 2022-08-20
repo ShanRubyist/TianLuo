@@ -83,7 +83,8 @@ export default {
   data: function () {
     return {
       load_more_loading: false,
-      total_page: null
+      total_page:
+          Math.floor(this.total_num / 100) + ((this.total_num % 100 == 0) ? 0 : 1)
     };
   },
   methods: {
