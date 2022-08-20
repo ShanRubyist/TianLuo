@@ -16,8 +16,17 @@
       <div title="只看未读/查看全部" class="article-list__toolbar-unread active"></div>
     </div>
     <!---->
-    <div v-if="has_new_articles()" class="article-list__refresh">
-      <span @click='$emit("refresh_list", current_rss)' class="article-list__refresh-tip">订阅有 {{ new_articles_count() }} 篇新文章，点击刷新</span>
+    <div v-if="has_new_articles() && is_status_change()" class="article-list__refresh">
+      <span @click='$emit("refresh_list", current_rss)' class="article-list__refresh-tip">
+        订阅有 {{ new_articles_count() }} 篇新文章、{{ change_articles_count() }} 篇文章状态有变化，点击刷新</span>
+    </div>
+    <div v-else-if="has_new_articles()" class="article-list__refresh">
+      <span @click='$emit("refresh_list", current_rss)' class="article-list__refresh-tip">
+        订阅有 {{ new_articles_count() }} 篇新文章，点击刷新</span>
+    </div>
+    <div v-else-if="is_status_change()" class="article-list__refresh">
+      <span @click='$emit("refresh_list", current_rss)' class="article-list__refresh-tip">
+        订阅有 {{ change_articles_count() }} 篇文章状态有变化，点击刷新</span>
     </div>
 
     <div v-loading="article_list_loading" ref="article_list" class="article-list__main text-list" id="article-list__main">
@@ -79,10 +88,14 @@
 
 <script>
 export default {
-  props: ["full_screen", "rss_list_json", "rss_list_json1", "current_article", "current_rss", "article_list_loading", "current_page", "total_num", "latest_total_num"],
+  props: ["full_screen", "rss_list_json", "rss_list_json1",
+    "current_article", "current_rss", "article_list_loading",
+    "current_page", "total_num", "latest_total_num",
+    "latest_unread_count", "unread_count_of_current_rss"],
   data: function () {
     return {
       load_more_loading: false,
+      unread_count: this.unread_count_of_current_rss,
       total_page:
           this.total_num == 0 ? 1 : (Math.floor(this.total_num / 100) + ((this.total_num % 100 == 0) ? 0 : 1))
     };
@@ -130,12 +143,35 @@ export default {
         return false
       }
     },
+    is_status_change: function () {
+      if (this.latest_unread_count == null){
+        return false;
+      }
+
+      // 无新文章时，latest_unread_count != unread_count;
+      // 有新文章是，latest_unread_count != unread_count + 新文章数量;
+      if ((this.latest_unread_count - this.unread_count) != (this.latest_total_num - this.total_num)) {
+        return true
+      }
+      else {
+        return false
+      }
+    },
     new_articles_count: function (){
       if (this.latest_total_num) {
-        return this.latest_total_num - this.total_num
+        let result = this.latest_total_num - this.total_num;
+        return (result > 999 ? "999+" : result);
       }
       else {
         return 0
+      }
+    },
+    change_articles_count: function () {
+      if (this.latest_unread_count != null) {
+        let result = Math.abs(this.latest_unread_count - this.unread_count);
+        return (result > 999 ? "999+" : result);
+      } else {
+        return 0;
       }
     }
   },
@@ -150,6 +186,9 @@ export default {
         this.total_page =
             Math.floor(this.total_num / 100) + ((this.total_num % 100 == 0) ? 0 : 1)
       }
+    },
+    unread_count_of_current_rss: function() {
+      this.unread_count = this.unread_count_of_current_rss;
     }
   }
 };

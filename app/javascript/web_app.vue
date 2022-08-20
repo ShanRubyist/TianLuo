@@ -31,6 +31,9 @@
         :current_page="current_page"
         :total_num="total_num"
         :latest_total_num="latest_total_num"
+                    :unread_count="unread_count"
+        :latest_unread_count="latest_unread_count"
+                    :unread_count_of_current_rss="unread_count_of_current_rss"
         @change_article="change_article"
         @next_page="next_page"
                     @refresh_list="change_rss"
@@ -294,7 +297,9 @@ export default {
       article_list_loading: false,
       current_page: window.rss_list_json1.current_page,
       total_num: rss_list_json1.total_num_of_current_rss,
-      latest_total_num: null
+      latest_total_num: null,
+      latest_unread_count: null,
+      unread_count_of_current_rss: unread_count,
     };
   },
   methods: {
@@ -351,6 +356,8 @@ export default {
         this.current_page = this.rss_list_json1.current_page;
         this.total_num = this.rss_list_json1.total_num_of_current_rss;
         this.latest_total_num = this.total_num;
+        this.unread_count_of_current_rss = this.rss_list_json1.total_unread_count_of_current_rss;
+        this.latest_unread_count = this.unread_count_of_current_rss;
       } catch (error) {
         that.$message.error(error.toString());
       };
@@ -366,6 +373,8 @@ export default {
 
       this.total_num = this.rss_list_json1.total_num_of_current_rss;
       this.latest_total_num = this.total_num;
+      this.unread_count_of_current_rss = this.rss_list_json1.total_unread_count_of_current_rss;
+      this.latest_unread_count = this.unread_count_of_current_rss;
     },
     init_websocket: function () {
       let url;
@@ -399,8 +408,9 @@ export default {
 
             that.all_rss_list_json = info['message']['info']["rss_list"];
             that.latest_total_num = info['message']['info']["total_num_of_current_rss"];
+            that.latest_unread_count = info['message']['info']["total_unread_count_of_current_rss"];
           } else if (info['message']['info']['type'] == 'tl_update_status') {
-            that.rss_list_json = info['message']['info']["rss_feed_list"];
+            // that.rss_list_json = info['message']['info']["rss_feed_list"];
           }
         }
       };

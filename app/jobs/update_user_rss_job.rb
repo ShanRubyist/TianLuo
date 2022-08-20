@@ -39,7 +39,8 @@ class UpdateUserRssJob < ApplicationJob
       type: 'tl_update_unread_count',
       total_unread_count: total_unread_count,
       rss_list: rss_list,
-      total_num_of_current_rss: user_rss_feeds.count
+      total_num_of_current_rss: user_rss_feeds.count,
+      total_unread_count_of_current_rss: user_rss_feeds.where(user_rss_feed_ships: { unread: true }).count,
     }
 
     ActionCable.server.broadcast "tl_#{args[:user_id]}_channel", info: rst
