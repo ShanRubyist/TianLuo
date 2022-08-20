@@ -4,7 +4,7 @@
       <!--    工具栏区域-->
       <sidebar id="sidebar"
                :full_screen="full_screen"
-               :unread_count="unread_count"
+               :unread_count="latest_unread_count"
                @rss_feed="rss_feed"
                @recommend="recommend"
                @favor="favor"
@@ -13,30 +13,29 @@
 
       <!--    订阅列表区域-->
       <cat-wrapper id="cat-wrapper"
-        :full_screen="full_screen"
-        :all_rss_list_json="all_rss_list_json"
-                   :unread_count="unread_count"
-        :cat_wrapper_visible="cat_wrapper_visible"
-        @change_rss="change_rss"
+                   :full_screen="full_screen"
+                   :all_rss_list_json="all_rss_list_json"
+                   :unread_count="latest_unread_count"
+                   :cat_wrapper_visible="cat_wrapper_visible"
+                   @change_rss="change_rss"
       ></cat-wrapper>
 
       <!--Feed 列表区域-->
       <article-list id="article-list"
-        :full_screen="full_screen"
+                    :full_screen="full_screen"
                     :article_list_loading="article_list_loading"
-        :rss_list_json="rss_list_json"
-        :rss_list_json1="rss_list_json1"
-        :current_rss="current_rss"
-        :current_article="current_article"
-        :current_page="current_page"
-        :total_num="total_num"
-        :latest_total_num="latest_total_num"
-                    :unread_count="unread_count"
-        :latest_unread_count="latest_unread_count"
-                    :unread_count_of_current_rss="unread_count_of_current_rss"
-                    :abc="abc"
-        @change_article="change_article"
-        @next_page="next_page"
+                    :rss_list_json="rss_list_json"
+                    :rss_list_json1="rss_list_json1"
+                    :current_rss="current_rss"
+                    :current_article="current_article"
+                    :current_page="current_page"
+                    :total_num_of_current_rss="total_num_of_current_rss"
+                    :latest_total_num="latest_total_num"
+                    :latest_unread_count="latest_unread_count"
+                    :total_unread_count="total_unread_count"
+                    :total_num="total_num"
+                    @change_article="change_article"
+                    @next_page="next_page"
                     @refresh_list="change_rss"
 
       ></article-list>
@@ -284,7 +283,6 @@ import ArticleDetail from "components/web/article_detail.vue";
 export default {
   data: function () {
     return {
-      unread_count: window.unread_count,
       unread_count_rss_feeds_path: window.unread_count_rss_feeds_path,
       cat_wrapper_visible: true,
       rss_list_json1: rss_list_json1,
@@ -297,11 +295,11 @@ export default {
       font_list: window.font_list,
       article_list_loading: false,
       current_page: window.rss_list_json1.current_page,
-      total_num: rss_list_json1.total_num_of_current_rss,
+      total_num_of_current_rss: rss_list_json1.total_num_of_current_rss,
       latest_total_num: null,
-      latest_unread_count: null,
-      unread_count_of_current_rss: unread_count,
-      abc: rss_list_json1.total_num,
+      latest_unread_count: window.unread_count,
+      total_unread_count: unread_count,
+      total_num: rss_list_json1.total_num,
     };
   },
   methods: {
@@ -356,12 +354,12 @@ export default {
         this.current_rss = rss;
         this.article_list_loading = false;
         this.current_page = this.rss_list_json1.current_page;
-        this.total_num = this.rss_list_json1.total_num_of_current_rss;
-        this.abc = this.rss_list_json1.total_num;
+        this.total_num_of_current_rss = this.rss_list_json1.total_num_of_current_rss;
+        this.total_num = this.rss_list_json1.total_num;
         this.latest_total_num = this.rss_list_json1.total_num;
 
-        this.unread_count_of_current_rss = this.rss_list_json1.total_unread_count_of_current_rss;
-        this.latest_unread_count = this.unread_count_of_current_rss;
+        this.total_unread_count = this.rss_list_json1.total_unread_count;
+        this.latest_unread_count = this.total_unread_count;
       } catch (error) {
         that.$message.error(error.toString());
       };
@@ -375,12 +373,12 @@ export default {
       // this.article_list_loading = false;
       this.current_page = this.rss_list_json1.current_page;
 
-      this.total_num = this.rss_list_json1.total_num_of_current_rss;
-      this.abc = this.rss_list_json1.total_num;
+      this.total_num_of_current_rss = this.rss_list_json1.total_num_of_current_rss;
+      this.total_num = this.rss_list_json1.total_num;
 
       this.latest_total_num = this.rss_list_json1.total_num;
-      this.unread_count_of_current_rss = this.rss_list_json1.total_unread_count_of_current_rss;
-      this.latest_unread_count = this.unread_count_of_current_rss;
+      this.total_unread_count = this.rss_list_json1.total_unread_count;
+      this.latest_unread_count = this.total_unread_count;
     },
     init_websocket: function () {
       let url;
@@ -409,12 +407,12 @@ export default {
           if (info['message']['info']['type'] == 'tl_update_unread_count') {
             let total_unread_count = info['message']['info']['total_unread_count'];
 
-            that.unread_count = total_unread_count;
-            window.favicon.badge(that.unread_count);
 
             that.all_rss_list_json = info['message']['info']["rss_list"];
             that.latest_total_num = info['message']['info']["total_num"];
-            that.latest_unread_count = info['message']['info']["total_unread_count_of_current_rss"];
+            that.latest_unread_count = info['message']['info']["total_unread_count"];
+            window.favicon.badge(that.latest_unread_count);
+
           } else if (info['message']['info']['type'] == 'tl_update_status') {
             // that.rss_list_json = info['message']['info']["rss_feed_list"];
           }
@@ -456,7 +454,7 @@ export default {
     //     .catch(function (reason) {});
     // }, 5000);
 
-    window.favicon.badge(this.unread_count);
+    window.favicon.badge(this.latest_unread_count);
     this.init_websocket();
 
     // 新手教程

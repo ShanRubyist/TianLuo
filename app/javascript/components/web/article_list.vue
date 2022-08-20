@@ -90,14 +90,14 @@
 export default {
   props: ["full_screen", "rss_list_json", "rss_list_json1",
     "current_article", "current_rss", "article_list_loading",
-    "current_page", "total_num", "latest_total_num",
-    "latest_unread_count", "unread_count_of_current_rss", "abc"],
+    "current_page", "total_num_of_current_rss", "latest_total_num",
+    "latest_unread_count", "total_unread_count", "total_num"],
   data: function () {
     return {
       load_more_loading: false,
-      unread_count: this.unread_count_of_current_rss,
+      unread_count: this.total_unread_count,
       total_page:
-          this.total_num == 0 ? 1 : (Math.floor(this.total_num / 100) + ((this.total_num % 100 == 0) ? 0 : 1))
+          this.total_num_of_current_rss == 0 ? 1 : (Math.floor(this.total_num_of_current_rss / 100) + ((this.total_num_of_current_rss % 100 == 0) ? 0 : 1))
     };
   },
   methods: {
@@ -136,7 +136,7 @@ export default {
       };
     },
     has_new_articles: function () {
-      if (this.latest_total_num && (this.latest_total_num > this.abc)) {
+      if (this.latest_total_num && (this.latest_total_num > this.total_num)) {
         return true
       }
       else {
@@ -150,7 +150,7 @@ export default {
 
       // 无新文章时，latest_unread_count != unread_count;
       // 有新文章是，latest_unread_count != unread_count + 新文章数量;
-      if ((this.latest_unread_count - this.unread_count) != (this.latest_total_num - this.abc)) {
+      if ((this.latest_unread_count - this.unread_count) != (this.latest_total_num - this.total_num)) {
         return true;
       }
       else {
@@ -159,7 +159,7 @@ export default {
     },
     new_articles_count: function (){
       if (this.latest_total_num) {
-        let result = this.latest_total_num - this.abc;
+        let result = this.latest_total_num - this.total_num;
         return (result > 999 ? "999+" : result);
       }
       else {
@@ -179,16 +179,16 @@ export default {
     current_rss: function() {
       this.$refs.article_list.scrollTop = 0;
     },
-    total_num: function() {
-      if (this.total_num == 0) {
+    total_num_of_current_rss: function() {
+      if (this.total_num_of_current_rss == 0) {
         this.total_page = 1
       } else {
         this.total_page =
-            Math.floor(this.total_num / 100) + ((this.total_num % 100 == 0) ? 0 : 1)
+            Math.floor(this.total_num_of_current_rss / 100) + ((this.total_num_of_current_rss % 100 == 0) ? 0 : 1)
       }
     },
-    unread_count_of_current_rss: function() {
-      this.unread_count = this.unread_count_of_current_rss;
+    total_unread_count: function() {
+      this.unread_count = this.total_unread_count;
     }
   }
 };
