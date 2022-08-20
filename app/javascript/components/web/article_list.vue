@@ -84,7 +84,7 @@ export default {
     return {
       load_more_loading: false,
       total_page:
-          Math.floor(this.total_num / 100) + ((this.total_num % 100 == 0) ? 0 : 1)
+          this.total_num == 0 ? 1 : (Math.floor(this.total_num / 100) + ((this.total_num % 100 == 0) ? 0 : 1))
     };
   },
   methods: {
@@ -93,6 +93,10 @@ export default {
     },
     next_page: async function () {
       var that = this;
+
+      if (this.current_page == this.total_page) {
+        return;
+      }
 
       try {
         // app.__vue__.article_list_loading = true;
@@ -140,8 +144,12 @@ export default {
       this.$refs.article_list.scrollTop = 0;
     },
     total_num: function() {
-      this.total_page =
-          Math.floor(this.total_num / 100) + ((this.total_num % 100 == 0) ? 0 : 1)
+      if (this.total_num == 0) {
+        this.total_page = 1
+      } else {
+        this.total_page =
+            Math.floor(this.total_num / 100) + ((this.total_num % 100 == 0) ? 0 : 1)
+      }
     }
   }
 };

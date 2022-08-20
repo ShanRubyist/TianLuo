@@ -350,6 +350,7 @@ export default {
         this.article_list_loading = false;
         this.current_page = this.rss_list_json1.current_page;
         this.total_num = this.rss_list_json1.total_num_of_current_rss;
+        this.latest_total_num = this.total_num;
       } catch (error) {
         that.$message.error(error.toString());
       };
@@ -364,6 +365,7 @@ export default {
       this.current_page = this.rss_list_json1.current_page;
 
       this.total_num = this.rss_list_json1.total_num_of_current_rss;
+      this.latest_total_num = this.total_num;
     },
     init_websocket: function () {
       let url;
