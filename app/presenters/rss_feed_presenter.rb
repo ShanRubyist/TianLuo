@@ -5,6 +5,12 @@ class RssFeedPresenter < BasePresenter
     @locals[:page] ||= 1
     @locals[:per] ||= 100
 
+    user_rss_feeds = RssFeed
+                       .includes(:user_rss_feed_ships)
+                       .where(user_rss_feed_ships: { user_id: @locals[:user_id] })
+
+    user_rss_feeds = user_rss_feeds.where(probe_setting: @locals[:rss]) if @locals[:rss]
+
     rss_list =     RssFeed.rss_feeds_list(@locals[:user_id], @locals[:rss], @locals[:page], @locals[:per]).map do |rss|
       {
         id: rss.id,
@@ -31,9 +37,10 @@ class RssFeedPresenter < BasePresenter
     end
 
     {
+      current_rss: @locals[:rss],
       current_page: @locals[:page].to_i,
-                total_page: RssFeed.rss_feeds_list(@locals[:user_id], @locals[:rss]).size / @locals[:per].to_i + ((rss_list.size % @locals[:per].to_i == 0) ? 0 : 1),
-                rss_list: rss_list
+      totoal_num_of_current_rss: user_rss_feeds.count,
+      rss_list: rss_list
     }
 
   end

@@ -23,7 +23,11 @@
             <div class="draggable-item">
               <div title="5677 篇未读文章" class="nav-item cat-item">
                 <i class="iconfont icon-unfold"></i>
-                <span class="nav-item__title text--ellipsis">全部</span>
+                <span
+                    class="nav-item__title text--ellipsis"
+                    @click="$emit('change_rss', null)"
+                >全部
+                </span>
                 <a-popover>
                   <template slot="content">
                     <ul class="el-popover__menu">
@@ -49,7 +53,7 @@
 
                 <span
                   class="nav-item__title text--ellipsis"
-                  @click="change_rss(rss.probe_settings_id)"
+                  @click="$emit('change_rss', rss.probe_settings_id)"
                 >{{rss.title}}
                 </span>
 
@@ -104,31 +108,6 @@ export default {
         .catch(function(reason) {
           that.$message.error(reason.toString());
         });
-    },
-    change_rss: async function(rss) {
-      this.current_rss = rss;
-      var that = this;
-
-      try {
-        app.__vue__.article_list_loading = true;
-        let promise = axios
-            .get("/rss_list", {
-              headers: {
-                Accept: "application/json"
-              },
-              params: {
-                user_id: user_id,
-                rss: rss
-              }
-            })
-
-        let response = await promise;
-        // console.log(response.data)
-
-        that.$emit('change_rss', rss, response.data.data)
-      } catch (error) {
-          that.$message.error(error.toString());
-      };
     },
     refresh_feeds: function(type) {
       var that = this;

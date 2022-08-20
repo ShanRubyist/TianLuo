@@ -29,9 +29,11 @@
         :current_rss="current_rss"
         :current_article="current_article"
         :current_page="current_page"
-        :total_page="total_page"
+        :total_num="total_num"
+        :latest_total_num="latest_total_num"
         @change_article="change_article"
         @next_page="next_page"
+                    @refresh_list="change_rss"
 
       ></article-list>
 
@@ -291,7 +293,8 @@ export default {
       font_list: window.font_list,
       article_list_loading: false,
       current_page: window.rss_list_json1.current_page,
-      total_page: window.rss_list_json1.total_page,
+      total_num: rss_list_json1.totoal_num_of_current_rss,
+      latest_total_num: null
     };
   },
   methods: {
@@ -319,14 +322,38 @@ export default {
     full_screen_mode: function () {
       this.full_screen = !this.full_screen;
     },
-    change_rss: function (rss, data) {
-      this.rss_list_json1 = data;
-      this.rss_list_json = this.rss_list_json1.rss_list;
-      this.current_article = this.rss_list_json[0];
+    change_rss: async function(rss) {
       this.current_rss = rss;
-      this.article_list_loading = false;
-      this.current_page = this.rss_list_json1.current_page;
-      this.total_page = this.rss_list_json1.total_page;
+      var that = this;
+
+      try {
+        app.__vue__.article_list_loading = true;
+        let promise = axios
+            .get("/rss_list", {
+              headers: {
+                Accept: "application/json"
+              },
+              params: {
+                user_id: user_id,
+                rss: rss
+              }
+            })
+
+        let response = await promise;
+        // console.log(response.data)
+
+        let data = response.data.data;
+        this.rss_list_json1 = data;
+        this.rss_list_json = this.rss_list_json1.rss_list;
+        this.current_article = this.rss_list_json[0];
+        this.current_rss = rss;
+        this.article_list_loading = false;
+        this.current_page = this.rss_list_json1.current_page;
+
+        this.total_num = this.rss_list_json1.totoal_num_of_current_rss;
+      } catch (error) {
+        that.$message.error(error.toString());
+      };
     },
     next_page: function (data) {
       // console.log(this.rss_list_json1)
@@ -336,7 +363,8 @@ export default {
       this.current_article = this.rss_list_json[0];
       // this.article_list_loading = false;
       this.current_page = this.rss_list_json1.current_page;
-      this.total_page = this.rss_list_json1.total_page;
+
+      this.total_num = this.rss_list_json1.totoal_num_of_current_rss;
     },
     init_websocket: function () {
       let url;
@@ -368,6 +396,7 @@ export default {
             that.unread_count = total_unread_count;
             window.favicon.badge(that.unread_count);
             that.all_rss_list_json = info['message']['info']["rss_list"];
+            that.latest_total_num = info['message']['info']["totoal_num_of_current_rss"];
           } else if (info['message']['info']['type'] == 'tl_update_status') {
             that.rss_list_json = info['message']['info']["rss_feed_list"];
           }

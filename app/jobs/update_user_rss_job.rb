@@ -29,10 +29,17 @@ class UpdateUserRssJob < ApplicationJob
       }
     end
 
+    user_rss_feeds = RssFeed
+                                 .includes(:user_rss_feed_ships)
+                                 .where(user_rss_feed_ships: { user_id: args[:user_id] })
+
+    user_rss_feeds = user_rss_feeds.where(probe_setting: args[:rss]) if args[:rss]
+
     rst = {
       type: 'tl_update_unread_count',
       total_unread_count: total_unread_count,
-      rss_list: rss_list
+      rss_list: rss_list,
+      total_num_of_current_rss: user_rss_feeds.count
     }
 
     ActionCable.server.broadcast "tl_#{args[:user_id]}_channel", info: rst

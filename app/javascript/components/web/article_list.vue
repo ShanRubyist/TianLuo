@@ -16,10 +16,11 @@
       <div title="只看未读/查看全部" class="article-list__toolbar-unread active"></div>
     </div>
     <!---->
-    <div class="article-list__refresh">
-      <span class="article-list__refresh-tip">订阅有 11 篇新文章，点击刷新</span>
+    <div v-if="has_new_articles()" class="article-list__refresh">
+      <span @click='$emit("refresh_list", current_rss)' class="article-list__refresh-tip">订阅有 {{ new_articles_count() }} 篇新文章，点击刷新</span>
     </div>
-    <div v-loading="article_list_loading" class="article-list__main text-list" id="article-list__main">
+
+    <div v-loading="article_list_loading" ref="article_list" class="article-list__main text-list" id="article-list__main">
       <div v-for="rss in rss_list_json" class="article-item feeds-expanded sm-text text-list"
         :class="{ read: rss.status, active: (current_article == rss) }" @click="change_article(rss)">
         <div class="article-item__wrapper">
@@ -61,7 +62,7 @@
               <i class="iconfont icon-layout el-popover__reference" aria-describedby="el-popover-7006" tabindex="0"></i>
             </span>
           </div>
-          <span class="bottom-toolbar__label">{{ current_page }}</span>
+          <span class="bottom-toolbar__label">{{ current_page }} / {{ total_page }}</span>
           <div class="bottom-toolbar__right">
             <span>
               <i class="iconfont icon-more el-popover__reference" aria-describedby="el-popover-7846" tabindex="0"></i>
@@ -78,10 +79,12 @@
 
 <script>
 export default {
-  props: ["full_screen", "rss_list_json", "rss_list_json1", "current_article", "current_rss", "article_list_loading", "current_page", "total_page"],
+  props: ["full_screen", "rss_list_json", "rss_list_json1", "current_article", "current_rss", "article_list_loading", "current_page", "total_num", "latest_total_num"],
   data: function () {
     return {
       load_more_loading: false,
+      total_page:
+          Math.floor(this.total_num / 100) + ((this.total_num % 100 == 0) ? 0 : 1)
     };
   },
   methods: {
@@ -115,6 +118,27 @@ export default {
         that.$message.error(error.toString());
       };
     },
+    has_new_articles: function () {
+      if (this.latest_total_num && (this.latest_total_num > this.total_num)) {
+        return true
+      }
+      else {
+        return false
+      }
+    },
+    new_articles_count: function (){
+      if (this.latest_total_num) {
+        return this.latest_total_num - this.total_num
+      }
+      else {
+        return 0
+      }
+    }
+  },
+  watch: {
+    current_rss: function() {
+      this.$refs.article_list.scrollTop = 0;
+    }
   }
 };
 </script>
