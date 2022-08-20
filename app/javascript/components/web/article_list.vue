@@ -83,8 +83,7 @@ export default {
   data: function () {
     return {
       load_more_loading: false,
-      total_page:
-          Math.floor(this.total_num / 100) + ((this.total_num % 100 == 0) ? 0 : 1)
+      total_page: null
     };
   },
   methods: {
@@ -138,6 +137,10 @@ export default {
   watch: {
     current_rss: function() {
       this.$refs.article_list.scrollTop = 0;
+    },
+    total_num: function() {
+      this.total_page =
+          Math.floor(this.total_num / 100) + ((this.total_num % 100 == 0) ? 0 : 1)
     }
   }
 };

@@ -293,7 +293,7 @@ export default {
       font_list: window.font_list,
       article_list_loading: false,
       current_page: window.rss_list_json1.current_page,
-      total_num: rss_list_json1.totoal_num_of_current_rss,
+      total_num: rss_list_json1.total_num_of_current_rss,
       latest_total_num: null
     };
   },
@@ -349,8 +349,7 @@ export default {
         this.current_rss = rss;
         this.article_list_loading = false;
         this.current_page = this.rss_list_json1.current_page;
-
-        this.total_num = this.rss_list_json1.totoal_num_of_current_rss;
+        this.total_num = this.rss_list_json1.total_num_of_current_rss;
       } catch (error) {
         that.$message.error(error.toString());
       };
@@ -396,7 +395,7 @@ export default {
             that.unread_count = total_unread_count;
             window.favicon.badge(that.unread_count);
             that.all_rss_list_json = info['message']['info']["rss_list"];
-            that.latest_total_num = info['message']['info']["totoal_num_of_current_rss"];
+            that.latest_total_num = info['message']['info']["total_num_of_current_rss"];
           } else if (info['message']['info']['type'] == 'tl_update_status') {
             that.rss_list_json = info['message']['info']["rss_feed_list"];
           }

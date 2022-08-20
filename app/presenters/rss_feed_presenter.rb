@@ -39,7 +39,7 @@ class RssFeedPresenter < BasePresenter
     {
       current_rss: @locals[:rss],
       current_page: @locals[:page].to_i,
-      totoal_num_of_current_rss: user_rss_feeds.count,
+      total_num_of_current_rss: user_rss_feeds.count,
       rss_list: rss_list
     }
 
