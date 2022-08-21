@@ -150,7 +150,8 @@ export default {
 
       // 无新文章时，latest_unread_count != unread_count;
       // 有新文章是，latest_unread_count != unread_count + 新文章数量;
-      if ((this.latest_unread_count - this.unread_count) != (this.latest_total_num - this.total_num)) {
+      if (((this.latest_unread_count - this.unread_count) != (this.latest_total_num - this.total_num))
+        && (this.latest_unread_count != this.unread_count)) {
         return true;
       }
       else {

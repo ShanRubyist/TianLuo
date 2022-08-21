@@ -21,7 +21,7 @@
         <div class="cat-list__content">
           <div>
             <div class="draggable-item">
-              <div title="5677 篇未读文章" class="nav-item cat-item">
+              <div title="{{ this.unread_count }} 篇未读文章" class="nav-item cat-item">
                 <i class="iconfont icon-unfold"></i>
                 <span
                     class="nav-item__title text--ellipsis"
