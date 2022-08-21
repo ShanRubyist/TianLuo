@@ -13,11 +13,24 @@ RSpec.describe RssFeedsController, type: :controller do
 
   login_user
 
+  describe 'GET #index' do
+    it 'access to index path' do
+      get :index, params: {format: :json}
+      expect(response).to render_template("index")
+    end
+  end
+
   describe 'PUT #mark_all_as_read' do
     it 'mark all rss feed readed' do
       patch :mark_all_as_read, params: { user_id: user.id}
       expect(response).to have_http_status(:success)
       expect(UserRssFeedShip.where(user: user, unread: true).count).to eq 0
+    end
+
+    it 'change status' do
+      expect {
+        patch :mark_all_as_read, params: { user_id: user.id}
+      }.to change(UserRssFeedShip.where(unread: true), :count).by(-1)
     end
 
     # it 'should have enqueued UpdateUserRssJob jobs' do

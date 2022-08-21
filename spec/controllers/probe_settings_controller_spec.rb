@@ -10,6 +10,11 @@ RSpec.describe ProbeSettingsController, type: :controller do
       get :index
       expect(response).to render_template("index")
     end
+
+    it 'has 1 rss job' do
+      get :index
+      expect(assigns(:running_rss_jobs_count)).to eq 1
+    end
   end
 
   describe 'POST #create' do
