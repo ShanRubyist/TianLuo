@@ -2,7 +2,7 @@
 class RssFeedsController < ApplicationController
 
   # for web
-  def rss_feeds_of_rss
+  def index
     respond_to do |format|
       format.json
     end

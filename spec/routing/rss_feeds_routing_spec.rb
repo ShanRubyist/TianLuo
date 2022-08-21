@@ -13,6 +13,10 @@ RSpec.describe 'RssFeedsController', type: :routing do
     it 'routes to #load_more_rss_feed' do
       expect(get: "/rss_feeds/load_more_rss_feed").to route_to("rss_feeds#load_more_rss_feed")
     end
+
+    it 'routes to #index' do
+      expect(get: "/rss_feeds").to route_to("rss_feeds#index")
+    end
   end
 
   describe 'routes with format' do
@@ -26,6 +30,10 @@ RSpec.describe 'RssFeedsController', type: :routing do
 
     it 'routes to #load_more_rss_feed' do
       expect(get: "/rss_feeds/load_more_rss_feed.json").to route_to("rss_feeds#load_more_rss_feed", { format: 'json'})
+    end
+
+    it 'routes to #index' do
+      expect(get: "/rss_feeds.json").to route_to("rss_feeds#index", { format: 'json'})
     end
   end
 end

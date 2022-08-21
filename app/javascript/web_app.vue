@@ -4,7 +4,7 @@
       <!--    工具栏区域-->
       <sidebar id="sidebar"
                :full_screen="full_screen"
-               :unread_count="latest_unread_count"
+               :unread_count="total_unread_count"
                @rss_feed="rss_feed"
                @recommend="recommend"
                @favor="favor"
@@ -15,7 +15,7 @@
       <cat-wrapper id="cat-wrapper"
                    :full_screen="full_screen"
                    :all_rss_list_json="all_rss_list_json"
-                   :unread_count="latest_unread_count"
+                   :unread_count="total_unread_count"
                    :cat_wrapper_visible="cat_wrapper_visible"
                    @change_rss="change_rss"
       ></cat-wrapper>
@@ -283,7 +283,6 @@ import ArticleDetail from "components/web/article_detail.vue";
 export default {
   data: function () {
     return {
-      unread_count_rss_feeds_path: window.unread_count_rss_feeds_path,
       cat_wrapper_visible: true,
       rss_list_json1: rss_list_json1,
       rss_list_json: rss_list_json,
@@ -297,8 +296,8 @@ export default {
       current_page: window.rss_list_json1.current_page,
       total_num_of_current_rss: rss_list_json1.total_num_of_current_rss,
       latest_total_num: null,
-      latest_unread_count: window.unread_count,
-      total_unread_count: unread_count,
+      latest_unread_count: null,
+      total_unread_count: window.unread_count,
       total_num: rss_list_json1.total_num,
     };
   },
@@ -334,7 +333,7 @@ export default {
       try {
         app.__vue__.article_list_loading = true;
         let promise = axios
-            .get("/rss_list", {
+            .get("/rss_feeds/", {
               headers: {
                 Accept: "application/json"
               },
@@ -454,7 +453,7 @@ export default {
     //     .catch(function (reason) {});
     // }, 5000);
 
-    window.favicon.badge(this.latest_unread_count);
+    window.favicon.badge(this.total_unread_count);
     this.init_websocket();
 
     // 新手教程

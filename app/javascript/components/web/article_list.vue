@@ -115,7 +115,7 @@ export default {
         // app.__vue__.article_list_loading = true;
         that.load_more_loading = true;
         let promise = axios
-          .get("/rss_list", {
+          .get("/rss_feeds/", {
             headers: {
               Accept: "application/json"
             },
