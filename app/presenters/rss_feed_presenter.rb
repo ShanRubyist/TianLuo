@@ -40,6 +40,7 @@ class RssFeedPresenter < BasePresenter
       current_rss: @locals[:rss],
       current_page: @locals[:page].to_i,
       total_num: user_rss_feeds.count,
+      total_unread_count: user_rss_feeds.where(user_rss_feed_ships: { unread: true }).count,
       total_num_of_current_rss: user_rss_feeds_of_current_rss.count,
       total_unread_count_of_current_rss: user_rss_feeds_of_current_rss.where(user_rss_feed_ships: { unread: true }).count,
       rss_feed_list: rss_feed_list

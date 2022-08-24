@@ -4,7 +4,7 @@
       <!--    工具栏区域-->
       <sidebar id="sidebar"
                :full_screen="full_screen"
-               :unread_count="latest_unread_count"
+               :unread_count="unread_count"
                @rss_feed="rss_feed"
                @recommend="recommend"
                @favor="favor"
@@ -295,7 +295,7 @@ export default {
       current_page: window.rss_list_json1.current_page,
       total_num: rss_list_json1.total_num_of_current_rss,
       latest_total_num: rss_list_json1.total_num_of_current_rss,
-      unread_count: rss_list_json1.total_num,
+      unread_count: rss_list_json1.total_unread_count,
       latest_unread_count: rss_list_json1.total_unread_count_of_current_rss,
       total_unread_count: rss_list_json1.total_unread_count_of_current_rss
     };
