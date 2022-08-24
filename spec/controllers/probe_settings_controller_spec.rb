@@ -11,9 +11,9 @@ RSpec.describe ProbeSettingsController, type: :controller do
       expect(response).to render_template("index")
     end
 
-    it 'has 1 rss job' do
+    it 'has 0 rss job' do
       get :index
-      expect(assigns(:running_rss_jobs_count)).to eq 1
+      expect(assigns(:running_rss_jobs_count)).to eq 0
     end
   end
 

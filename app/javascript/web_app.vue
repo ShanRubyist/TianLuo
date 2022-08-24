@@ -15,7 +15,7 @@
       <cat-wrapper id="cat-wrapper"
                    :full_screen="full_screen"
                    :all_rss_list_json="all_rss_list_json"
-                   :unread_count="latest_unread_count"
+                   :unread_count="unread_count"
                    :cat_wrapper_visible="cat_wrapper_visible"
                    @change_rss="change_rss"
       ></cat-wrapper>
@@ -29,11 +29,10 @@
                     :current_rss="current_rss"
                     :current_article="current_article"
                     :current_page="current_page"
-                    :total_num_of_current_rss="total_num_of_current_rss"
+                    :total_num="total_num"
                     :latest_total_num="latest_total_num"
                     :latest_unread_count="latest_unread_count"
                     :total_unread_count="total_unread_count"
-                    :total_num="total_num"
                     @change_article="change_article"
                     @next_page="next_page"
                     @refresh_list="change_rss"
@@ -294,11 +293,11 @@ export default {
       font_list: window.font_list,
       article_list_loading: false,
       current_page: window.rss_list_json1.current_page,
-      total_num_of_current_rss: rss_list_json1.total_num_of_current_rss,
-      latest_unread_count: window.unread_count,
-      total_unread_count: window.unread_count,
-      total_num: rss_list_json1.total_num,
-      latest_total_num: rss_list_json1.total_num
+      total_num: rss_list_json1.total_num_of_current_rss,
+      latest_total_num: rss_list_json1.total_num_of_current_rss,
+      unread_count: rss_list_json1.total_num,
+      latest_unread_count: rss_list_json1.total_unread_count_of_current_rss,
+      total_unread_count: rss_list_json1.total_unread_count_of_current_rss
     };
   },
   methods: {
@@ -348,16 +347,15 @@ export default {
 
         let data = response.data.data;
         this.rss_list_json1 = data;
-        this.rss_list_json = this.rss_list_json1.rss_list;
+        this.rss_list_json = this.rss_list_json1.rss_feed_list;
         this.current_article = this.rss_list_json[0];
         this.current_rss = rss;
         this.article_list_loading = false;
         this.current_page = this.rss_list_json1.current_page;
-        this.total_num_of_current_rss = this.rss_list_json1.total_num_of_current_rss;
-        this.total_num = this.rss_list_json1.total_num;
-        this.latest_total_num = this.rss_list_json1.total_num;
+        this.total_num = this.rss_list_json1.total_num_of_current_rss;
+        this.latest_total_num = this.rss_list_json1.total_num_of_current_rss;
 
-        this.total_unread_count = this.rss_list_json1.total_unread_count;
+        this.total_unread_count = this.rss_list_json1.total_unread_count_of_current_rss;
         this.latest_unread_count = this.total_unread_count;
       } catch (error) {
         that.$message.error(error.toString());
@@ -366,18 +364,43 @@ export default {
     next_page: function (data) {
       // console.log(this.rss_list_json1)
       this.rss_list_json1 = data;
-      this.rss_list_json = this.rss_list_json.concat(this.rss_list_json1.rss_list);
+      this.rss_list_json = this.rss_list_json.concat(this.rss_list_json1.rss_feed_list);
 
       this.current_article = this.rss_list_json[0];
       // this.article_list_loading = false;
       this.current_page = this.rss_list_json1.current_page;
 
-      this.total_num_of_current_rss = this.rss_list_json1.total_num_of_current_rss;
-      this.total_num = this.rss_list_json1.total_num;
-
-      this.latest_total_num = this.rss_list_json1.total_num;
-      this.total_unread_count = this.rss_list_json1.total_unread_count;
+      this.total_num = this.rss_list_json1.total_num_of_current_rss;
+      this.latest_total_num = this.rss_list_json1.total_num_of_current_rss;
+      this.total_unread_count = this.rss_list_json1.total_unread_count_of_current_rss;
       this.latest_unread_count = this.total_unread_count;
+    },
+    refresh_rss_feed_list: async function () {
+      var that = this;
+
+      try {
+        let promise = axios
+            .get("/rss_feeds/", {
+              headers: {
+                Accept: "application/json"
+              },
+              params: {
+                user_id: user_id,
+                rss: this.current_rss
+              }
+            })
+
+        let response = await promise;
+        // console.log(response.data)
+
+        let data = response.data.data;
+        let rss_list_json1 = data;
+
+        this.latest_total_num = rss_list_json1.total_num_of_current_rss;
+        this.latest_unread_count = rss_list_json1.total_unread_count_of_current_rss;
+      } catch (error) {
+        that.$message.error(error.toString());
+      };
     },
     init_websocket: function () {
       let url;
@@ -408,7 +431,7 @@ export default {
             that.latest_total_num = info['message']['info']["total_num"];
             that.latest_unread_count = info['message']['info']["total_unread_count"];
             window.favicon.badge(that.latest_unread_count);
-
+            that.refresh_rss_feed_list();
           } else if (info['message']['info']['type'] == 'tl_update_status') {
             // that.rss_list_json = info['message']['info']["rss_feed_list"];
           }

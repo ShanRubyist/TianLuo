@@ -16,15 +16,20 @@
       <div title="只看未读/查看全部" class="article-list__toolbar-unread active"></div>
     </div>
     <!---->
-    <div v-if="has_new_articles() && is_status_change()" class="article-list__refresh">
+    <div v-if="has_new_articles() && has_unload_articles()" class="article-list__refresh">
       <span @click='$emit("refresh_list", current_rss)' class="article-list__refresh-tip">
-        订阅有 {{ new_articles_count() }} 篇新文章、{{ change_articles_count() }} 篇文章状态有变化，点击刷新</span>
+        订阅有 {{ new_articles_count() }} 篇新文章、{{ unload_articles_count() }} 篇已读未加载，点击刷新</span>
     </div>
     <div v-else-if="has_new_articles()" class="article-list__refresh">
       <span @click='$emit("refresh_list", current_rss)' class="article-list__refresh-tip">
         订阅有 {{ new_articles_count() }} 篇新文章，点击刷新</span>
     </div>
-    <div v-else-if="is_status_change()" class="article-list__refresh">
+    <div v-else-if="has_unload_articles()" class="article-list__refresh">
+      <span @click='$emit("refresh_list", current_rss)' class="article-list__refresh-tip">
+        订阅有 {{ unload_articles_count() }} 篇新文章，点击刷新</span>
+    </div>
+
+    <div v-if="is_status_change()" class="article-list__refresh">
       <span @click='$emit("refresh_list", current_rss)' class="article-list__refresh-tip">
         订阅有 {{ change_articles_count() }} 篇文章状态有变化，点击刷新</span>
     </div>
@@ -90,14 +95,14 @@
 export default {
   props: ["full_screen", "rss_list_json", "rss_list_json1",
     "current_article", "current_rss", "article_list_loading",
-    "current_page", "total_num_of_current_rss", "latest_total_num",
-    "latest_unread_count", "total_unread_count", "total_num"],
+    "current_page", "total_num", "latest_total_num",
+    "latest_unread_count", "total_unread_count"],
   data: function () {
     return {
       load_more_loading: false,
       unread_count: this.total_unread_count,
       total_page:
-          this.total_num_of_current_rss == 0 ? 1 : (Math.floor(this.total_num_of_current_rss / 100) + ((this.total_num_of_current_rss % 100 == 0) ? 0 : 1))
+          this.total_num == 0 ? 1 : (Math.floor(this.total_num / 100) + ((this.total_num % 100 == 0) ? 0 : 1))
     };
   },
   methods: {
@@ -136,7 +141,17 @@ export default {
       };
     },
     has_new_articles: function () {
-      if (this.latest_total_num && (this.latest_total_num > this.total_num)) {
+      let read_num = this.latest_total_num - this.latest_unread_count;
+      if ((this.latest_total_num - Math.max(this.total_num, read_num)) != 0) {
+        return true
+      }
+      else {
+        return false
+      }
+    },
+    has_unload_articles: function (){
+      let read_num = this.latest_total_num - this.latest_unread_count;
+      if ((Math.max(this.total_num, read_num) - this.total_num) != 0) {
         return true
       }
       else {
@@ -144,14 +159,9 @@ export default {
       }
     },
     is_status_change: function () {
-      if (this.latest_unread_count == null){
-        return false;
-      }
+      let read_num = this.latest_total_num - this.latest_unread_count;
 
-      // 无新文章时，latest_unread_count != unread_count;
-      // 有新文章是，latest_unread_count != unread_count + 新文章数量;
-      if (((this.latest_unread_count - this.unread_count) != (this.latest_total_num - this.total_num))
-        && (this.latest_unread_count != this.unread_count)) {
+      if ((Math.min(this.total_num, read_num) - (this.total_num - this.unread_count)) != 0) {
         return true;
       }
       else {
@@ -159,33 +169,34 @@ export default {
       }
     },
     new_articles_count: function (){
-      if (this.latest_total_num) {
-        let result = this.latest_total_num - this.total_num;
-        return (result > 999 ? "999+" : result);
-      }
-      else {
-        return 0
-      }
+      let read_num = this.latest_total_num - this.latest_unread_count;
+      let result = this.latest_total_num - Math.max(this.total_num, read_num)
+
+      return (result > 999 ? "999+" : result);
+    },
+    unload_articles_count: function () {
+      let read_num = this.latest_total_num - this.latest_unread_count;
+      let result = Math.max(this.total_num, read_num) - this.total_num;
+
+      return (result > 999 ? "999+" : result);
     },
     change_articles_count: function () {
-      if (this.latest_unread_count != null) {
-        let result = Math.abs(this.latest_unread_count - this.unread_count);
-        return (result > 999 ? "999+" : result);
-      } else {
-        return 0;
-      }
+      let read_num = this.latest_total_num - this.latest_unread_count;
+      let result = Math.min(this.total_num, read_num) - (this.total_num - this.unread_count);
+
+      return (result > 999 ? "999+" : result);
     }
   },
   watch: {
     current_rss: function() {
       this.$refs.article_list.scrollTop = 0;
     },
-    total_num_of_current_rss: function() {
-      if (this.total_num_of_current_rss == 0) {
+    total_num: function() {
+      if (this.total_num == 0) {
         this.total_page = 1
       } else {
         this.total_page =
-            Math.floor(this.total_num_of_current_rss / 100) + ((this.total_num_of_current_rss % 100 == 0) ? 0 : 1)
+            Math.floor(this.total_num / 100) + ((this.total_num % 100 == 0) ? 0 : 1)
       }
     },
     total_unread_count: function() {

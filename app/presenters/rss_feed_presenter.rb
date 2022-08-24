@@ -11,7 +11,7 @@ class RssFeedPresenter < BasePresenter
 
     user_rss_feeds_of_current_rss = @locals[:rss] ? user_rss_feeds.where(probe_setting: @locals[:rss]) : user_rss_feeds
 
-    rss_list =  RssFeed.rss_feeds_list(@locals[:user_id], @locals[:rss], @locals[:page], @locals[:per]).map do |rss|
+    rss_feed_list =  RssFeed.rss_feeds_list(@locals[:user_id], @locals[:rss], @locals[:page], @locals[:per]).map do |rss|
       {
         id: rss.id,
         title: rss.title,
@@ -41,8 +41,8 @@ class RssFeedPresenter < BasePresenter
       current_page: @locals[:page].to_i,
       total_num: user_rss_feeds.count,
       total_num_of_current_rss: user_rss_feeds_of_current_rss.count,
-      total_unread_count: user_rss_feeds.where(user_rss_feed_ships: { unread: true }).count,
-      rss_list: rss_list
+      total_unread_count_of_current_rss: user_rss_feeds_of_current_rss.where(user_rss_feed_ships: { unread: true }).count,
+      rss_feed_list: rss_feed_list
     }
 
   end
