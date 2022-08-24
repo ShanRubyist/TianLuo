@@ -428,8 +428,9 @@ export default {
 
           if (info['message']['info']['type'] == 'tl_update_unread_count') {
             that.all_rss_list_json = info['message']['info']["rss_list"];
-            that.latest_total_num = info['message']['info']["total_num"];
-            that.latest_unread_count = info['message']['info']["total_unread_count"];
+            that.latest_total_num = info['message']['info']["total_num_of_current_rss"];
+            that.unread_count = info['message']['info']["total_unread_count"];
+            that.latest_unread_count = info['message']['info']["total_unread_count_of_current_rss"];
             window.favicon.badge(that.latest_unread_count);
             that.refresh_rss_feed_list();
           } else if (info['message']['info']['type'] == 'tl_update_status') {
