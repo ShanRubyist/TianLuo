@@ -1,5 +1,5 @@
 class UpdateUserRssJob < ApplicationJob
-  queue_as :default
+  queue_as :update_job
 
   include ApplicationHelper
 
