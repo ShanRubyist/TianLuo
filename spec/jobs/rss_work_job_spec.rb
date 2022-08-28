@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe RssWorkJob, type: :job do
-  describe ' # perform later' do
+  describe '#perform later' do
     let(:probe_setting) { FactoryBot.create(:probe_setting) }
 
     it 'enqueued web spider work jobs' do

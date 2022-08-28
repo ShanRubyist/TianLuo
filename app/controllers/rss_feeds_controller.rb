@@ -8,6 +8,19 @@ class RssFeedsController < ApplicationController
     end
   end
 
+  def briefly_info
+    user_rss_feeds = RssFeed
+                       .includes(:user_rss_feed_ships)
+                       .where(user_rss_feed_ships: { user_id: current_user.id })
+
+    user_rss_feeds_of_current_rss = params[:rss] ? user_rss_feeds.where(probe_setting: params[:rss]) : user_rss_feeds
+
+    render json: {
+      total_num_of_current_rss: user_rss_feeds_of_current_rss.count,
+      total_unread_count_of_current_rss: user_rss_feeds_of_current_rss.where(user_rss_feed_ships: { unread: true }).count
+    }
+  end
+
   def recommend
     respond_to do |format|
       format.json

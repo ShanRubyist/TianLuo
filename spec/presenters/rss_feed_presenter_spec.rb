@@ -16,8 +16,8 @@ RSpec.describe 'RssFeedPresenter' do
   end
 
   it 'returns correct params' do
-    expect(@presenter.rss_feed.keys).to eq([:current_rss, :current_page,
+    expect(@presenter.rss_feed.keys.sort).to eq([:current_rss, :current_page, :total_unread_count,
                                             :total_num, :total_num_of_current_rss,
-                                            :total_unread_count_of_current_rss, :rss_feed_list])
+                                            :total_unread_count_of_current_rss, :rss_feed_list].sort)
   end
 end

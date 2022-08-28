@@ -17,6 +17,10 @@ RSpec.describe 'RssFeedsController', type: :routing do
     it 'routes to #index' do
       expect(get: "/rss_feeds").to route_to("rss_feeds#index")
     end
+
+    it 'routes to #briefly_info' do
+      expect(get: '/rss_feeds/briefly_info').to route_to('rss_feeds#briefly_info')
+    end
   end
 
   describe 'routes with format' do

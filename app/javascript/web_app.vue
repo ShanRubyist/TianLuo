@@ -17,6 +17,7 @@
                    :all_rss_list_json="all_rss_list_json"
                    :unread_count="unread_count"
                    :cat_wrapper_visible="cat_wrapper_visible"
+                   :current_rss="current_rss"
                    @change_rss="change_rss"
       ></cat-wrapper>
 
@@ -375,17 +376,16 @@ export default {
       this.total_unread_count = this.rss_list_json1.total_unread_count_of_current_rss;
       this.latest_unread_count = this.total_unread_count;
     },
-    refresh_rss_feed_list: async function () {
+    refresh_rss_feed_list_info: async function () {
       var that = this;
 
       try {
         let promise = axios
-            .get("/rss_feeds/", {
+            .get("/rss_feeds/briefly_info", {
               headers: {
                 Accept: "application/json"
               },
               params: {
-                user_id: user_id,
                 rss: this.current_rss
               }
             })
@@ -393,11 +393,10 @@ export default {
         let response = await promise;
         // console.log(response.data)
 
-        let data = response.data.data;
-        let rss_list_json1 = data;
+        let data = response.data;
 
-        this.latest_total_num = rss_list_json1.total_num_of_current_rss;
-        this.latest_unread_count = rss_list_json1.total_unread_count_of_current_rss;
+        this.latest_total_num = data.total_num_of_current_rss;
+        this.latest_unread_count = data.total_unread_count_of_current_rss;
       } catch (error) {
         that.$message.error(error.toString());
       };
@@ -428,11 +427,11 @@ export default {
 
           if (info['message']['info']['type'] == 'tl_update_unread_count') {
             that.all_rss_list_json = info['message']['info']["rss_list"];
-            that.latest_total_num = info['message']['info']["total_num_of_current_rss"];
+            // that.latest_total_num = info['message']['info']["total_num_of_current_rss"];
             that.unread_count = info['message']['info']["total_unread_count"];
-            that.latest_unread_count = info['message']['info']["total_unread_count_of_current_rss"];
-            window.favicon.badge(that.latest_unread_count);
-            that.refresh_rss_feed_list();
+            // that.latest_unread_count = info['message']['info']["total_unread_count_of_current_rss"];
+            window.favicon.badge(that.unread_count);
+            that.refresh_rss_feed_list_info();
           } else if (info['message']['info']['type'] == 'tl_update_status') {
             // that.rss_list_json = info['message']['info']["rss_feed_list"];
           }

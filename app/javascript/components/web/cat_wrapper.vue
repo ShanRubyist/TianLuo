@@ -21,7 +21,7 @@
         <div class="cat-list__content">
           <div>
             <div class="draggable-item">
-              <div :title="unread_count + ' 篇未读文章'" class="nav-item cat-item">
+              <div :title="unread_count + ' 篇未读文章'" class="nav-item cat-item" :class="{active: (current_rss==null)}">
                 <i class="iconfont icon-unfold"></i>
                 <span
                     class="nav-item__title text--ellipsis"
@@ -43,7 +43,7 @@
               </div>
             </div>
             <div style>
-              <div v-for="rss in all_rss_list_json" class="nav-item">
+              <div v-for="rss in all_rss_list_json" class="nav-item" :class="{active: (current_rss == rss.probe_settings_id)}">
                 <template v-if="rss.status == 'enqueued' || rss.status == 'performing'">
                   <a-space><a-spin :spinning="true" size="small" /></a-space>
                 </template>
@@ -83,7 +83,7 @@
 
 <script>
 export default {
-  props: ["all_rss_list_json", "cat_wrapper_visible", "full_screen", "unread_count"],
+  props: ["all_rss_list_json", "cat_wrapper_visible", "full_screen", "unread_count", "current_rss"],
   methods: {
     mark_readed: function() {
       var that = this;

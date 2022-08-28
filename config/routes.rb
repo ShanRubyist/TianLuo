@@ -28,6 +28,7 @@ Rails.application.routes.draw do
 
   resources :rss_feeds, only: [:index] do
     collection do
+      get :briefly_info
       get :unread_count
       put :mark_all_as_read
       get :load_more_rss_feed

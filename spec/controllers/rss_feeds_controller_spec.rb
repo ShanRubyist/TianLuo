@@ -20,6 +20,13 @@ RSpec.describe RssFeedsController, type: :controller do
     end
   end
 
+  describe 'GET #briefly_info' do
+    it 'get rss feed briefly info' do
+      get :briefly_info, params: { current_rss: probe_setting.id }
+      expect(response.body).to match /.*total_num_of_current_rss.*total_unread_count_of_current_rss.*/
+    end
+  end
+
   describe 'PUT #mark_all_as_read' do
     it 'mark all rss feed readed' do
       patch :mark_all_as_read, params: { user_id: user.id}

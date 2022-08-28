@@ -26,7 +26,7 @@
     </div>
     <div v-else-if="has_unload_articles()" class="article-list__refresh">
       <span @click='$emit("refresh_list", current_rss)' class="article-list__refresh-tip">
-        订阅有 {{ unload_articles_count() }} 篇新文章，点击刷新</span>
+        订阅有 {{ unload_articles_count() }} 篇已读未加载，点击刷新</span>
     </div>
 
     <div v-if="is_status_change()" class="article-list__refresh">
