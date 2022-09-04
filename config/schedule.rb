@@ -22,7 +22,7 @@
 env :PATH, ENV['PATH']
 set :output, 'log/whenever.log'
 
-every 10.minutes do
+every 1.hour do
   runner "RssQueueJob.perform_later", environment: :development
 end
 
@@ -30,7 +30,7 @@ end
 #   runner "WebSpiderQueueJob.perform_later", environment: :development
 # end
 
-every 1.day, at: ['11:00 am'] do
+every '30 * * * *' do
   runner "KeywordsJob.perform_later", environment: :development
 end
 

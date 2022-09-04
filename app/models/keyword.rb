@@ -15,7 +15,7 @@ class Keyword < ApplicationRecord
     end
 
     def fetch_new_rss_feed
-      max_fetch_count = 50_000
+      max_fetch_count = 1_000
       sql_str = <<-STR
       select *
       from rss_feeds
