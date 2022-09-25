@@ -13,8 +13,14 @@ class ProbeSettingsController < ApplicationController
   end
 
   def create
-    @probe_setting = ProbeSetting.new(probe_setting_params)
-    @probe_setting.users = [current_user]
+    @probe_setting = ProbeSetting
+                       .create_with(retry_limit: params[:probe_setting][:retry_limit],
+                                    proxy: params[:probe_setting][:proxy],
+                                    status: params[:probe_setting][:status])
+                       .find_or_create_by(url: params[:probe_setting][:url],
+                                          port: params[:probe_setting][:port])
+
+    @probe_setting.users << current_user unless @probe_setting.users.include?(current_user)
 
     respond_to do |format|
       if @probe_setting.save
@@ -43,7 +49,7 @@ class ProbeSettingsController < ApplicationController
   private
 
   def probe_setting_params
-    params[:probe_setting][:user_id] = current_user.id
+    # params[:probe_setting][:user_id] = current_user.id
     params.require(:probe_setting).permit(:url, :port, :retry_limit, :proxy, :status, :user_id)
   end
 end
