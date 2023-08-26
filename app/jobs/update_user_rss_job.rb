@@ -26,6 +26,6 @@ class UpdateUserRssJob < ApplicationJob
     rss_feed_list.delete :rss_feed_list
     rss_feed_list.merge!({ type: 'tl_update_unread_count' }, { rss_list: rss_list })
 
-    ActionCable.server.broadcast "tl_#{args[:user_id]}_channel", info: rss_feed_list
+    ActionCable.server.broadcast "tl_#{args[:user_id]}_channel", { info: rss_feed_list }
   end
 end

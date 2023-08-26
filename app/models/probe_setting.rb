@@ -1,3 +1,5 @@
+require_relative 'concerns/rss_list.rb'
+
 class ProbeSetting < ApplicationRecord
   include RSSList
 

@@ -9,7 +9,7 @@ Bundler.require(*Rails.groups)
 module TianLuo
   class Application < Rails::Application
     # Initialize configuration defaults for originally generated Rails version.
-    config.load_defaults 5.2
+    config.load_defaults 6.0
 
     require 'server'
     config.middleware.use Server
@@ -50,5 +50,7 @@ module TianLuo
     }
 
     config.view_component.preview_paths << "#{Rails.root}/spec/components/previews"
+
+    config.hosts << ENV.fetch('HOST') { 'localhost' }
   end
 end

@@ -10,7 +10,7 @@ gem 'omniauth-weibo-oauth2'
 gem 'rails_admin', '~> 2.0'
 gem 'pundit'
 
-gem "view_component", require: "view_component/engine"
+gem "view_component"#, require: "view_component/engine"
 
 # gem 'jquery-rails'
 # gem 'bootstrap-sass'
@@ -21,8 +21,9 @@ gem 'coveralls', require: false
 
 # 使用redis作为缓存服务器
 gem 'redis-rails'
-gem 'sidekiq', '< 6.0'
+gem 'sidekiq', '< 7.0'
 gem 'whenever', require: false
+gem 'feedjira'
 
 gem 'rest-client'
 
@@ -31,7 +32,7 @@ gem 'webpacker'
 gem 'kaminari'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '~> 5.2.3'
+gem 'rails', '~> 6.0.0'
 # Use postgresql as the database for Active Record
 gem 'pg', '>= 0.18', '< 2.0'
 # Use Puma as the app server
