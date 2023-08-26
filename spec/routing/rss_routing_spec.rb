@@ -13,6 +13,10 @@ RSpec.describe 'ProbeSettingsController', type: :routing do
     it 'routes to #destroy' do
       expect(delete: "/probe_settings/1").to route_to("probe_settings#destroy", {id: '1'})
     end
+
+    it 'routes to #index' do
+      expect(get: "/probe_settings").to route_to("probe_settings#index")
+    end
   end
 
   describe 'routes with format' do
@@ -26,6 +30,10 @@ RSpec.describe 'ProbeSettingsController', type: :routing do
 
     it 'routes to #destroy' do
       expect(delete: "/probe_settings/1.json").to route_to("probe_settings#destroy", {format: 'json', id: '1'})
+    end
+
+    it 'routes to #index' do
+      expect(get: "/probe_settings.json").to route_to("probe_settings#index", {format: 'json'})
     end
   end
 end

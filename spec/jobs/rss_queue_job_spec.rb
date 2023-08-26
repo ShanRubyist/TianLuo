@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe RssQueueJob, type: :job do
-  describe ' # perform later' do
+  describe '#perform later' do
     it 'enqueued rss feed work jobs' do
       ActiveJob::Base.queue_adapter = :test
       expect {

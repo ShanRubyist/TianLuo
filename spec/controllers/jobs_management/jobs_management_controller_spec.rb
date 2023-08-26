@@ -13,9 +13,16 @@ RSpec.describe JobsManagement::JobsManagementController, type: :controller do
 
   describe 'POST #start_all_job' do
     it 'start all jobs' do
-      post :start_all_jobs, params: {type: 'RssWorkJob'}
+      post :start_all_jobs, params: { type: 'RssWorkJob' }
       expect(response.body).to match /成功/
       expect(response.status).to eq 200
     end
+
+    # it 'should have enqueued UpdateUserRssJob jobs' do
+    #   ActiveJob::Base.queue_adapter = :test
+    #   expect {
+    #     post :start_all_jobs, params: { type: 'RssWorkJob' }
+    #   }.to have_enqueued_job(UpdateUserRssJob)
+    # end
   end
 end

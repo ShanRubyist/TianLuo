@@ -26,9 +26,11 @@ module JobsManagement
                     RssWorkJob
                   end
 
-      ProbeSetting.where(user_id: current_user.id).each do |setting|
+      current_user.probe_settings.each do |setting|
         job_class.perform_later(setting)
       end
+
+      UpdateUserRssJob.perform_now(user_id: current_user.id)
 
       render(json: {message: '任务启动成功!'})
     rescue
@@ -50,6 +52,9 @@ module JobsManagement
       # job_class = params['type'].constantize
 
       rst = job_class.perform_later(setting)
+
+      UpdateUserRssJob.perform_now(user_id: current_user.id)
+
       rst ? render(json: {message: '任务启动成功!'}) : render(json: nil, status: 502)
     end
 

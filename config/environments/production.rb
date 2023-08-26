@@ -64,7 +64,7 @@ Rails.application.configure do
   # config.active_job.queue_adapter     = :resque
   config.active_job.queue_adapter = :sidekiq
 
-  # config.active_job.queue_name_prefix = "MoJing_#{Rails.env}"
+  # config.active_job.queue_name_prefix = "TianLuo_#{Rails.env}"
 
   config.action_mailer.perform_caching = false
 

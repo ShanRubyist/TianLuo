@@ -10,7 +10,8 @@
     var user_id =  <%= current_user.id %>
 
     <% present('RssFeedPresenter', user_id: current_user) do |rss| %>
-    var rss_list_json = <%= raw(rss.rss_feed.to_json) %>
+    var rss_list_json1 = <%= raw(rss.rss_feed.to_json) %>
+    var rss_list_json = rss_list_json1.rss_feed_list
     <% end %>
 
     <% present('RssPresenter', user_id: current_user.id) do |rss| %>
@@ -24,6 +25,7 @@
     var favicon=new Favico({
       animation:'slide'
     });
+
 </script>
 
 <%= javascript_pack_tag 'web_app' %>
@@ -31,3 +33,9 @@
 <div id="tianluo">
   <app></app>
 </div>
+
+<noscript>
+  <div style="color: red">
+    你的浏览器不支持JavaScript！
+  </div>
+</noscript>

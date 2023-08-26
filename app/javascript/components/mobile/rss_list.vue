@@ -60,7 +60,7 @@ export default {
       var that = this;
       axios
         .put(
-          window.location.href + "rss_feeds/mark_readed",
+          window.location.href + "rss_feeds/mark_all_as_read",
           {
             user_id: user_id,
             authenticity_token: document

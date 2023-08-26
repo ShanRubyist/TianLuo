@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_09_10_133154) do
+ActiveRecord::Schema.define(version: 2022_08_01_125940) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -207,6 +207,7 @@ ActiveRecord::Schema.define(version: 2021_09_10_133154) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "probe_setting_id"
+    t.string "enclosure"
     t.index ["probe_setting_id", "link"], name: "index_rss_feeds_on_probe_setting_id_and_link"
     t.index ["probe_setting_id"], name: "index_rss_feeds_on_probe_setting_id"
     t.index ["rss_probe_history_id"], name: "index_rss_feeds_on_rss_probe_history_id"

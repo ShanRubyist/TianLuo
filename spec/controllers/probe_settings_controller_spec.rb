@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe ProbeSettingsController, type: :controller do
-  let(:probe_setting) { FactoryBot.create(:probe_setting) }
+  # let(:probe_setting) { FactoryBot.create(:probe_setting) }
 
   login_user
 
@@ -10,18 +10,32 @@ RSpec.describe ProbeSettingsController, type: :controller do
       get :index
       expect(response).to render_template("index")
     end
+
+    it 'has 0 rss job' do
+      get :index
+      expect(assigns(:running_rss_jobs_count)).to eq 0
+    end
   end
 
   describe 'POST #create' do
     context 'with valid params' do
       it 'save the new probe setting' do
-        post :create, params: {probe_setting: FactoryBot.attributes_for(:probe_setting)}
-
-        expect(assigns(:probe_setting).url).to eq(probe_setting.url)
-
         expect {
           post :create, params: {probe_setting: FactoryBot.attributes_for(:probe_setting)}
         }.to change(ProbeSetting, :count).by(1)
+
+        post :create, params: {probe_setting: FactoryBot.attributes_for(:probe_setting)}
+        expect(assigns(:probe_setting).url).to eq(FactoryBot.attributes_for(:probe_setting).fetch(:url))
+      end
+
+      login_admin
+
+      it 'save the same probe setting with another user' do
+        post :create, params: {probe_setting: FactoryBot.attributes_for(:probe_setting)}
+
+        expect {
+          post :create, params: {probe_setting: FactoryBot.attributes_for(:probe_setting)}
+        }.to change(ProbeSetting, :count).by(0)
       end
     end
 

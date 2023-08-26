@@ -1,0 +1,34 @@
+redis:
+  image: redis:7.0
+  restart: always
+db:
+  image: postgres:13.7
+  restart: always
+  env_file:
+   - .env
+     #environment:
+     #- POSTGRES_DB
+     #- POSTGRES_PASSWORD
+app:
+  build: .
+  restart: always
+  links:
+   - db
+   - redis
+  ports:
+   - "3000:3000"
+  working_dir: /opt
+  volumes:
+   - "./:/opt"
+  command:
+   - bash
+   - -c
+   - |
+     rm tmp/pids/server.pid
+     rm tmp/pids/sidekiq.pid
+     rails db:create
+     rails db:migrate
+     whenever --update-cron
+     ./bin/webpack-dev-server &
+     bundle exec sidekiq
+     bundle exec rails s -b 0.0.0.0

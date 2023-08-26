@@ -1,3 +1,5 @@
+require_relative 'concerns/rss_list.rb'
+
 class ProbeSetting < ApplicationRecord
   include RSSList
 
@@ -12,4 +14,10 @@ class ProbeSetting < ApplicationRecord
   has_many :rss_probe_failure_histories
 
   validates :url, presence: true#, uniqueness: true
+
+  def save(*)
+    res = super
+    RssWorkJob.perform_later(self) if res
+    res
+  end
 end

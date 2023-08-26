@@ -13,24 +13,38 @@
 
       <!--    订阅列表区域-->
       <cat-wrapper id="cat-wrapper"
-        :full_screen="full_screen"
-        :all_rss_list_json="all_rss_list_json"
-        :cat_wrapper_visible="cat_wrapper_visible"
-        @change_rss="change_rss"
+                   :full_screen="full_screen"
+                   :all_rss_list_json="all_rss_list_json"
+                   :unread_count="unread_count"
+                   :cat_wrapper_visible="cat_wrapper_visible"
+                   :current_rss="current_rss"
+                   @change_rss="change_rss"
       ></cat-wrapper>
 
       <!--Feed 列表区域-->
       <article-list id="article-list"
-        :full_screen="full_screen"
-        :rss_list_json="rss_list_json"
-        :current_article="current_article"
-        @change_article="change_article"
+                    :full_screen="full_screen"
+                    :article_list_loading="article_list_loading"
+                    :rss_list_json="rss_list_json"
+                    :rss_list_json1="rss_list_json1"
+                    :current_rss="current_rss"
+                    :current_article="current_article"
+                    :current_page="current_page"
+                    :total_num="total_num"
+                    :latest_total_num="latest_total_num"
+                    :latest_unread_count="latest_unread_count"
+                    :total_unread_count="total_unread_count"
+                    @change_article="change_article"
+                    @next_page="next_page"
+                    @refresh_list="change_rss"
+
       ></article-list>
 
       <!--    Feed 详情内容-->
       <article-detail id="article-detail"
         :full_screen="full_screen"
-        :current_article="current_article"
+                      :article_list_loading="article_list_loading"
+                      :current_article="current_article"
         :font_list="font_list"
         @full_screen_mode="full_screen_mode"
       >
@@ -269,16 +283,22 @@ import ArticleDetail from "components/web/article_detail.vue";
 export default {
   data: function () {
     return {
-      unread_count: 0,
-      unread_count_rss_feeds_path: window.unread_count_rss_feeds_path,
       cat_wrapper_visible: true,
-      rss_list_json: window.rss_list_json,
+      rss_list_json1: rss_list_json1,
+      rss_list_json: rss_list_json,
       all_rss_list_json: window.all_rss_list_json,
       current_article: window.rss_list_json[0],
       current_rss: null,
       qrcode: null,
       full_screen: false,
       font_list: window.font_list,
+      article_list_loading: false,
+      current_page: window.rss_list_json1.current_page,
+      total_num: rss_list_json1.total_num_of_current_rss,
+      latest_total_num: rss_list_json1.total_num_of_current_rss,
+      unread_count: rss_list_json1.total_unread_count,
+      latest_unread_count: rss_list_json1.total_unread_count_of_current_rss,
+      total_unread_count: rss_list_json1.total_unread_count_of_current_rss
     };
   },
   methods: {
@@ -306,31 +326,155 @@ export default {
     full_screen_mode: function () {
       this.full_screen = !this.full_screen;
     },
-    change_rss: function (data) {
-      this.rss_list_json = data;
-      this.current_article = data[0];
+    change_rss: async function(rss) {
+      this.current_rss = rss;
+      var that = this;
+
+      try {
+        app.__vue__.article_list_loading = true;
+        let promise = axios
+            .get("/rss_feeds/", {
+              headers: {
+                Accept: "application/json"
+              },
+              params: {
+                user_id: user_id,
+                rss: rss
+              }
+            })
+
+        let response = await promise;
+        // console.log(response.data)
+
+        let data = response.data.data;
+        this.rss_list_json1 = data;
+        this.rss_list_json = this.rss_list_json1.rss_feed_list;
+        this.current_article = this.rss_list_json[0];
+        this.current_rss = rss;
+        this.article_list_loading = false;
+        this.current_page = this.rss_list_json1.current_page;
+        this.total_num = this.rss_list_json1.total_num_of_current_rss;
+        this.latest_total_num = this.rss_list_json1.total_num_of_current_rss;
+
+        this.total_unread_count = this.rss_list_json1.total_unread_count_of_current_rss;
+        this.latest_unread_count = this.total_unread_count;
+      } catch (error) {
+        that.$message.error(error.toString());
+      };
     },
+    next_page: function (data) {
+      // console.log(this.rss_list_json1)
+      this.rss_list_json1 = data;
+      this.rss_list_json = this.rss_list_json.concat(this.rss_list_json1.rss_feed_list);
+
+      this.current_article = this.rss_list_json[0];
+      // this.article_list_loading = false;
+      this.current_page = this.rss_list_json1.current_page;
+
+      this.total_num = this.rss_list_json1.total_num_of_current_rss;
+      this.latest_total_num = this.rss_list_json1.total_num_of_current_rss;
+      this.total_unread_count = this.rss_list_json1.total_unread_count_of_current_rss;
+      this.latest_unread_count = this.total_unread_count;
+    },
+    refresh_rss_feed_list_info: async function () {
+      var that = this;
+
+      try {
+        let promise = axios
+            .get("/rss_feeds/briefly_info", {
+              headers: {
+                Accept: "application/json"
+              },
+              params: {
+                rss: this.current_rss
+              }
+            })
+
+        let response = await promise;
+        // console.log(response.data)
+
+        let data = response.data;
+
+        this.latest_total_num = data.total_num_of_current_rss;
+        this.latest_unread_count = data.total_unread_count_of_current_rss;
+      } catch (error) {
+        that.$message.error(error.toString());
+      };
+    },
+    init_websocket: function () {
+      let url;
+      if(window.location.protocol == "https:") {
+        url = "wss://" + window.location.host + "/cable"
+      } else {
+        url = "ws://" + window.location.host + "/cable"
+      }
+      let ws = new WebSocket(url)
+
+      let that = this;
+
+      ws.onopen = function () {
+        console.log("connected");
+        ws.send(JSON.stringify({
+          "command": "subscribe", "identifier": '{"channel":"TlChannel","user_id":' + user_id + '}'
+        }))
+      };
+
+      ws.onmessage = function (data) {
+        let info = JSON.parse(data.data);
+
+        if ((info['type'] == null) || (info['type'] == undefined)) {
+          console.log("ws get message: " + info['message']['info']);
+
+          if (info['message']['info']['type'] == 'tl_update_unread_count') {
+            that.all_rss_list_json = info['message']['info']["rss_list"];
+            // that.latest_total_num = info['message']['info']["total_num_of_current_rss"];
+            that.unread_count = info['message']['info']["total_unread_count"];
+            // that.latest_unread_count = info['message']['info']["total_unread_count_of_current_rss"];
+            window.favicon.badge(that.unread_count);
+            that.refresh_rss_feed_list_info();
+          } else if (info['message']['info']['type'] == 'tl_update_status') {
+            // that.rss_list_json = info['message']['info']["rss_feed_list"];
+          }
+        }
+      };
+
+      ws.onclose = function () {
+        console.log("disconnected");
+        that.reconnect_websocket();
+      }
+    },
+    reconnect_websocket: function (){
+      var that = this;
+      console.log("websocker 重连");
+
+      setTimeout(function () {
+        that.init_websocket();
+      }, 10 * 1000);
+    }
   },
   mounted: function () {
     // 定时轮询未读的rss feed数量
-    setInterval(function () {
-      axios
-        .get(unread_count_rss_feeds_path, {
-          headers: {
-            Accept: "application/json",
-          },
-          params: {
-            id: user_id,
-          },
-        })
-        .then(function (reason) {
-          // app._data.unread_count = reason.data.unread_count;
-          // app.__vue__._data.unread_count = reason.data.unread_count;
-          app.__vue__.unread_count = reason.data.unread_count;
-          window.favicon.badge(reason.data.unread_count);
-        })
-        .catch(function (reason) {});
-    }, 5000);
+    // setInterval(function () {
+    //   axios
+    //     .get(unread_count_rss_feeds_path, {
+    //       headers: {
+    //         Accept: "application/json",
+    //       },
+    //       params: {
+    //         id: user_id,
+    //       },
+    //     })
+    //     .then(function (reason) {
+    //       // app._data.unread_count = reason.data.unread_count;
+    //       // app.__vue__._data.unread_count = reason.data.unread_count;
+    //       app.__vue__.unread_count = reason.data.unread_count;
+    //       window.favicon.badge(reason.data.unread_count);
+    //     })
+    //     .catch(function (reason) {});
+    // }, 5000);
+
+    window.favicon.badge(this.latest_unread_count);
+    this.init_websocket();
 
     // 新手教程
     if (!localStorage.getItem("has_show_tutor")) {

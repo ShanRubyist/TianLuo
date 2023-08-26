@@ -21,9 +21,13 @@
         <div class="cat-list__content">
           <div>
             <div class="draggable-item">
-              <div title="5677 篇未读文章" class="nav-item cat-item">
+              <div :title="unread_count + ' 篇未读文章'" class="nav-item cat-item" :class="{active: (current_rss==null)}">
                 <i class="iconfont icon-unfold"></i>
-                <span class="nav-item__title text--ellipsis">未分组</span>
+                <span
+                    class="nav-item__title text--ellipsis"
+                    @click="$emit('change_rss', null)"
+                >全部
+                </span>
                 <a-popover>
                   <template slot="content">
                     <ul class="el-popover__menu">
@@ -31,7 +35,7 @@
                     </ul>
                   </template>
                   <div class="nav-item__count">
-                    <span>999+</span>
+                    <span>{{unread_count}}</span>
                   </div>
 
                   <!--                  <i class="iconfont icon-more el-popover__reference" aria-describedby="el-popover-8372" tabindex="0"></i>-->
@@ -39,11 +43,20 @@
               </div>
             </div>
             <div style>
-              <div v-for="rss in all_rss_list_json" class="nav-item">
+              <div v-for="rss in all_rss_list_json" class="nav-item" :class="{active: (current_rss == rss.probe_settings_id)}">
+                <template v-if="rss.status == 'enqueued' || rss.status == 'performing'">
+                  <a-space><a-spin :spinning="true" size="small" /></a-space>
+                </template>
+                <template v-else-if="rss.status == 'fail'">
+                    <i class="iconfont icon-error"></i>
+                </template>
+
                 <span
                   class="nav-item__title text--ellipsis"
-                  @click="change_rss(rss.probe_settings_id)"
-                >{{rss.title}}</span>
+                  @click="$emit('change_rss', rss.probe_settings_id)"
+                >{{rss.title}}
+                </span>
+
 
                 <a-popover>
                   <template slot="content">
@@ -70,13 +83,13 @@
 
 <script>
 export default {
-  props: ["all_rss_list_json", "cat_wrapper_visible", "full_screen"],
+  props: ["all_rss_list_json", "cat_wrapper_visible", "full_screen", "unread_count", "current_rss"],
   methods: {
     mark_readed: function() {
       var that = this;
       axios
         .put(
-          window.location.href + "rss_feeds/mark_readed",
+          window.location.href + "rss_feeds/mark_all_as_read",
           {
             user_id: user_id,
             authenticity_token: document
@@ -91,26 +104,6 @@ export default {
         )
         .then(function(reason) {
           that.$message.success(reason.data.message);
-        })
-        .catch(function(reason) {
-          that.$message.error(reason.toString());
-        });
-    },
-    change_rss: function(rss) {
-      this.current_rss = rss;
-      var that = this;
-      axios
-        .get("/rss_list", {
-          headers: {
-            Accept: "application/json"
-          },
-          params: {
-            user_id: user_id,
-            rss: rss
-          }
-        })
-        .then(function(reason) {
-          that.$emit('change_rss', reason.data)
         })
         .catch(function(reason) {
           that.$message.error(reason.toString());
@@ -139,7 +132,7 @@ export default {
         .catch(function(reason) {
           that.$message.error(reason.toString());
         });
-    }
+    },
   }
 };
 </script>

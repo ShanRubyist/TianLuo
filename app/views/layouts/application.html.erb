@@ -4,9 +4,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
   <meta name="description" content="<%= meta_description %>">
   <meta name="keywords" content="<%= meta_keywords %>">
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
 
   <title>
-    <%= yield :feed_unread_count %>
+    <%#= yield :feed_unread_count %>
     <%= ENV['SITE_NAME'] %>
   </title>
 
@@ -80,3 +81,13 @@
 </body>
 </html>
 
+<script type="text/javascript" charset="utf-8">
+  window.onload = function () {
+        let now = new Date();
+
+        if ((now.getMonth() == '3' && now.getDay() == '4') || (now.getMonth() == '4') && now.getDay() == '7'){
+            let body = document.getElementsByTagName('body')[0]
+            body.style.filter = 'grayscale(100%)'
+        }
+    }
+</script>
