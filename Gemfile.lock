@@ -264,7 +264,7 @@ GEM
       coderay (~> 1.1)
       method_source (~> 1.0)
     public_suffix (5.0.3)
-    puma (4.3.12)
+    puma (5.6.7)
       nio4r (~> 2.0)
     pundit (2.3.1)
       activesupport (>= 3.0.0)
@@ -488,7 +488,6 @@ GEM
     zeitwerk (2.6.11)
 
 PLATFORMS
-  ruby
   x86_64-linux
 
 DEPENDENCIES
@@ -516,13 +515,14 @@ DEPENDENCIES
   omniauth-oauth2
   omniauth-weibo-oauth2
   pg (>= 0.18, < 2.0)
-  puma (~> 4.3)
+  puma (~> 5.6)
   pundit
   rack-mini-profiler
   rails (~> 6.0.0)
   rails-controller-testing
   rails_admin (~> 2.0)
   rails_best_practices
+  redis (~> 4.0)
   redis-rails
   rest-client
   rspec-rails (~> 4.0.0)
