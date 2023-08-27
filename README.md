@@ -41,7 +41,44 @@ sudo bundle
 
 * 执行数据库迁移  
 ```
-rails db:migrate
+bundle exec rails db:create
+bundle exec rails db:migrate
+bundle exec rails db:seed
+```
+
+* 安装 SCWS
+* [查看 zhparser](https://github.com/amutu/zhparser)
+```
+apt install -y automake
+wget -q -O - http://www.xunsearch.com/scws/down/scws-1.2.3.tar.bz2 | tar jxf -
+cd scws-1.2.3 ;
+./configure ; make install
+```
+
+* 安装 zhparser
+```
+git clone https://github.com/amutu/zhparser.git
+cd zhparser
+apt install postgresql-server-dev-all -y
+make && make install
+```
+
+* 执行 postgresql 命令
+```
+su postgres
+psql -d db_name -c "CREATE EXTENSION zhparser;CREATE TEXT SEARCH CONFIGURATION testzhcfg (PARSER = zhparser);ALTER TEXT SEARCH CONFIGURATION testzhcfg ADD MAPPING FOR n,v,a,i,e,l WITH simple;"
+```
+
+* 安装 yarn
+* [yarn install](https://classic.yarnpkg.cn/docs/install#debian-stable)
+```
+apt install -y nodejs
+
+curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
+echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
+sudo apt update && sudo apt install yarn -y
+
+yarn
 ```
 
 * 设定 *config/schedule* 定时任务  
@@ -59,6 +96,11 @@ bundle exec sidekiq
 ```
 ./bin/webpack-dev-server
 rails assets:precompile
+```
+
+* 启动程序
+```
+rails server -b 0.0.0.0 -p 3000
 ```
 
 ### 方式2: docker 部署
