@@ -14,6 +14,7 @@ ActiveRecord::Schema.define(version: 2022_08_01_125940) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+  enable_extension "zhparser"
 
   create_table "coupons", force: :cascade do |t|
     t.integer "good_id", null: false

@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-require 'rss'
 require 'rest-client'
+# require 'rss'
 
 module RssSavable
   extend ActiveSupport::Concern

@@ -8,4 +8,3 @@ class AddForeignKeyConstraintToActiveStorageAttachmentsForBlobId < ActiveRecord:
     end
   end
 end
-~
