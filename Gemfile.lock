@@ -416,7 +416,7 @@ GEM
     semantic_range (3.0.0)
     sexp_processor (4.17.0)
     shellany (0.0.1)
-    sidekiq (6.5.9)
+    sidekiq (6.5.10)
       connection_pool (>= 2.2.5, < 3)
       rack (~> 2.0)
       redis (>= 4.5.0, < 5)
@@ -488,7 +488,6 @@ GEM
     zeitwerk (2.6.11)
 
 PLATFORMS
-  ruby
   x86_64-linux
 
 DEPENDENCIES
@@ -523,6 +522,7 @@ DEPENDENCIES
   rails-controller-testing
   rails_admin (~> 2.0)
   rails_best_practices
+  redis (~> 4.0)
   redis-rails
   rest-client
   rspec-rails (~> 4.0.0)
