@@ -46,11 +46,13 @@ module TianLuo
         password: ENV['SMTP_PASSWORD'],
         authentication: :login,
         enable_startttls_auto: ENV['SMTP_STARTTTLS_AUTO'],
-        ssl: ENV['SMTP_SSL']
+        tls: ENV['SMTP_SSL'] == 'true' ? true : false
     }
 
     config.view_component.preview_paths << "#{Rails.root}/spec/components/previews"
 
     config.hosts << ENV.fetch('HOST') { 'localhost' }
+
+    config.autoloader = :classic
   end
 end

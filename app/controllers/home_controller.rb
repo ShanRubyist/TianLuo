@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+require_relative '../models/concerns/rss_list'
 
 class HomeController < ApplicationController
   include RssReadable
