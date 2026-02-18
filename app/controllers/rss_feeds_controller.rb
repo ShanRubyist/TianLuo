@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 class RssFeedsController < ApplicationController
 
+  skip_before_action :authenticate_user!, only: [:daily]
+
   # for web
   def index
     respond_to do |format|
@@ -64,6 +66,14 @@ class RssFeedsController < ApplicationController
     respond_to do |format|
       format.json
       format.html { render 'rss_feeds/load_more_rss_feed.json' }
+    end
+  end
+
+  def daily
+    @rss_feeds = RssFeed.where('DATE(created_at) = ?', Date.current).order(created_at: :desc)
+
+    respond_to do |format|
+      format.xml { render layout: false }
     end
   end
 end

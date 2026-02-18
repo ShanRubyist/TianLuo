@@ -40,6 +40,7 @@ Rails.application.routes.draw do
       get :recommend
       get :favor
       get :recommend_feeds_of_specify_feed
+      get :daily
     end
   end
 
