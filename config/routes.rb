@@ -22,7 +22,11 @@ Rails.application.routes.draw do
   mount ActionCable.server => '/cable'
 
   # 自定义路由
-  resources :probe_settings, only: [:index, :create, :destroy]
+  resources :probe_settings, only: [:index, :create, :destroy] do
+    collection do
+      get :opml
+    end
+  end
 
   resources :web_spider_settings, only: [:create, :destroy]
 
@@ -37,10 +41,6 @@ Rails.application.routes.draw do
       get :favor
       get :recommend_feeds_of_specify_feed
     end
-  end
-
-  resources :probe_settings, only: [:index] do
-
   end
 
   scope module: 'goods' do

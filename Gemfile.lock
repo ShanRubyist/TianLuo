@@ -237,6 +237,8 @@ GEM
       net-protocol
     netrc (0.11.0)
     nio4r (2.5.9)
+    nokogiri (1.15.4-arm64-darwin)
+      racc (~> 1.4)
     nokogiri (1.15.4-x86_64-linux)
       racc (~> 1.4)
     notiffany (0.1.3)
@@ -523,6 +525,7 @@ DEPENDENCIES
   rails-controller-testing
   rails_admin (~> 2.0)
   rails_best_practices
+  redis (~> 4.0)
   redis-rails
   rest-client
   rspec-rails (~> 4.0.0)
@@ -541,4 +544,4 @@ DEPENDENCIES
   whenever
 
 BUNDLED WITH
-   2.2.26
+   2.3.11
