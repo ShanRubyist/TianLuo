@@ -2,6 +2,9 @@ class ProbeSettingsController < ApplicationController
   include RunningJosbsCountable
   include ApplicationHelper
 
+  skip_before_action :authenticate_user!, only: [:opml]
+  
+
   # for mobile
   def index
     @running_rss_jobs_count = running_rss_jobs_count
@@ -43,6 +46,14 @@ class ProbeSettingsController < ApplicationController
       render json: {message: '删除成功'}
     else
       render json: {message: '记录不存在'}
+    end
+  end
+
+  def opml
+    @probe_settings = ProbeSetting.all
+
+    respond_to do |format|
+      format.xml { render layout: false }
     end
   end
 
